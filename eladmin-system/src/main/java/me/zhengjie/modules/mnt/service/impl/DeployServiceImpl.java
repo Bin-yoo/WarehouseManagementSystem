@@ -71,8 +71,7 @@ public class DeployServiceImpl extends CommonServiceImpl<DeployMapper, Deploy> i
         PageInfo<DeployDto> pi = ConvertUtil.convertPage(pageList, DeployDto.class);
         for (DeployDto dd: pi.getContent() ) {
             dd.setApp(appService.findById(dd.getAppId()));
-    
-            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverService.lambdaQuery()
+            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverMapper.lambdaQuery()
                     .in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()))
                     .list(), ServerDto.class)));
         }
@@ -84,10 +83,7 @@ public class DeployServiceImpl extends CommonServiceImpl<DeployMapper, Deploy> i
         List<DeployDto> list = ConvertUtil.convertList(deployMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), DeployDto.class);
         for (DeployDto dd: list) {
             dd.setApp(appService.findById(dd.getAppId()));
-
-            QueryWrapper<Server> wrapper = new QueryWrapper<>();
-            wrapper.lambda().in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()));
-            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverService.lambdaQuery()
+            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverMapper.lambdaQuery()
                     .in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()))
                     .list(), ServerDto.class)));
         }
