@@ -18,7 +18,7 @@ import java.util.Map;
 * @date 2021/07/28
 */
 @Data
-public abstract class CommonEntity<T extends Model<?>> extends Model<T> implements Serializable{
+public abstract class CommonEntity<T extends Model<?>> extends CommonModel<T> implements Serializable{
 
     @ApiModelProperty(value = "创建者")
     @TableField(fill= FieldFill.INSERT)
