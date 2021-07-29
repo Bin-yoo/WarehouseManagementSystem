@@ -25,6 +25,12 @@ eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本�
 - 支持在线用户管理与服务器性能监控，支持限制单用户登录
 - 支持运维管理，可方便地对远程服务器的应用进行部署与管理
 
+### 项目捐赠
+
+项目的发展离不开你的支持，请作者喝杯咖啡吧☕
+<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://gitee.com/rayson517/codes/fen0k8oj1pacym3q246du20/raw?blob_name=63107bde-42cd-407b-a1cc-3d36c9b96cdb.jpg"  width="200" height="260" ><img src="https://gitee.com/rayson517/codes/ozbksaxjcge1ihn6tu29716/raw?blob_name=9af111de-ba20-43e6-972a-08541d448107.jpg" width="200" height="260" ></div>
+ 
+
 ####  系统功能
 - 用户管理：提供用户的相关配置，新增用户后，默认密码为123456
 - 角色管理：对权限与菜单进行分配，可根据部门设置角色的数据权限
@@ -76,13 +82,6 @@ eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本�
 - eladmin-generator 系统代码生成模块
 - eladmin-ui 系统前端Vue代码
 ```
-
-### 项目捐赠
-
-项目的发展离不开你的支持，请作者喝杯咖啡吧☕
-<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://gitee.com/rayson517/codes/fen0k8oj1pacym3q246du20/raw?blob_name=63107bde-42cd-407b-a1cc-3d36c9b96cdb.jpg"  width="200" height="260" ><img src="https://gitee.com/rayson517/codes/ozbksaxjcge1ihn6tu29716/raw?blob_name=9af111de-ba20-43e6-972a-08541d448107.jpg" width="200" height="260" ></div>
- 
-
 
 
 **原项目地址：**  [https://github.com/elunez/eladmin](https://github.com/elunez/eladmin)
