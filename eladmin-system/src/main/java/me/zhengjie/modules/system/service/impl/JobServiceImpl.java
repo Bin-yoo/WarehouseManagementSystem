@@ -1,7 +1,6 @@
 package me.zhengjie.modules.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
@@ -120,9 +119,7 @@ public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements
 
     @Override
     public void verification(Set<Long> ids) {
-        QueryWrapper<UsersJobs> wrapper = new QueryWrapper<>();
-        wrapper.lambda().in(UsersJobs::getUserId, ids);
-        int count = usersJobsService.lambdaQuery().in(UsersJobs::getUserId, ids).count();
+        int count = usersJobsMapper.lambdaQuery().in(UsersJobs::getUserId, ids).count();
         if(count > 0){
             throw new BadRequestException("所选的岗位中存在用户关联，请解除关联再试！");
         }

@@ -15,7 +15,6 @@
  */
 package me.zhengjie.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.base.impl.CommonServiceImpl;

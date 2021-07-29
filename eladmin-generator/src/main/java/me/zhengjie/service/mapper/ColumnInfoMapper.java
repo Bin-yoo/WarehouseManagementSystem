@@ -1,8 +1,6 @@
 package me.zhengjie.service.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
 import me.zhengjie.base.CommonMapper;
 import me.zhengjie.domain.ColumnInfo;
 import me.zhengjie.domain.vo.TableInfo;
