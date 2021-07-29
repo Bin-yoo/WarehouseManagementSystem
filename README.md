@@ -80,8 +80,7 @@ eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本�
 ### 项目捐赠
 
 项目的发展离不开你的支持，请作者喝杯咖啡吧☕
-<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://gitee.com/rayson517/codes/fen0k8oj1pacym3q246du20/raw?blob_name=63107bde-42cd-407b-a1cc-3d36c9b96cdb.jpg"  width="200" height="260" ></div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://gitee.com/rayson517/codes/ozbksaxjcge1ihn6tu29716/raw?blob_name=9af111de-ba20-43e6-972a-08541d448107.jpg" width="200" height="260" ></div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img src="https://gitee.com/rayson517/codes/fen0k8oj1pacym3q246du20/raw?blob_name=63107bde-42cd-407b-a1cc-3d36c9b96cdb.jpg"  width="200" height="260" ><img src="https://gitee.com/rayson517/codes/ozbksaxjcge1ihn6tu29716/raw?blob_name=9af111de-ba20-43e6-972a-08541d448107.jpg" width="200" height="260" ></div>
  
 
 
