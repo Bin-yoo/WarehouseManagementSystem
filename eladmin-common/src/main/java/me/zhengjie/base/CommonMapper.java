@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * 公共抽象Mapper接口类
 * @author fanglei
 * @date 2021/07/28
 */
+@Mapper
 public interface CommonMapper<E> extends BaseMapper<E> {
     default QueryChainWrapper<E> query() {
         return ChainWrappers.queryChain(this);
