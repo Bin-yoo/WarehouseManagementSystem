@@ -1,6 +1,7 @@
 package ${package}.service;
 
 import me.zhengjie.base.PageInfo;
+import me.zhengjie.base.CommonService;
 import ${package}.domain.${className};
 import ${package}.service.dto.${className}Dto;
 import ${package}.service.dto.${className}QueryParam;
@@ -12,7 +13,7 @@ import java.util.Set;
 * @author ${author}
 * @date ${date}
 */
-public interface ${className}Service {
+public interface ${className}Service extends CommonService<${className}>  {
 
     static final String CACHE_KEY = "${changeClassName}";
 

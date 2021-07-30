@@ -13,6 +13,7 @@ import me.zhengjie.exception.EntityExistException;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
+import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import ${package}.domain.${className};
@@ -38,7 +39,7 @@ import java.util.*;
 @AllArgsConstructor
 // @CacheConfig(cacheNames = ${className}Service.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class ${className}ServiceImpl implements ${className}Service {
+public class ${className}ServiceImpl extends CommonServiceImpl<${className}Mapper, ${className}> implements ${className}Service {
 
     // private final RedisUtils redisUtils;
     private final ${className}Mapper ${changeClassName}Mapper;
@@ -88,7 +89,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         // delCaches(ids);
         return ${changeClassName}Mapper.deleteBatchIds(ids);
     }
-    
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int removeById(${pkColumnType} id){
