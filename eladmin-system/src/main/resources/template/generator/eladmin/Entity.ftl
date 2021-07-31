@@ -1,5 +1,6 @@
 package ${package}.domain;
 
+import me.zhengjie.base.CommonModel;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -39,7 +40,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("${tableName}")
-public class ${className} implements Serializable {
+public class ${className} extends CommonModel<${className}> implements Serializable {
     private static final long serialVersionUID = 1L;
 <#if columns??>
     <#list columns as column>
