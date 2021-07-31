@@ -2,7 +2,7 @@ module.exports = {
   /**
    * @description 网站标题
    */
-  title: 'ELADMIN-PLUS',
+  title: 'eladmin-plus',
   /**
    * @description 是否显示 tagsView
    */
