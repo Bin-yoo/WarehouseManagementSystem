@@ -61,6 +61,8 @@ login:
   single: false
   #  验证码
   login-code:
+    # 是否启用验证码
+    enabled: true
     #  验证码类型配置 查看 LoginProperties 类
     code-type: arithmetic
     #  登录图形验证码有效时间/分钟

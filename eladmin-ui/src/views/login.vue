@@ -14,7 +14,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code">
+      <el-form-item v-if="codeEnabled" prop="code">
         <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter.native="handleLogin">
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
@@ -68,7 +68,8 @@ export default {
         code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
-      redirect: undefined
+      redirect: undefined,
+      codeEnabled: false
     }
   },
   watch: {
@@ -97,6 +98,11 @@ export default {
   methods: {
     getCode() {
       getCodeImg().then(res => {
+        if (res.enabled === 0) {
+          this.codeEnabled = false
+          return
+        }
+        this.codeEnabled = true
         this.codeUrl = res.img
         this.loginForm.uuid = res.uuid
       })

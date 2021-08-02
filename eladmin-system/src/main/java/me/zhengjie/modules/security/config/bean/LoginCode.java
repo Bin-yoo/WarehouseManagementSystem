@@ -25,7 +25,12 @@ import lombok.Data;
  */
 @Data
 public class LoginCode {
-
+    
+    /**
+     * 是否启用验证码
+     */
+    private Boolean enabled = true;
+    
     /**
      * 验证码配置
      */
