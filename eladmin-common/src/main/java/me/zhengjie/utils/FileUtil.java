@@ -32,6 +32,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -384,5 +386,42 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     
     public static String getMd5(File file) {
         return getMd5(getByte(file));
+    }
+    
+    /**
+     * 下载网络文件
+     * @param fileUrl 网络文件URL地址
+     * @return 文件的二进制字节数组数据
+     * @throws MalformedURLException
+     */
+    public static byte[] downloadNetworkFile(String fileUrl) throws MalformedURLException {
+        URL ur = new URL(fileUrl);
+        BufferedInputStream in = null;
+        ByteArrayOutputStream out = null;
+        try {
+            //获取网络文件的输入流
+            in = new BufferedInputStream(ur.openStream());
+            out = new ByteArrayOutputStream(1024);
+            byte[] temp = new byte[1024];
+            int size = 0;
+            while ((size = in.read(temp)) != -1) {
+                out.write(temp, 0, size);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(in != null){
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(out != null){
+            return out.toByteArray();
+        }else{
+            return null;
+        }
     }
 }
