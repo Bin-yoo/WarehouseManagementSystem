@@ -20,6 +20,7 @@
         <qcloud.cos.version>5.6.19</qcloud.cos.version>
         <baidubce.bos.version>0.10.82</baidubce.bos.version>
         <jsch.version>0.1.54</jsch.version>
+        <minio.version>8.2.2</minio.version>
     </properties>
 
     <dependencies>
@@ -90,5 +91,11 @@
             <version>${jsch.version}</version>
         </dependency>
 
+        <!--minio 分布式文件存储-->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
     </dependencies>
 </project>

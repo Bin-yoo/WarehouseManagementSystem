@@ -94,5 +94,15 @@ public abstract class CloudStorageService {
      * @return              返回http访问地址
      */
     public abstract String upload(InputStream inputStream, String savePath);
-
+    
+    /**
+     * 文件上传
+     * @param inputStream   字节流
+     * @param savePath      文件保存路径，包含文件名
+     * @param size      文件大小
+     * @return              返回http访问地址
+     */
+    public String upload(InputStream inputStream, String savePath, long size) {
+        return upload(inputStream, savePath);
+    }
 }
