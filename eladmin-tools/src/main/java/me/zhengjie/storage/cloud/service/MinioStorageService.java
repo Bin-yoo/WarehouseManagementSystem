@@ -40,7 +40,7 @@ public class MinioStorageService extends CloudStorageService {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
         } catch (Exception e) {
-            log.error("创建Bucket失败", e);
+            throw new RuntimeException("创建Bucket失败", e);
         }
     }
     
@@ -50,7 +50,7 @@ public class MinioStorageService extends CloudStorageService {
         try {
             minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
         } catch (Exception e) {
-            log.error("删除Bucket失败", e);
+            throw new RuntimeException("删除Bucket失败", e);
         }
     }
     /**
@@ -72,7 +72,7 @@ public class MinioStorageService extends CloudStorageService {
                     .bucket(minioConfig.getBucketName())
                     .object(savePath).build());
         } catch (Exception e) {
-            log.error("删除File失败", e);
+            throw new RuntimeException("删除File失败", e);
         }
     }
     
@@ -86,7 +86,7 @@ public class MinioStorageService extends CloudStorageService {
                     .bucket(minioConfig.getBucketName()).objects(keys)
                     .build());
         } catch (Exception e) {
-            log.error("批量删除File失败", e);
+            throw new RuntimeException("批量删除File失败", e);
         }
     }
     
@@ -101,7 +101,7 @@ public class MinioStorageService extends CloudStorageService {
                 return true;
             }
         } catch (Exception e) {
-            log.error("判断文件是否存在", e);
+            throw new RuntimeException("判断文件是否存在", e);
         }
         return false;
     }
@@ -125,7 +125,7 @@ public class MinioStorageService extends CloudStorageService {
             minioClient.putObject(PutObjectArgs.builder().bucket(minioConfig.getBucketName())
                     .object(savePath).stream(inputStream, size, minioConfig.getPartSize()).build());
         } catch (Exception e) {
-            log.error("上传文件失败", e);
+            throw new RuntimeException("上传文件失败", e);
         }
         return minioConfig.getDomain() + "/" + savePath;//返回文件的访问URL地址
     }

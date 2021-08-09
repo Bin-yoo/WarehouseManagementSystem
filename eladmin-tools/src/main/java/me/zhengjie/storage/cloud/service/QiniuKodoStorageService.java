@@ -87,8 +87,7 @@ public class QiniuKodoStorageService extends CloudStorageService {
             bucketManager.delete(config.getBucketName(), objectName);
         } catch (QiniuException ex) {
             //如果遇到异常，说明删除失败
-            System.err.println(ex.code());
-            System.err.println(ex.response.toString());
+            throw new RuntimeException(ex);
         }
     }
 
@@ -119,7 +118,7 @@ public class QiniuKodoStorageService extends CloudStorageService {
                 }
             }
         } catch (QiniuException ex) {
-            System.err.println(ex.response.toString());
+            throw new RuntimeException(ex);
         }
     }
 
@@ -136,9 +135,8 @@ public class QiniuKodoStorageService extends CloudStorageService {
             FileInfo fileInfo = bucketManager.stat(config.getBucketName(), objectName);
             return fileInfo != null;
         } catch (QiniuException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override

@@ -45,26 +45,35 @@ public class BaiduBosStorageService extends CloudStorageService {
     @Override
     void createBucket(String bucketName) {
         BosClient client = getClient();
-        boolean exists = client.doesBucketExist(bucketName);
-        if(exists) {
-            return;
+        try {
+            boolean exists = client.doesBucketExist(bucketName);
+            if(exists) {
+                return;
+            }
+            // 创建CreateBucketRequest对象。
+            CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+            // 创建存储空间。
+            client.createBucket(createBucketRequest);
+        }catch (Exception e) {
+            throw new RuntimeException("创建Bucket失败", e);
+        } finally {
+            // 关闭BOSClient。
+            client.shutdown();
         }
-        // 创建CreateBucketRequest对象。
-        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
-        // 创建存储空间。
-        client.createBucket(createBucketRequest);
-        // 关闭BOSClient。
-        client.shutdown();
-        
     }
     
     @Override
     void deleteBucket(String bucketName) {
         BosClient client = getClient();
-        // 删除存储空间。
-        client.deleteBucket(bucketName);
-        // 关闭BOSClient。
-        client.shutdown();
+        try {
+            // 删除存储空间。
+            client.deleteBucket(bucketName);
+        }catch (Exception e) {
+            throw new RuntimeException("删除Bucket失败", e);
+        } finally {
+            // 关闭BOSClient。
+            client.shutdown();
+        }
     }
     /**
      * 通过文件URL反向解析文件保存路径
@@ -79,31 +88,49 @@ public class BaiduBosStorageService extends CloudStorageService {
     @Override
     public void deleteFile(String fileUrl) {
         BosClient bosClient = getClient();
-        String savePath = getSavePath(fileUrl);
-        bosClient.deleteObject(baiduBosConfig.getBucketName(),savePath);
-        // 关闭BOSClient。
-        bosClient.shutdown();
+        try {
+            String savePath = getSavePath(fileUrl);
+            bosClient.deleteObject(baiduBosConfig.getBucketName(), savePath);
+        }catch (Exception e) {
+            throw new RuntimeException("删除文件失败", e);
+        } finally {
+            // 关闭BOSClient。
+            bosClient.shutdown();
+        }
     }
     
     @Override
     public void deleteFile(List<String> fileUrlList) {
         BosClient bosClient = getClient();
-        List<String> keys = new ArrayList<>();
-        fileUrlList.forEach(item-> keys.add(getSavePath(item)));
-        DeleteMultipleObjectsRequest deleteMultipleObjectsRequest = new DeleteMultipleObjectsRequest()
-                .withBucketName(baiduBosConfig.getBucketName());
-        deleteMultipleObjectsRequest.setObjectKeys(keys);
-        DeleteMultipleObjectsResponse deleteObjectsResult = bosClient.deleteMultipleObjects(deleteMultipleObjectsRequest);
-        // 关闭BOSClient。
-        bosClient.shutdown();
+        try {
+            List<String> keys = new ArrayList<>();
+            fileUrlList.forEach(item -> keys.add(getSavePath(item)));
+            DeleteMultipleObjectsRequest deleteMultipleObjectsRequest = new DeleteMultipleObjectsRequest()
+                    .withBucketName(baiduBosConfig.getBucketName());
+            deleteMultipleObjectsRequest.setObjectKeys(keys);
+            DeleteMultipleObjectsResponse deleteObjectsResult = bosClient.deleteMultipleObjects(deleteMultipleObjectsRequest);
+        }catch (Exception e) {
+            throw new RuntimeException("批量删除文件", e);
+        } finally {
+            // 关闭BOSClient。
+            bosClient.shutdown();
+        }
+        
     }
     
     @Override
     public boolean exist(String fileUrl) {
         String objectName = getSavePath(fileUrl);
         BosClient bosClient = getClient();
-        boolean exists = bosClient.doesObjectExist(baiduBosConfig.getBucketName(), objectName);
-        bosClient.shutdown();
+        boolean exists = false;
+        try {
+            exists = bosClient.doesObjectExist(baiduBosConfig.getBucketName(), objectName);
+        }catch (Exception e) {
+            throw new RuntimeException("判断文件是否存在", e);
+        } finally {
+            bosClient.shutdown();
+        }
+        
         return exists;
     }
     
@@ -121,7 +148,7 @@ public class BaiduBosStorageService extends CloudStorageService {
             bosClient.putObject(baiduBosConfig.getBucketName(), savePath, inputStream);
         } catch (Exception e){
             throw new RuntimeException("上传文件失败，请检查配置信息", e);
-        }finally {
+        } finally {
             bosClient.shutdown();
         }
         return baiduBosConfig.getDomain() + "/" + savePath;//返回文件的访问URL地址

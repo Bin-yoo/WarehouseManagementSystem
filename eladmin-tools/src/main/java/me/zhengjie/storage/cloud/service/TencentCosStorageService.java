@@ -118,7 +118,6 @@ public class TencentCosStorageService extends CloudStorageService {
             List<DeleteObjectsResult.DeletedObject> deleteObjects = mde.getDeletedObjects();
             List<MultiObjectDeleteException.DeleteError> deleteErrors = mde.getErrors();
         } catch (CosServiceException e) { // 如果是其他错误，例如参数错误， 身份验证不过等会抛出 CosServiceException
-            e.printStackTrace();
             throw e;
         }
     }
@@ -156,7 +155,7 @@ public class TencentCosStorageService extends CloudStorageService {
             //将图片上传到 COS
             cosClient.putObject(putObjectRequest);
         } catch (IOException e) {
-           log.error(e.getMessage(),e);
+            throw new RuntimeException(e);
         }
         return config.getDomain()+"/"+ savePath;
     }
