@@ -34,17 +34,25 @@ public class AliyunOssStorageService extends CloudStorageService {
     @Override
     void createBucket(String bucketName) {
         // 创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        boolean exists = ossClient.doesBucketExist(bucketName);//判断存储空间是否存在
-        if(exists){
-            return;
+        OSS ossClient = getOSSClient();
+        try {
+            boolean exists = ossClient.doesBucketExist(bucketName);//判断存储空间是否存在
+            if (exists) {
+                return;
+            }
+            // 创建CreateBucketRequest对象。
+            CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+            // 创建存储空间。
+            ossClient.createBucket(createBucketRequest);
+        }catch (Exception e) {
+            throw new RuntimeException("创建Bucket失败", e);
+        } finally {
+            if(ossClient != null) {
+                // 关闭OSSClient。
+                ossClient.shutdown();
+            }
         }
-        // 创建CreateBucketRequest对象。
-        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
-        // 创建存储空间。
-        ossClient.createBucket(createBucketRequest);
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        
     }
 
     /**
@@ -56,11 +64,20 @@ public class AliyunOssStorageService extends CloudStorageService {
     @Override
     void deleteBucket(String bucketName) {
         // 创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        // 删除存储空间。
-        ossClient.deleteBucket(bucketName);
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        OSS ossClient = getOSSClient();
+        try {
+            // 删除存储空间。
+            ossClient.deleteBucket(bucketName);
+        } catch (Exception e) {
+            throw new RuntimeException("删除Bucket失败", e);
+        } finally {
+            if (ossClient != null) {
+                // 关闭OSSClient。
+                ossClient.shutdown();
+            }
+        }
+        
+        
     }
 
     /**
@@ -81,11 +98,19 @@ public class AliyunOssStorageService extends CloudStorageService {
     @Override
     public void deleteFile(String fileUrl) {
         // 创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        String savePath = getSavePath(fileUrl);
-        ossClient.deleteObject(config.getBucketName(),savePath);
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        OSS ossClient = getOSSClient();
+        try {
+            String savePath = getSavePath(fileUrl);
+            ossClient.deleteObject(config.getBucketName(), savePath);
+        } catch (Exception e) {
+            throw new RuntimeException("删除File失败", e);
+        } finally {
+            if (ossClient != null) {
+                // 关闭OSSClient。
+                ossClient.shutdown();
+            }
+        }
+        
     }
 
     /**
@@ -96,13 +121,20 @@ public class AliyunOssStorageService extends CloudStorageService {
     @Override
     public void deleteFile(List<String> fileUrlList) {
         // 创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        List<String> keys = new ArrayList<>();
-        fileUrlList.forEach(item-> keys.add(getSavePath(item)));
-        DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(config.getBucketName()).withKeys(keys));
-        List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        OSS ossClient = getOSSClient();
+        try {
+            List<String> keys = new ArrayList<>();
+            fileUrlList.forEach(item -> keys.add(getSavePath(item)));
+            DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(config.getBucketName()).withKeys(keys));
+            List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+        } catch (Exception e) {
+            throw new RuntimeException("批量删除文件失败", e);
+        } finally {
+            if (ossClient != null) {
+                // 关闭OSSClient。
+                ossClient.shutdown();
+            }
+        }
     }
 
     /**
@@ -114,12 +146,18 @@ public class AliyunOssStorageService extends CloudStorageService {
     @Override
     public boolean exist(String fileUrl) {
         String objectName = getSavePath(fileUrl);
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        // 判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
-        boolean exist = ossClient.doesObjectExist(config.getBucketName(), objectName);
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        // 创建OSSClient实例
+        OSS ossClient = getOSSClient();
+        boolean exist = false;
+        try {
+            // 判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
+            exist = ossClient.doesObjectExist(config.getBucketName(), objectName);
+        } catch (Exception e) {
+            if (ossClient != null) {
+                // 关闭OSSClient。
+                ossClient.shutdown();
+            }
+        }
         //  返回是否存在
         return exist;
     }
@@ -140,8 +178,14 @@ public class AliyunOssStorageService extends CloudStorageService {
         } catch (Exception e){
             throw new RuntimeException("上传文件失败，请检查配置信息", e);
         }finally {
-            ossClient.shutdown();
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
         }
         return config.getDomain() + "/" + savePath;//返回文件的访问URL地址
+    }
+    
+    public OSS getOSSClient() {
+        return new OSSClientBuilder().build(config.getEndPoint(), config.getAccessKeyId(), config.getAccessKeySecret());
     }
 }
