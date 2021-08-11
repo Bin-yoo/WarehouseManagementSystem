@@ -4,7 +4,7 @@
 
 ### 已完成新特性
 
-- [x] 集成screw-pro 强大的数据库表结构文档生成, 可以导出HTML/WORD/MD/EXCEL。 
+- [x] 集成[screw-pro](https://gitee.com/rayson517/screw-pro) 强大的数据库表结构文档生成, 可以导出HTML/WORD/MD/EXCEL。 
 - [x] 集成腾讯云/阿里云/百度云/SFTP/FTP/Minio等文件存储服务。
 
 # eladmin-plus
