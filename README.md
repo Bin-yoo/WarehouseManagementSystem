@@ -4,8 +4,8 @@
 
 # 已完成新特性
 
-[x] 集成screw-pro 强大的数据库表结构文档生成, 可以导出HTML/WORD/MD/EXCEL。 
-[x] 集成腾讯云/阿里云/百度云/SFTP/FTP/Minio等文件存储服务。
+- [x] 集成screw-pro 强大的数据库表结构文档生成, 可以导出HTML/WORD/MD/EXCEL。 
+- [x] 集成腾讯云/阿里云/百度云/SFTP/FTP/Minio等文件存储服务。
 
 # eladmin-plus
 eladmin的mybatis-plus移植版本。目前更新到2021年8月。<br>
