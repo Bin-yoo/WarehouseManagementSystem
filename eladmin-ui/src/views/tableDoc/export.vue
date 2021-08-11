@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="primary" @click="exportFile('word',2)">生成WORD</el-button>
-    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="primary" @click="exportFile('excel',2)">生成EXCEL</el-button>
-    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="primary" @click="exportFile('html',2)">生成HTML</el-button>
-    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="primary" @click="exportFile('md',2)">生成MD</el-button>
+    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="success" @click="exportFile('excel',2)">生成EXCEL</el-button>
+    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="warning" @click="exportFile('html',2)">生成HTML</el-button>
+    <el-button :loading="loading" style="margin-left:1.6%;" size="medium" type="info" @click="exportFile('md',2)">生成MD</el-button>
   </div>
 </template>
 
