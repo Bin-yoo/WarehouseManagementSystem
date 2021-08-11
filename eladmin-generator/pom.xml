@@ -35,5 +35,16 @@
             <artifactId>commons-configuration</artifactId>
             <version>${configuration.version}</version>
         </dependency>
+
+        <!-- 实现数据库文档集成 单独维护，新增Excel导出，以及按流式下载文件 -->
+        <!-- https://gitee.com/rayson517/screw-pro -->
+        <dependency>
+            <groupId>cn.smallbun.screw</groupId>
+            <artifactId>screw-core</artifactId>
+            <version>1.0.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/screw-core-pro-1.0.6-SNAPSHOT.jar</systemPath>
+        </dependency>
+
     </dependencies>
 </project>
