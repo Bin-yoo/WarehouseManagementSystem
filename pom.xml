@@ -40,8 +40,8 @@
         <lock4j.version>2.2.1</lock4j.version>
         <poi.version>4.1.2</poi.version>
         <hutool.version>5.7.4</hutool.version>
-        <screw.version>1.0.5</screw.version>
         <mybatis-plus.version>3.4.3.1</mybatis-plus.version>
+        <easyexcel.version>2.2.10</easyexcel.version>
     </properties>
 
     <dependencies>
@@ -218,11 +218,11 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-        <!-- 实现数据库文档 -->
+
         <dependency>
-            <groupId>cn.smallbun.screw</groupId>
-            <artifactId>screw-core</artifactId>
-            <version>${screw.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easyexcel.version}</version>
         </dependency>
     </dependencies>
 
