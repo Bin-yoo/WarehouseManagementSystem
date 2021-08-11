@@ -2,10 +2,13 @@
 
 1. 考虑增加 插件化 功能。类似插件市场，可以启用停用，动态调用。根据不同应用场景，走个性化功能实现。提供思路dubbo spi extension 和 可以模拟 前端vue 定义组件。
 
-2. 考虑增加数据库表信息文件导出，接口文档导出
+# 已完成新特性
+
+[x] 集成screw-pro 强大的数据库表结构文档生成, 可以导出HTML/WORD/MD/EXCEL。 
+[x] 集成腾讯云/阿里云/百度云/SFTP/FTP/Minio等文件存储服务。
 
 # eladmin-plus
-eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本。<br>
+eladmin的mybatis-plus移植版本。目前更新到2021年8月。<br>
 
 对应前端vue: [eladmin-plus/eladmin-ui](https://gitee.com/rayson517/eladmin-plus/tree/master/eladmin-ui)
 
