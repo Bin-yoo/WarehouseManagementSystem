@@ -33,7 +33,7 @@ public class UserQueryParam{
 
     /** 精确 */
     @Query
-    private Long enabled;
+    private Boolean enabled;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Query(type = Query.Type.BETWEEN)
