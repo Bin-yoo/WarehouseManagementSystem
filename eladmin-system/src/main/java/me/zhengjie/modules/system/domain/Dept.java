@@ -34,7 +34,6 @@ public class Dept extends CommonEntity<Dept> implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "上级部门")
-    @NotNull
     private Long pid;
 
     @ApiModelProperty(value = "子部门数目")
