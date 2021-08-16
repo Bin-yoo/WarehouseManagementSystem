@@ -73,6 +73,10 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
             query.setPidIsNull(null);
         }
         QueryWrapper wrapper = QueryHelpMybatisPlus.getPredicate(query);
+        
+        if (!(isQuery && notEmpty)) {
+            wrapper.or(true).eq("pid", 0);
+        }
         wrapper.orderByAsc("menu_sort");
         return ConvertUtil.convertList(menuMapper.selectList(wrapper), MenuDto.class);
     }
@@ -382,7 +386,9 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
         int count = lambdaQuery().eq(Menu::getPid, menuId).count();
         Menu menu = new Menu();
         menu.setSubCount(count);
-        menu.setPid(parent.getPid());
+        if (parent != null) {
+            menu.setPid(parent.getPid());
+        }
         lambdaUpdate().eq(Menu::getId, menuId).update(menu);
     }
 

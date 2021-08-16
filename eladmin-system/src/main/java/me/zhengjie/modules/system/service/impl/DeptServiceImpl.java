@@ -68,6 +68,7 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
         if (isQuery && notEmpty) {
             query.setPidIsNull(null);
         }
+        
         return ConvertUtil.convertList(deptMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), DeptDto.class);
     }
 
@@ -178,7 +179,9 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
         
         Dept dept = new Dept();
         dept.setSubCount(count);
-        dept.setPid(deptId);
+        if (parent != null) {
+            dept.setPid(parent.getPid());
+        }
         lambdaUpdate().eq(Dept::getId, deptId)
                 .update(dept);
     }
