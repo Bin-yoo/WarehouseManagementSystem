@@ -173,10 +173,12 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
         if (deptId == null) {
             return;
         }
+        Dept parent = getById(deptId);
         int count = lambdaQuery().eq(Dept::getPid, deptId).count();
         
         Dept dept = new Dept();
         dept.setSubCount(count);
+        dept.setPid(deptId);
         lambdaUpdate().eq(Dept::getId, deptId)
                 .update(dept);
     }

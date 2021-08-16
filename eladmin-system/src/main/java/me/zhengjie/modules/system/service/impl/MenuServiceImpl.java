@@ -375,9 +375,14 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
     }
 
     private void updateSubCnt(Long menuId) {
+        if (menuId == null) {
+            return;
+        }
+        Menu parent = getById(menuId);
         int count = lambdaQuery().eq(Menu::getPid, menuId).count();
         Menu menu = new Menu();
         menu.setSubCount(count);
+        menu.setPid(parent.getPid());
         lambdaUpdate().eq(Menu::getId, menuId).update(menu);
     }
 
