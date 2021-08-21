@@ -124,6 +124,9 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
                 throw new BadRequestException("外链必须以http://或者https://开头");
             }
         }
+        if (resources.getPid().equals(0L)) {
+            resources.setPid(null);
+        }
         resources.setSubCount(resources.getSubCount() == null ? 0 : resources.getSubCount());
         resources.setMenuSort(resources.getMenuSort() == null ? 999 : resources.getMenuSort());
         int ret = menuMapper.insert(resources);
