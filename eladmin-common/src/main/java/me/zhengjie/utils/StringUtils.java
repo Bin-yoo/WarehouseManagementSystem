@@ -47,6 +47,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static File file = null;
     private static DbConfig config;
     private static final char SEPARATOR = '_';
+    private static final char YAML_SEPARATOR = '-';
     private static final String UNKNOWN = "unknown";
     
     private static final UserAgentAnalyzer userAgentAnalyzer = UserAgentAnalyzer
@@ -74,6 +75,36 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
                 }
             }
         });
+    }
+    
+    /**
+     * Yaml key 驼峰命名法工具
+     *
+     * @return yamlToCamelCase(" hello-world ") == "helloWorld"
+     */
+    public static String yamlToCamelCase(String s) {
+        if (s == null) {
+            return null;
+        }
+        if(StringUtils.containsAny(s, YAML_SEPARATOR)) {
+            s = s.toLowerCase();
+            StringBuilder sb = new StringBuilder(s.length());
+            boolean yamlUpperCase = false;
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                
+                if (c == YAML_SEPARATOR) {
+                    yamlUpperCase = true;
+                } else if (yamlUpperCase) {
+                    sb.append(Character.toUpperCase(c));
+                    yamlUpperCase = false;
+                } else {
+                    sb.append(c);
+                }
+            }
+            return sb.toString();
+        }
+        return s;
     }
     
     /**
