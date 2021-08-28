@@ -1,6 +1,6 @@
 - 2021-08-11
 -- 增加菜单
-INSERT INTO `sys_menu`(`menu_id`, `pid`, `sub_count`, `type`, `title`, `name`, `component`, `menu_sort`, `icon`, `path`, `i_frame`, `cache`, `hidden`, `permission`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (118, 36, 0, 1, '表结构文档生成', 'TableDoc', 'tableDoc/index', 38, 'database', 'tableDoc', '0', '0', '0', NULL, 'admin', 'admin', '2021-08-09 15:29:22', '2021-08-09 16:48:57');
+INSERT INTO `sys_menu`(`menu_id`, `pid`, `sub_count`, `type`, `title`, `name`, `component`, `menu_sort`, `icon`, `path`, `i_frame`, `cache`, `hidden`, `permission`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (118, 36, 0, 1, '表结构文档生成', 'TableDoc', 'tableDoc/index', 38, 'database', 'tableDoc', b'0', b'0', b'0', NULL, 'admin', 'admin', '2021-08-09 15:29:22', '2021-08-09 16:48:57');
 INSERT INTO `sys_roles_menus` VALUES (118, 1);
 COMMIT;
 
