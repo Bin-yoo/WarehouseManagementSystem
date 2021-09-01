@@ -64,11 +64,11 @@ public class ${className} extends CommonModel<${className}> implements Serializa
         </#if>
     </#if>
     <#if column.dateAnnotation?? && column.dateAnnotation != ''>
-    <#if column.dateAnnotation = 'CreationTimestamp'>
+    <#--<#if column.dateAnnotation = 'CreationTimestamp'>
     @CreationTimestamp
     <#else>
     @UpdateTimestamp
-    </#if>
+    </#if>-->
     </#if>
     <#if column.changeColumnName = 'updateTime'|| column.changeColumnName = 'updateDate' || column.changeColumnName = 'updateBy'>
     @TableField(fill= FieldFill.INSERT_UPDATE)
