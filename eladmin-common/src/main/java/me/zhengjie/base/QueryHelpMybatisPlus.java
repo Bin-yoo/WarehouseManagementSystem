@@ -2,19 +2,17 @@ package me.zhengjie.base;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.annotation.DataPermission;
 import me.zhengjie.annotation.Query;
+import me.zhengjie.annotation.Scene;
 import me.zhengjie.utils.SecurityUtils;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import me.zhengjie.utils.StringUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -39,13 +37,37 @@ public class QueryHelpMybatisPlus {
             // 获取数据权限
             List<Long> dataScopes = SecurityUtils.getCurrentUserDataScope();
             if(CollectionUtil.isNotEmpty(dataScopes)){
-                if(StringUtils.isNotBlank(permission.joinName()) && StringUtils.isNotBlank(permission.fieldName())) {
-                    //Join join = root.join(permission.joinName(), JoinType.LEFT);
-                    //list.add(getExpression(permission.fieldName(),join, root).in(dataScopes));
-                    throw new RuntimeException("未实现");
-                } else if (StringUtils.isBlank(permission.joinName()) && StringUtils.isNotBlank(permission.fieldName())) {
-                    //list.add(getExpression(permission.fieldName(),null, root).in(dataScopes));
-                    queryWrapper.in(permission.fieldName(), dataScopes);
+                // 过滤场景
+                boolean ignoreScene = false;
+                if(ArrayUtil.isNotEmpty(permission.ignoreScene())) {
+                    boolean exits = query.getClass().isAnnotationPresent(Scene.class);
+                    if(exits) {
+                        for(Field field : query.getClass().getDeclaredFields()) {
+                            Scene scene = field.getAnnotation(Scene.class);
+                            if (scene != null) {
+                                Object sceneValue = ReflectionUtils.getField(field, query);
+                                if(Objects.nonNull(sceneValue)) {
+                                    if(StringUtils.equalsAny(String.valueOf(sceneValue), permission.ignoreScene())) {
+                                        ignoreScene = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                       throw new RuntimeException("需要用 @Scene 注解标识场景字段值, 根据字段对应的值判断是否忽略");
+                    }
+                }
+                if(!ignoreScene) {
+                    if(StringUtils.isNotBlank(permission.joinName()) && StringUtils.isNotBlank(permission.fieldName())) {
+                        //Join join = root.join(permission.joinName(), JoinType.LEFT);
+                        //list.add(getExpression(permission.fieldName(),join, root).in(dataScopes));
+                        
+                        throw new RuntimeException("未实现");
+                    } else if (StringUtils.isBlank(permission.joinName()) && StringUtils.isNotBlank(permission.fieldName())) {
+                        //list.add(getExpression(permission.fieldName(),null, root).in(dataScopes));
+                        queryWrapper.in(permission.fieldName(), dataScopes);
+                    }
                 }
             }
         }
