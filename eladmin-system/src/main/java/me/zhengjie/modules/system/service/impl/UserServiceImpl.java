@@ -296,6 +296,7 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
         if (StrUtil.isNotBlank(oldPath)) {
             FileUtil.del(oldPath);
         }
+        flushCache(user.getUsername());
         return new HashMap<String, String>() {
             {
                 put("avatar", file.getName());
