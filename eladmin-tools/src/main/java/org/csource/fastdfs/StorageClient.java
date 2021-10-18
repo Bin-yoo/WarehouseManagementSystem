@@ -833,7 +833,7 @@ public class StorageClient {
                 if (result != 0) {
                     this.errno = (byte) result;
                     this.delete_file(new_group_name, remote_filename);
-                    return null;
+                    results = null;
                 }
             }
             return results;
@@ -1798,6 +1798,7 @@ public class StorageClient {
          * @param out output stream for writing file content
          * @return 0 success, return none zero(errno) if fail
          */
+        @Override
         public int send(OutputStream out) throws IOException {
             out.write(this.fileBuff, this.offset, this.length);
 

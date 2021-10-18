@@ -41,7 +41,9 @@ public interface DeployHistoryService  extends CommonService<DeployHistory>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(DeployHistory resources);
+    @Override
     boolean updateById(DeployHistory resources);
     boolean removeById(String id);
     boolean removeByIds(Set<String> ids);

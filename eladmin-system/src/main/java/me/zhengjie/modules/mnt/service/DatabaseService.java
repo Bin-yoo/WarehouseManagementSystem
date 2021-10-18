@@ -41,7 +41,9 @@ public interface DatabaseService  extends CommonService<Database>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(Database resources);
+    @Override
     boolean updateById(Database resources);
     boolean removeById(String id);
     boolean removeByIds(Set<String> ids);

@@ -466,7 +466,7 @@ public class ProtoCommon {
       }
     }
 
-    if (true_ext_name.length() == 0 && prefix_name.equals("-m")) {
+    if (true_ext_name.length() == 0 && "-m".equals(prefix_name)) {
       throw new MyException("prefix_name \"" + prefix_name + "\" is invalid");
     }
 

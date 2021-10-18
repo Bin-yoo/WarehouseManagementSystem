@@ -1,5 +1,6 @@
 package me.zhengjie.modules.test.rest;
 
+import me.zhengjie.annotation.AnonymousAccess;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.modules.test.domain.Table1;
 import me.zhengjie.modules.test.service.Table1Service;
@@ -13,6 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -69,5 +73,4 @@ public class Table1Controller {
     public void download(HttpServletResponse response, Table1QueryParam query) throws IOException {
         table1Service.download(table1Service.queryAll(query), response);
     }*/
-
 }

@@ -35,7 +35,9 @@ public interface DictService  extends CommonService<Dict>{
 
     Dict getById(Long id);
     DictDto findById(Long id);
+    @Override
     boolean save(Dict resources);
+    @Override
     boolean updateById(Dict resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

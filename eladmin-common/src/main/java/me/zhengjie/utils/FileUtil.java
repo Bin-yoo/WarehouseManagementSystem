@@ -253,7 +253,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                 }
                 if (currentRow.getCell(columnNum) != null) {
                     SXSSFCell currentCell = currentRow.getCell(columnNum);
-                    if (currentCell.getCellTypeEnum() == CellType.STRING) {
+                    if (currentCell.getCellType() == CellType.STRING) {
                         int length = currentCell.getStringCellValue().getBytes().length;
                         if (columnWidth < length) {
                             columnWidth = length;

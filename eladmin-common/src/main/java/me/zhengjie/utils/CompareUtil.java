@@ -1,6 +1,5 @@
 package me.zhengjie.utils;
 
-import org.springframework.util.StringUtils;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -12,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
 * 实体类差异化比较器，可以比较类变化字段，方便针对变化的数据进行日志记录
@@ -73,9 +73,9 @@ public class CompareUtil {
                     if(o2 instanceof Timestamp){
                         o2 = new Date(((Timestamp) o2).getTime());
                     }
-                    if(StringUtils.isEmpty(o1) && StringUtils.isEmpty(o2)){
+                    if(Objects.isNull(o1) && Objects.isNull(o2)){
                         continue;
-                    }else if(StringUtils.isEmpty(o1) && !StringUtils.isEmpty(o2)){
+                    }else if(Objects.isNull(o1) && !Objects.isNull(o2)){
                         List<Object> list = new ArrayList<Object>();
                         list.add(o1);
                         list.add(o2);

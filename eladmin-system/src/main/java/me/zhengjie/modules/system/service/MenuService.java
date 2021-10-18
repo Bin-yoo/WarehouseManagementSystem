@@ -38,7 +38,9 @@ public interface MenuService  extends CommonService<Menu>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(Menu resources);
+    @Override
     boolean updateById(Menu resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

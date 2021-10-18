@@ -56,7 +56,9 @@ public interface QuartzJobService extends CommonService<QuartzJob>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(QuartzJob resources);
+    @Override
     boolean updateById(QuartzJob resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

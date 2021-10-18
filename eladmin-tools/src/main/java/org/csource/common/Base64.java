@@ -449,6 +449,8 @@ public class Base64 {
               j += 3;
               cycle = 0;
               break;
+            default:
+              break;
           }
           break;
       }

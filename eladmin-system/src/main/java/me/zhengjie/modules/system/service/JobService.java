@@ -34,7 +34,9 @@ public interface JobService  extends CommonService<Job>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(Job resources);
+    @Override
     boolean updateById(Job resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

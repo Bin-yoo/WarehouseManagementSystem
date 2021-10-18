@@ -42,7 +42,9 @@ public interface ServerService  extends CommonService<Server>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(Server resources);
+    @Override
     boolean updateById(Server resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

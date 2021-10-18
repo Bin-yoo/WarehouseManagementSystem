@@ -71,7 +71,9 @@ public interface DeptService  extends CommonService<Dept>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(Dept resources);
+    @Override
     boolean updateById(Dept resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);
