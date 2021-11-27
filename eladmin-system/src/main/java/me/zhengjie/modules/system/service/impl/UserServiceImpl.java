@@ -319,7 +319,7 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
     @Override
     public void updateCenter(User resources) {
         User user2 = getByPhone(resources.getPhone());
-        if (ObjectUtil.notEqual(resources.getId(), user2.getId())) {
+        if (user2 != null && ObjectUtil.notEqual(resources.getId(), user2.getId())) {
             throw new EntityExistException(User.class, "phone", resources.getPhone());
         }
         User userUpdate = new User();
