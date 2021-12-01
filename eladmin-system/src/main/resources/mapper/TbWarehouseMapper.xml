@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.tb_warehouse.service.mapper.TbWarehouseMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.wh_name, a.dept_id, a.keeper, a.director, a.phone, a.address, a.goods_type, a.remark
+  </sql>
+  -->
+</mapper>

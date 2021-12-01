@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.tb_partner_company_info.service.mapper.TbPartnerCompanyInfoMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.c_code, a.c_name, a.py_code, a.type, a.province, a.address, a.contact_person, a.contact_phone, a.mobile, a.fax, a.zip, a.email, a.website, a.qq, a.bank, a.bank_account, a.remark
+  </sql>
+  -->
+</mapper>
