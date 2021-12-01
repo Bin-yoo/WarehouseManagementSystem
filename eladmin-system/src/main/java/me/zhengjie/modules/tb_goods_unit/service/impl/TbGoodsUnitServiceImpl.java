@@ -62,6 +62,10 @@ public class TbGoodsUnitServiceImpl extends CommonServiceImpl<TbGoodsUnitMapper,
     @Transactional(rollbackFor = Exception.class)
     public int insert(TbGoodsUnitDto resources) {
         TbGoodsUnit entity = ConvertUtil.convert(resources, TbGoodsUnit.class);
+        if (entity.getSort()==null || "".equals(entity.getSort())) {
+            Integer count = tbGoodsUnitMapper.selectCount(null);
+            entity.setSort(count + 1);
+        }
         return tbGoodsUnitMapper.insert(entity);
     }
 

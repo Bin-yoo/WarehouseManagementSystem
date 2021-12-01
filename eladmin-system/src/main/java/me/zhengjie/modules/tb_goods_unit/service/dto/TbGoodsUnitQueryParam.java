@@ -14,5 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 public class TbGoodsUnitQueryParam{
-
+    @Query(blurry = "guName")
+    private String blurry;
 }

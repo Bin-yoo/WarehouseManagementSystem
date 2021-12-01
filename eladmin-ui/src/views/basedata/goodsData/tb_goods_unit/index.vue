@@ -2,15 +2,17 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
+      <div v-if="crud.props.searchToggle">
+        <!-- 搜索 -->
+        <el-input v-model="query.blurry" clearable size="small" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <rrOperation />
+      </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="货品单位id" prop="id">
-            <el-input v-model="form.id" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="货品单位名称" prop="guName">
+          <el-form-item label="单位名称" prop="guName">
             <el-input v-model="form.guName" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="排序">
@@ -25,7 +27,6 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="货品单位id" />
         <el-table-column prop="guName" label="货品单位名称" />
         <el-table-column prop="sort" label="排序" />
         <el-table-column v-if="checkPer(['admin','tbGoodsUnit:edit','tbGoodsUnit:del'])" label="操作" width="150px" align="center">
@@ -57,7 +58,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: 'tb_goods_unit', url: 'api/tbGoodsUnit', idField: 'id', sort: 'id,desc', crudMethod: { ...crudTbGoodsUnit }})
+    return CRUD({ title: 'tb_goods_unit', url: 'api/tbGoodsUnit', idField: 'id', sort: 'id,asc', crudMethod: { ...crudTbGoodsUnit }})
   },
   data() {
     return {
