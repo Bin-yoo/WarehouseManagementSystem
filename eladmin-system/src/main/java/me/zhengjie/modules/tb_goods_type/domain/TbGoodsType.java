@@ -48,7 +48,7 @@ public class TbGoodsType extends CommonModel<TbGoodsType> implements Serializabl
 
     @ApiModelProperty(value = "是否文件夹")
     @NotBlank
-    private String isFolder;
+    private Integer isFolder;
 
     public void copyFrom(TbGoodsType source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));

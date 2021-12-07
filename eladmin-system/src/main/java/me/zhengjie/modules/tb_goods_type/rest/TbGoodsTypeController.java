@@ -1,5 +1,6 @@
 package me.zhengjie.modules.tb_goods_type.rest;
 
+import com.alibaba.fastjson.JSONObject;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.modules.tb_goods_type.domain.TbGoodsType;
 import me.zhengjie.modules.tb_goods_type.service.TbGoodsTypeService;
@@ -13,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
+
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -27,12 +30,28 @@ public class TbGoodsTypeController {
 
     private final TbGoodsTypeService tbGoodsTypeService;
 
-    @GetMapping
+    /*@GetMapping
     @Log("查询tb_goods_type")
     @ApiOperation("查询tb_goods_type")
     @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity query(TbGoodsTypeQueryParam query, Pageable pageable){
         return new ResponseEntity<>(tbGoodsTypeService.queryAll(query,pageable),HttpStatus.OK);
+    }*/
+
+    @GetMapping
+    @Log("查询tb_goods_type")
+    @ApiOperation("查询tb_goods_type")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
+    public ResponseEntity query(){
+        return new ResponseEntity<>(tbGoodsTypeService.queryAll(0l),HttpStatus.OK);
+    }
+
+    @GetMapping("/getTypesSelectTree")
+    @Log("查询tb_goods_type树形选择数据")
+    @ApiOperation("查询tb_goods_type树形选择数据")
+    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    public ResponseEntity getTypesSelectTree(){
+        return new ResponseEntity<>(tbGoodsTypeService.getTypesSelectTree(0l),HttpStatus.OK);
     }
 
     @PostMapping
@@ -52,12 +71,20 @@ public class TbGoodsTypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/getGoodsTypeById")
+    @Log("获取货品类型信息")
+    @ApiOperation("获取货品类型信息")
+    @PreAuthorize("@el.check('tbGoodsType:edit')")
+    public ResponseEntity getGoodsTypeById(Long id) {
+        return new ResponseEntity<>(tbGoodsTypeService.getGoodsTypeById(id), HttpStatus.OK);
+    }
+
     @DeleteMapping
     @Log("删除tb_goods_type")
     @ApiOperation("删除tb_goods_type")
     @PreAuthorize("@el.check('tbGoodsType:del')")
-    public ResponseEntity delete(@RequestBody Set<Long> ids) {
-        tbGoodsTypeService.removeByIds(ids);
+    public ResponseEntity delete(@RequestBody Long id) {
+        tbGoodsTypeService.removeById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

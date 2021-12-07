@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import java.io.Serializable;
-import java.util.Date;
-import java.sql.Timestamp;
 import io.swagger.annotations.ApiModelProperty;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
@@ -35,8 +33,10 @@ public class TbGoodsTypeDto implements Serializable {
     private String gtName;
 
     @ApiModelProperty(value = "父级id")
+    /** 防止精度丢失 */
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parentId;
 
     @ApiModelProperty(value = "是否文件夹")
-    private String isFolder;
+    private Integer isFolder;
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeTreeSelectVo;
+import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeVo;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import me.zhengjie.modules.tb_goods_type.domain.TbGoodsType;
@@ -48,6 +50,38 @@ public class TbGoodsTypeServiceImpl extends CommonServiceImpl<TbGoodsTypeMapper,
     }
 
     @Override
+    public List<TbGoodsTypeVo> queryAll(Long pid){
+        List<TbGoodsType> tbGoodsTypeList = tbGoodsTypeMapper.lambdaQuery()
+                .eq(TbGoodsType::getParentId, pid).list();
+        List<TbGoodsTypeVo> list = ConvertUtil.convertList(tbGoodsTypeList, TbGoodsTypeVo.class);
+        if (list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                TbGoodsTypeVo tbGoodsTypeVo = list.get(i);
+                tbGoodsTypeVo.setChildren(queryAll(tbGoodsTypeVo.getId()));
+                //list.add(tbGoodsTypeVo);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<TbGoodsTypeTreeSelectVo> getTypesSelectTree(long pid) {
+        List<TbGoodsType> tbGoodsTypeList = tbGoodsTypeMapper.lambdaQuery()
+                .eq(TbGoodsType::getParentId, pid).eq(TbGoodsType::getIsFolder, "1").list();
+        List<TbGoodsTypeTreeSelectVo> list = new ArrayList<>();
+        if (tbGoodsTypeList.size() >0) {
+            for (TbGoodsType tbGoodsType: tbGoodsTypeList) {
+                TbGoodsTypeTreeSelectVo tbGoodsTypeTreeSelectVo = new TbGoodsTypeTreeSelectVo();
+                tbGoodsTypeTreeSelectVo.setId(tbGoodsType.getId());
+                tbGoodsTypeTreeSelectVo.setLabel(tbGoodsType.getGtName());
+                tbGoodsTypeTreeSelectVo.setChildren(getTypesSelectTree(tbGoodsType.getId()));
+                list.add(tbGoodsTypeTreeSelectVo);
+            }
+        }
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
     public TbGoodsType getById(Long id) {
         return tbGoodsTypeMapper.selectById(id);
     }
@@ -72,6 +106,12 @@ public class TbGoodsTypeServiceImpl extends CommonServiceImpl<TbGoodsTypeMapper,
         int ret = tbGoodsTypeMapper.updateById(entity);
         // delCaches(resources.id);
         return ret;
+    }
+
+    @Override
+    public TbGoodsTypeDto getGoodsTypeById(Long id) {
+        TbGoodsType tbGoodsType = tbGoodsTypeMapper.selectById(id);
+        return ConvertUtil.convert(tbGoodsType, TbGoodsTypeDto.class);
     }
 
     @Override

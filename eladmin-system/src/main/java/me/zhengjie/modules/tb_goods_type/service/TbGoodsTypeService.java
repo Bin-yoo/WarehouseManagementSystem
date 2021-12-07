@@ -3,6 +3,8 @@ package me.zhengjie.modules.tb_goods_type.service;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.CommonService;
 import me.zhengjie.modules.tb_goods_type.domain.TbGoodsType;
+import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeTreeSelectVo;
+import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeVo;
 import me.zhengjie.modules.tb_goods_type.service.dto.TbGoodsTypeDto;
 import me.zhengjie.modules.tb_goods_type.service.dto.TbGoodsTypeQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -32,16 +34,23 @@ public interface TbGoodsTypeService extends CommonService<TbGoodsType>  {
     */
     List<TbGoodsTypeDto> queryAll(TbGoodsTypeQueryParam query);
 
-    TbGoodsType getById(Long id);
-    TbGoodsTypeDto findById(Long id);
+    List<TbGoodsTypeVo> queryAll(Long id);
 
+    List<TbGoodsTypeTreeSelectVo> getTypesSelectTree(long pid);
+
+    TbGoodsType getById(Long id);
+
+    TbGoodsTypeDto findById(Long id);
     /**
      * 插入一条新数据。
      */
     int insert(TbGoodsTypeDto resources);
     int updateById(TbGoodsTypeDto resources);
     int removeById(Long id);
+
     int removeByIds(Set<Long> ids);
+
+    TbGoodsTypeDto getGoodsTypeById(Long id);
 
     /**
     * 导出数据
