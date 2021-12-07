@@ -24,4 +24,24 @@ export function edit(data) {
   })
 }
 
-export default { add, edit, del }
+export function getTypeDatas() {
+  return request({
+    url: 'api/tbGoodsType',
+    method: 'get'
+  })
+}
+export function getTypesSelectTree() {
+  return request({
+    url: 'api/tbGoodsType/getTypesSelectTree',
+    method: 'get'
+  })
+}
+
+export function getTypeDetail(id) {
+  return request({
+    url: 'api/tbGoodsType/getGoodsTypeById?id=' + id,
+    method: 'get'
+  })
+}
+
+export default { add, edit, del, getTypeDatas, getTypesSelectTree, getTypeDetail }

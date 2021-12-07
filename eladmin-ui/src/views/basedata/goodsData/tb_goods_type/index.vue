@@ -2,66 +2,84 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
-      <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
-      <crudOperation :permission="permission" />
-      <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="货品类型id" prop="id">
-            <el-input v-model="form.id" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="货品类型名称" prop="gtName">
-            <el-input v-model="form.gtName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="父级id" prop="parentId">
-            <el-input v-model="form.parentId" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="是否文件夹" prop="isFolder">
-            <el-input v-model="form.isFolder" style="width: 370px;" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
-          <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-        </div>
-      </el-dialog>
-      <!--表格渲染-->
-      <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="货品类型id" />
-        <el-table-column prop="gtName" label="货品类型名称" />
-        <el-table-column prop="parentId" label="父级id" />
-        <el-table-column prop="isFolder" label="是否文件夹" />
-        <el-table-column v-if="checkPer(['admin','tbGoodsType:edit','tbGoodsType:del'])" label="操作" width="150px" align="center">
-          <template slot-scope="scope">
-            <udOperation
-              :data="scope.row"
-              :permission="permission"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-      <!--分页组件-->
-      <pagination />
+      <div class="crud-opts" style="">
+        <span class="crud-opts-left">
+          <!--左侧插槽-->
+          <slot name="left" />
+          <el-button v-if="checkPer(['admin',permission.add])" v-permission="permission.add" class="filter-item" size="mini"
+            type="primary" icon="el-icon-plus" @click="toAdd()">
+            新增
+          </el-button>
+          <!-- <el-button v-if="crud.optShow.download" :loading="crud.downloadLoading" :disabled="!crud.data.length"
+            class="filter-item" size="mini" type="warning" icon="el-icon-download" @click="crud.doExport">导出</el-button> -->
+          <!--右侧-->
+          <slot name="right" />
+        </span>
+        <el-button-group class="crud-opts-right">
+          <el-button size="mini" icon="el-icon-refresh" @click="refresh()" />
+        </el-button-group>
+      </div>
     </div>
+    <!--表单组件-->
+    <el-dialog :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialogShow"
+      :title="title" width="500px">
+      <el-form ref="form" :model="defaultForm" :rules="rules" size="small" label-width="80px">
+        <el-form-item label="类型名称" prop="gtName">
+          <el-input v-model="defaultForm.gtName" style="width: 370px;" />
+        </el-form-item>
+        <el-form-item label="是否目录" prop="isFolder">
+          <el-radio-group v-model="defaultForm.isFolder" style="width: 140px">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 0;" label="上级类型" prop="parentId">
+          <treeselect v-model="defaultForm.parentId" :options="typesSelectTree" style="width: 370px;"
+            placeholder="选择上级类型" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="text" @click="cancel">取消</el-button>
+        <el-button :loading="status" type="primary" @click="submitForm">确认</el-button>
+      </div>
+    </el-dialog>
+    <!--表格渲染-->
+    <el-table ref="table" v-loading="tableLoading" row-key='id' default-expand-all
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="types" size="small"
+      style="width: 100%;">
+      <el-table-column prop="gtName" label="货品类型名称">
+        <template slot-scope="scope">
+          <i class="el-icon-folder" v-if="scope.row.isFolder == 1"></i>
+          <i class="el-icon-document" v-else></i>
+          {{scope.row.gtName}}
+        </template>
+      </el-table-column>
+      <el-table-column v-if="checkPer(['admin','tbGoodsType:edit','tbGoodsType:del'])" label="操作" width="300px"
+        align="center">
+        <template slot-scope="scope">
+          <el-button v-if="checkPer(['admin',permission.add]) && scope.row.isFolder == 1" v-permission="permission.add" :loading="status" class="filter-item" size="mini"
+            type="primary" icon="el-icon-plus" @click="toAdd(scope.row.id)" />
+          <el-button style="margin-left: 0px;" v-if="scope.row.id != 1" v-permission="permission.edit" :loading="status" size="mini" type="primary" icon="el-icon-edit" @click="toEdit(scope.row.id)" />
+          <myDoperation v-if="scope.row.id != 1 && scope.row.children.length == 0" :permission="permission" :status="status" :id='scope.row.id' @doDelete="doDelete"/>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 import crudTbGoodsType from '@/api/tbGoodsType'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import {LOAD_CHILDREN_OPTIONS} from '@riophae/vue-treeselect'
+import checkPer from '@/utils/permission' // 权限判断函数
+import MyDoperation from '@/components/MyD.operation'
 
-const defaultForm = { id: null, gtName: null, parentId: null, isFolder: null }
 export default {
   name: 'TbGoodsType',
-  components: { pagination, crudOperation, rrOperation, udOperation },
-  mixins: [presenter(), header(), form(defaultForm), crud()],
-  cruds() {
-    return CRUD({ title: 'tb_goods_type', url: 'api/tbGoodsType', idField: 'id', sort: 'id,desc', crudMethod: { ...crudTbGoodsType }})
+  components: {
+    Treeselect,
+    MyDoperation
   },
   data() {
     return {
@@ -70,30 +88,172 @@ export default {
         edit: ['admin', 'tbGoodsType:edit'],
         del: ['admin', 'tbGoodsType:del']
       },
+      types: [],
+      typesSelectTree: [],
+      dialogShow: false,
+      status: false,
+      tableLoading: false,
+      pop: false,
+      title: '',
+      CUstatus: 1,
+      defaultForm: {
+        id: null,
+        gtName: null,
+        parentId: null,
+        isFolder: null
+      },
       rules: {
-        id: [
-          { required: true, message: '货品类型id不能为空', trigger: 'blur' }
-        ],
-        gtName: [
-          { required: true, message: '货品类型名称不能为空', trigger: 'blur' }
-        ],
-        parentId: [
-          { required: true, message: '父级id不能为空', trigger: 'blur' }
-        ],
-        isFolder: [
-          { required: true, message: '是否文件夹不能为空', trigger: 'blur' }
-        ]
-      }}
+        gtName: [{
+          required: true,
+          message: '货品类型名称不能为空',
+          trigger: 'blur'
+        }],
+        parentId: [{
+          required: true,
+          message: '父级分类必须设置',
+          trigger: 'blur'
+        }],
+        isFolder: [{
+          required: true,
+          message: '是否文件夹不能为空',
+          trigger: 'blur'
+        }]
+      }
+    }
   },
+  created() {
+    this.getTypeDatas()
+  },
+  checkPer,
   methods: {
-    // 钩子：在获取表格数据之前执行，false 则代表不获取数据
-    [CRUD.HOOK.beforeRefresh]() {
-      return true
+    refresh() {
+      this.getTypeDatas()
+    },
+    cancel() {
+      this.dialogShow = false
+      this.$refs['form'].resetFields()
+      this.defaultForm.id = ''
+    },
+    toAdd(id) {
+      this.title = '新增货品类型'
+      this.dialogShow = true
+      this.typesSelectTree = []
+      this.loadTypesSelectTree()
+      this.CUstatus = 1
+      if (id != null || id != '') {
+        setTimeout(() => {
+          this.defaultForm.parentId = id
+        }, 100)
+      }
+    },
+    toEdit(id) {
+      this.title = '修改货品类型'
+      this.dialogShow = true
+      this.typesSelectTree = []
+      this.loadTypesSelectTree()
+      this.getTypeDetail(id)
+      this.CUstatus = 2
+    },
+    getTypeDatas() {
+      this.tableLoading= true
+      setTimeout(() => {
+        crudTbGoodsType.getTypeDatas().then(res => {
+          this.types = res;
+          this.tableLoading= false
+          // resolve(res.content)
+        })
+      }, 100)
+    },
+    // 获取弹窗内分类数据
+    loadTypesSelectTree () {
+        crudTbGoodsType.getTypesSelectTree().then(res => {
+          this.typesSelectTree = res;
+        })
+    },
+    submitForm() {
+      this.status = true
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          if (this.CUstatus == 1) {
+            this.addType()
+          } else if (this.CUstatus == 2) {
+            this.editType()
+          }
+          this.status = false
+        } else {
+          this.notifyMsg('表单有必填字段未填', 'warning')
+          this.status = false
+        }
+      })
+    },
+    addType(){
+      crudTbGoodsType.add(this.defaultForm).then(res => {
+        this.cancel()
+        this.notifyMsg('新增成功', 'success')
+        this.refresh()
+      }).catch(err => {
+        this.notifyMsg(err.response.data.message, 'error')
+      })
+    },
+    getTypeDetail(id) {
+      crudTbGoodsType.getTypeDetail(id).then(res => {
+        this.defaultForm = res
+      }).catch(err => {
+        this.notifyMsg(err.response.data.message, 'error')
+      })
+    },
+    onPopoverShow() {
+      setTimeout(() => {
+        document.addEventListener('click', this.handleDocumentClick)
+      }, 0)
+    },
+    onPopoverHide() {
+      document.removeEventListener('click', this.handleDocumentClick)
+    },
+    handleDocumentClick(event) {
+      this.pop = false
+    },
+    editType(){
+      crudTbGoodsType.edit(this.defaultForm).then(res => {
+        this.cancel()
+        this.notifyMsg('修改成功', 'success')
+        this.refresh()
+      }).catch(err => {
+        this.notifyMsg(err.response.data.message, 'error')
+      })
+    },
+    doDelete(id) {
+      this.status= true
+      crudTbGoodsType.del(id).then(res => {
+        this.notifyMsg('删除成功', 'success')
+        this.refresh()
+        this.status= false
+      }).catch(err => {
+        this.notifyMsg(err.response.data.message, 'error')
+      })
+    },
+    notifyMsg(title, type) {
+      this.$notify({
+        title,
+        type,
+        duration: 2500
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-
+  .crud-opts {
+    padding: 4px 0;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+  }
+  .crud-opts .crud-opts-right {
+    margin-left: auto;
+  }
+  .crud-opts .crud-opts-right span {
+    float: left;
+  }
 </style>
