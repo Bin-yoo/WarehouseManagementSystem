@@ -5,67 +5,64 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="货品id" prop="id">
-            <el-input v-model="form.id" style="width: 370px;" />
-          </el-form-item>
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="800px">
+        <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="货品编码" prop="gCode">
-            <el-input v-model="form.gCode" style="width: 370px;" />
+            <el-input v-model="form.gCode" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="货品名称" prop="gName">
-            <el-input v-model="form.gName" style="width: 370px;" />
+            <el-input v-model="form.gName" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="规格">
-            <el-input v-model="form.specification" style="width: 370px;" />
+            <el-input v-model="form.specification" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="拼音码">
-            <el-input v-model="form.pyCode" style="width: 370px;" />
+            <el-input v-model="form.pyCode" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="单位" prop="gUnit">
-            <el-input v-model="form.gUnit" style="width: 370px;" />
+            <el-input v-model="form.gUnit" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="货品类别" prop="gType">
-            <el-input v-model="form.gType" style="width: 370px;" />
+            <el-input v-model="form.gType" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="进价">
-            <el-input v-model="form.pPrice" style="width: 370px;" />
+            <el-input v-model="form.pPrice" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="售价">
-            <el-input v-model="form.sPrice" style="width: 370px;" />
+            <el-input v-model="form.sPrice" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="库存上限">
-            <el-input v-model="form.uLimit" style="width: 370px;" />
+            <el-input v-model="form.uLimit" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="库存下限">
-            <el-input v-model="form.lLimit" style="width: 370px;" />
+            <el-input v-model="form.lLimit" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="货位">
-            <el-input v-model="form.gAllocation" style="width: 370px;" />
+            <el-input v-model="form.gAllocation" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="生产厂家">
-            <el-input v-model="form.manufacturer" style="width: 370px;" />
+            <el-input v-model="form.manufacturer" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="form.remark" style="width: 370px;" />
+            <el-input v-model="form.remark" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="批次">
-            <el-input v-model="form.batch" style="width: 370px;" />
+            <el-input v-model="form.batch" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="生产日期">
-            <el-input v-model="form.productDate" style="width: 370px;" />
+            <el-input v-model="form.productDate" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="有效日期">
-            <el-input v-model="form.validDate" style="width: 370px;" />
+            <el-input v-model="form.validDate" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="物资来源">
-            <el-input v-model="form.source" style="width: 370px;" />
+            <el-input v-model="form.source" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="条形码">
-            <el-input v-model="form.barCode" style="width: 370px;" />
+            <el-input v-model="form.barCode" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="二维码">
-            <el-input v-model="form.qrCode" style="width: 370px;" />
+            <el-input v-model="form.qrCode" style="width: 280px;" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -76,7 +73,6 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="货品id" />
         <el-table-column prop="gCode" label="货品编码" />
         <el-table-column prop="gName" label="货品名称" />
         <el-table-column prop="specification" label="规格" />
@@ -125,7 +121,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: 'tb_goods_info', url: 'api/tbGoodsInfo', idField: 'id', sort: 'id,desc', crudMethod: { ...crudTbGoodsInfo }})
+    return CRUD({ title: '货品', url: 'api/tbGoodsInfo', idField: 'id', sort: 'id,desc', crudMethod: { ...crudTbGoodsInfo }})
   },
   data() {
     return {

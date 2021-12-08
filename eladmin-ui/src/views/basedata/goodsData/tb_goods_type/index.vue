@@ -71,7 +71,6 @@
 import crudTbGoodsType from '@/api/tbGoodsType'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {LOAD_CHILDREN_OPTIONS} from '@riophae/vue-treeselect'
 import checkPer from '@/utils/permission' // 权限判断函数
 import MyDoperation from '@/components/MyD.operation'
 
