@@ -1,30 +1,21 @@
-package me.zhengjie.modules.tb_employee.service.dto;
+package me.zhengjie.modules.tb_employee.domain.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import java.io.Serializable;
-import java.util.Date;
-import java.sql.Timestamp;
-import io.swagger.annotations.ApiModelProperty;
+import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
 * @author LiangBin
 * @date 2021-12-08
 */
 @Data
-@Builder
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class TbEmployeeDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class TbEmployeeVo implements Serializable {
 
     @ApiModelProperty(value = "员工id")
     /** 防止精度丢失 */
@@ -65,5 +56,6 @@ public class TbEmployeeDto implements Serializable {
     private String title;
 
     @ApiModelProperty(value = "生日")
+    @DateTimeFormat("yyyy-MM-dd")
     private Date birthday;
 }

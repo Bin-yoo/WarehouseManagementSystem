@@ -1,10 +1,13 @@
 package me.zhengjie.modules.tb_employee.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.modules.system.domain.Dept;
+import me.zhengjie.modules.tb_employee.domain.vo.TbEmployeeVo;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import me.zhengjie.modules.tb_employee.domain.TbEmployee;
@@ -12,6 +15,7 @@ import me.zhengjie.modules.tb_employee.service.TbEmployeeService;
 import me.zhengjie.modules.tb_employee.service.dto.TbEmployeeDto;
 import me.zhengjie.modules.tb_employee.service.dto.TbEmployeeQueryParam;
 import me.zhengjie.modules.tb_employee.service.mapper.TbEmployeeMapper;
+import me.zhengjie.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +28,7 @@ import java.util.*;
 
 /**
 * @author LiangBin
-* @date 2021-12-01
+* @date 2021-12-08
 */
 @Service
 @AllArgsConstructor
@@ -36,15 +40,27 @@ public class TbEmployeeServiceImpl extends CommonServiceImpl<TbEmployeeMapper, T
     private final TbEmployeeMapper tbEmployeeMapper;
 
     @Override
-    public PageInfo<TbEmployeeDto> queryAll(TbEmployeeQueryParam query, Pageable pageable) {
+    public PageInfo<TbEmployeeVo> queryAll(TbEmployeeQueryParam query, Pageable pageable) {
         IPage<TbEmployee> queryPage = PageUtil.toMybatisPage(pageable);
-        IPage<TbEmployee> page = tbEmployeeMapper.selectPage(queryPage, QueryHelpMybatisPlus.getPredicate(query));
-        return ConvertUtil.convertPage(page, TbEmployeeDto.class);
+        MPJLambdaWrapper<TbEmployeeDto> mpjLambdaWrapper = new MPJLambdaWrapper<>();
+        mpjLambdaWrapper.selectAll(TbEmployee.class)
+                .selectAs(Dept::getName, "deptName")
+                .leftJoin(Dept.class, Dept::getId, TbEmployee::getDeptId);
+
+        if (StringUtils.isNotEmpty(query.getName())) {
+            mpjLambdaWrapper.like(TbEmployee::getName, query.getName());
+        }
+        if (query.getDeptId() != null) {
+            mpjLambdaWrapper.eq(TbEmployee::getDeptId, query.getDeptId());
+        }
+        mpjLambdaWrapper.orderByDesc(TbEmployee::getId);
+        IPage<TbEmployeeDto> page = tbEmployeeMapper.selectJoinPage(queryPage, TbEmployeeDto.class, mpjLambdaWrapper);
+        return ConvertUtil.convertPage(page, TbEmployeeVo.class);
     }
 
     @Override
-    public List<TbEmployeeDto> queryAll(TbEmployeeQueryParam query){
-        return ConvertUtil.convertList(tbEmployeeMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), TbEmployeeDto.class);
+    public List<TbEmployeeVo> queryAll(TbEmployeeQueryParam query){
+        return ConvertUtil.convertList(tbEmployeeMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), TbEmployeeVo.class);
     }
 
     @Override

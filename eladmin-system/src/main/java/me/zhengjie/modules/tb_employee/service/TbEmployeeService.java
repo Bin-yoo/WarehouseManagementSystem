@@ -3,6 +3,7 @@ package me.zhengjie.modules.tb_employee.service;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.CommonService;
 import me.zhengjie.modules.tb_employee.domain.TbEmployee;
+import me.zhengjie.modules.tb_employee.domain.vo.TbEmployeeVo;
 import me.zhengjie.modules.tb_employee.service.dto.TbEmployeeDto;
 import me.zhengjie.modules.tb_employee.service.dto.TbEmployeeQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 /**
 * @author LiangBin
-* @date 2021-12-01
+* @date 2021-12-08
 */
 public interface TbEmployeeService extends CommonService<TbEmployee>  {
 
@@ -23,14 +24,14 @@ public interface TbEmployeeService extends CommonService<TbEmployee>  {
     * @param pageable 分页参数
     * @return PageInfo<TbEmployeeDto>
     */
-    PageInfo<TbEmployeeDto> queryAll(TbEmployeeQueryParam query, Pageable pageable);
+    PageInfo<TbEmployeeVo> queryAll(TbEmployeeQueryParam query, Pageable pageable);
 
     /**
     * 查询所有数据不分页
     * @param query 条件参数
     * @return List<TbEmployeeDto>
     */
-    List<TbEmployeeDto> queryAll(TbEmployeeQueryParam query);
+    List<TbEmployeeVo> queryAll(TbEmployeeQueryParam query);
 
     TbEmployee getById(Long id);
     TbEmployeeDto findById(Long id);

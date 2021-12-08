@@ -22,7 +22,7 @@ import java.sql.Timestamp;
 
 /**
 * @author LiangBin
-* @date 2021-12-01
+* @date 2021-12-08
 */
 @Data
 @Builder
@@ -34,7 +34,7 @@ import java.sql.Timestamp;
 public class TbEmployee extends CommonModel<TbEmployee> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "货品id")
+    @ApiModelProperty(value = "员工id")
     @TableId(type= IdType.ASSIGN_ID)
     private Long id;
 
@@ -43,7 +43,7 @@ public class TbEmployee extends CommonModel<TbEmployee> implements Serializable 
     private String name;
 
     @ApiModelProperty(value = "性别")
-    private Integer gender;
+    private String gender;
 
     @ApiModelProperty(value = "拼音码")
     private String pyCode;
