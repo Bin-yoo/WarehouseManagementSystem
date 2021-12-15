@@ -104,7 +104,7 @@ public class TbEmployeeServiceImpl extends CommonServiceImpl<TbEmployeeMapper, T
 
     @Override
     public Object getJobsSelect() {
-        return jobMapper.selectList(null);
+        return jobMapper.lambdaQuery().eq(Job::getEnabled, 1).list();
     }
 
     @Override
