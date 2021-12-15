@@ -24,4 +24,18 @@ export function edit(data) {
   })
 }
 
-export default { add, edit, del }
+export function getQueryParamAdviceList(name) {
+  return request({
+    url: 'api/tbWarehouse/getQueryParamAdviceList?name=' + name,
+    method: 'get'
+  })
+}
+
+export function getEmpSelect() {
+  return request({
+    url: 'api/tbWarehouse/getEmpSelect',
+    method: 'get'
+  })
+}
+
+export default { add, edit, del, getQueryParamAdviceList, getEmpSelect }
