@@ -238,21 +238,28 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.dept_tree_select {
-  width: 200px;
-  line-height: 28px;
-  font-size: 13px;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 3px 10px 0;
-  .vue-treeselect__placeholder {
-    height: 28px !important;
-    line-height: 28px !important;
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .dept_tree_select {
+    width: 200px;
+    line-height: 28px;
+    font-size: 13px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 3px 10px 0;
+    .vue-treeselect__placeholder {
+      height: 28px !important;
+      line-height: 28px !important;
+    }
+    .vue-treeselect__control {
+      height: 28px !important;
+      line-height: 28px !important;
+    }
   }
-  .vue-treeselect__control {
-    height: 28px !important;
-    line-height: 28px !important;
+  ::v-deep .el-input-number .el-input__inner {
+    text-align: left;
   }
-}
+  ::v-deep .vue-treeselect__control,::v-deep .vue-treeselect__placeholder,::v-deep .vue-treeselect__single-value {
+    height: 30px;
+    line-height: 30px;
+  }
 </style>
