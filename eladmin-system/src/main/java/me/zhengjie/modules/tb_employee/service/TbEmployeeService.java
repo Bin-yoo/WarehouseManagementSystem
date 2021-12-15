@@ -44,6 +44,8 @@ public interface TbEmployeeService extends CommonService<TbEmployee>  {
     int removeById(Long id);
     int removeByIds(Set<Long> ids);
 
+    Object getJobsSelect();
+
     /**
     * 导出数据
     * @param all 待导出的数据

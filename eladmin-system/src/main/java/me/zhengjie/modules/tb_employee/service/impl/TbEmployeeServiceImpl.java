@@ -7,6 +7,8 @@ import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.Dept;
+import me.zhengjie.modules.system.domain.Job;
+import me.zhengjie.modules.system.service.mapper.JobMapper;
 import me.zhengjie.modules.tb_employee.domain.vo.TbEmployeeVo;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
@@ -38,6 +40,7 @@ public class TbEmployeeServiceImpl extends CommonServiceImpl<TbEmployeeMapper, T
 
     // private final RedisUtils redisUtils;
     private final TbEmployeeMapper tbEmployeeMapper;
+    private final JobMapper jobMapper;
 
     @Override
     public PageInfo<TbEmployeeVo> queryAll(TbEmployeeQueryParam query, Pageable pageable) {
@@ -45,7 +48,9 @@ public class TbEmployeeServiceImpl extends CommonServiceImpl<TbEmployeeMapper, T
         MPJLambdaWrapper<TbEmployeeDto> mpjLambdaWrapper = new MPJLambdaWrapper<>();
         mpjLambdaWrapper.selectAll(TbEmployee.class)
                 .selectAs(Dept::getName, "deptName")
-                .leftJoin(Dept.class, Dept::getId, TbEmployee::getDeptId);
+                .selectAs(Job::getName, "jobName")
+                .leftJoin(Dept.class, Dept::getId, TbEmployee::getDeptId)
+                .leftJoin(Job.class, Job::getId, TbEmployee::getJobId);
 
         if (StringUtils.isNotEmpty(query.getName())) {
             mpjLambdaWrapper.like(TbEmployee::getName, query.getName());
@@ -95,6 +100,11 @@ public class TbEmployeeServiceImpl extends CommonServiceImpl<TbEmployeeMapper, T
     public int removeByIds(Set<Long> ids){
         // delCaches(ids);
         return tbEmployeeMapper.deleteBatchIds(ids);
+    }
+
+    @Override
+    public Object getJobsSelect() {
+        return jobMapper.selectList(null);
     }
 
     @Override

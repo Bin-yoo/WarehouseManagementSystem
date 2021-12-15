@@ -64,8 +64,8 @@ public class TbEmployee extends CommonModel<TbEmployee> implements Serializable 
     @ApiModelProperty(value = "家庭住址")
     private String address;
 
-    @ApiModelProperty(value = "职位")
-    private String position;
+    @ApiModelProperty(value = "岗位")
+    private Long jobId;
 
     @ApiModelProperty(value = "职称")
     private String title;

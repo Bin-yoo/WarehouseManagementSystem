@@ -61,6 +61,14 @@ public class TbEmployeeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/getJobsSelect")
+    @Log("获取岗位下拉列表数据")
+    @ApiOperation("获取岗位下拉列表数据")
+    @PreAuthorize("@el.check('tbEmployee:add','tbEmployee:edit')")
+    public ResponseEntity getJobsSelect() {
+        return new ResponseEntity<>(tbEmployeeService.getJobsSelect(), HttpStatus.OK);
+    }
+
     /*
     @Log("导出tb_employee")
     @ApiOperation("导出tb_employee")

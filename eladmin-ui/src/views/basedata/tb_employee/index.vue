@@ -60,8 +60,15 @@
           <el-form-item label="家庭住址">
             <el-input v-model="form.address" style="width: 250px;" />
           </el-form-item>
-          <el-form-item label="职位">
-            <el-input v-model="form.position" style="width: 250px;" />
+          <el-form-item label="岗位">
+            <el-select v-model="form.jobId" placeholder="请选择岗位" style="width: 250px;" >
+              <el-option
+                v-for="item in jobs"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="职称">
             <el-input v-model="form.title" style="width: 250px;" />
@@ -92,7 +99,7 @@
         <el-table-column prop="phone" label="联系电话" />
         <el-table-column prop="mobile" label="手机号码" />
         <el-table-column prop="address" label="家庭住址" />
-        <el-table-column prop="position" label="职位" />
+        <el-table-column prop="jobName" label="岗位" />
         <el-table-column prop="title" label="职称" />
         <el-table-column prop="birthday" label="生日">
           <template slot-scope="scope">
@@ -128,7 +135,7 @@ import { getDepts, getDeptSuperior } from '@/api/system/dept'
 import pinyin from 'js-pinyin'
 import { getFormatDate } from '@/utils/common.js'
 
-const defaultForm = { id: null, name: null, gender: null, pyCode: null, deptId: null, jg: null, phone: null, mobile: null, address: null, position: null, title: null, birthday: null }
+const defaultForm = { id: null, name: null, gender: null, pyCode: null, deptId: null, jg: null, phone: null, mobile: null, address: null, jobId: null, title: null, birthday: null }
 export default {
   name: 'TbEmployee',
   components: { pagination, crudOperation, rrOperation, udOperation, Treeselect },
@@ -151,7 +158,8 @@ export default {
           { required: true, message: '所属部门不能为空', trigger: 'blur' }
         ]
       },
-      depts: []
+      depts: [],
+      jobs: []
     }
   },
   methods: {
@@ -162,6 +170,8 @@ export default {
     },
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
+      this.jobs = []
+      this.getJobsSelect()
       if (form.id == null) {
         this.getDepts()
       } else {
@@ -213,6 +223,11 @@ export default {
     },
     convertPinyin(value) {
       this.form.pyCode = pinyin.getCamelChars(value)
+    },
+    getJobsSelect() {
+      crudTbEmployee.getJobsSelect().then(res => {
+        this.jobs = res
+      })
     }
   },
   filters: {

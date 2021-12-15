@@ -24,4 +24,11 @@ export function edit(data) {
   })
 }
 
-export default { add, edit, del }
+export function getJobsSelect() {
+  return request({
+    url: 'api/tbEmployee/getJobsSelect',
+    method: 'get'
+  })
+}
+
+export default { add, edit, del, getJobsSelect }
