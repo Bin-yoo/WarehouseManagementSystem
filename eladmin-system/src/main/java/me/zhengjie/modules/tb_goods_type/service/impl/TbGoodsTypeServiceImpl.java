@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeTreeSelectVo;
 import me.zhengjie.modules.tb_goods_type.domain.vo.TbGoodsTypeVo;
 import me.zhengjie.utils.ConvertUtil;
@@ -127,6 +128,14 @@ public class TbGoodsTypeServiceImpl extends CommonServiceImpl<TbGoodsTypeMapper,
         Set<Long> set = new HashSet<>(1);
         set.add(id);
         return this.removeByIds(set);
+    }
+
+    @Override
+    public void verification(Long id) {
+        int count = tbGoodsTypeMapper.lambdaQuery().eq(TbGoodsType::getParentId, id).count();
+        if(count > 0){
+            throw new BadRequestException("所选的货品分类中存在下级分类，无法删除！");
+        }
     }
 
     /*

@@ -84,6 +84,8 @@ public class TbGoodsTypeController {
     @ApiOperation("删除tb_goods_type")
     @PreAuthorize("@el.check('tbGoodsType:del')")
     public ResponseEntity delete(@RequestBody Long id) {
+        // 验证是否还有下级分类
+        tbGoodsTypeService.verification(id);
         tbGoodsTypeService.removeById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
