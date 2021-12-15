@@ -5,7 +5,14 @@
   <!-- 通用查询结果列 -->
   <!--
   <sql id="Base_Column_List">
-      a.id, a.wh_name, a.dept_id, a.keeper, a.director, a.phone, a.address, a.goods_type, a.remark
+      a.id, a.wh_name, a.dept_id, a.keeper_id, a.director_id, a.phone, a.address, a.goods_type, a.remark
   </sql>
   -->
+  <select id="queryAll" resultType="me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseDto">
+    SELECT a.id, a.wh_name, a.dept_id, a.keeper_id, a.director_id, a.phone, a.address, a.goods_type, a.remark, k.name as keeper, d.name as director, dept.name as dept_name
+        FROM `tb_warehouse` a
+        LEFT JOIN tb_employee k on a.keeper_id = k.id
+        LEFT JOIN tb_employee d on a.director_id = d.id
+        LEFT JOIN sys_dept dept on a.dept_id = dept.dept_id ${ew.customSqlSegment}
+  </select>
 </mapper>

@@ -1,5 +1,6 @@
 package me.zhengjie.modules.tb_warehouse.rest;
 
+import me.zhengjie.annotation.AnonymousAccess;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.modules.tb_warehouse.domain.TbWarehouse;
 import me.zhengjie.modules.tb_warehouse.service.TbWarehouseService;
@@ -59,6 +60,22 @@ public class TbWarehouseController {
     public ResponseEntity delete(@RequestBody Set<Long> ids) {
         tbWarehouseService.removeByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/getQueryParamAdviceList")
+    @Log("获取条件输入框输入建议")
+    @ApiOperation("获取条件输入框输入建议")
+    @PreAuthorize("@el.check('tbWarehouse:list')")
+    public ResponseEntity getQueryParamAdviceList(String name) {
+        return new ResponseEntity<>(tbWarehouseService.getQueryParamAdviceList(name), HttpStatus.OK);
+    }
+
+    @GetMapping("/getEmpSelect")
+    @Log("获取员工信息下拉数据")
+    @ApiOperation("获取员工信息下拉数据")
+    @PreAuthorize("@el.check('tbWarehouse:add', 'tbWarehouse:edit')")
+    public ResponseEntity getEmpSelect() {
+        return new ResponseEntity<>(tbWarehouseService.getEmpSelect(), HttpStatus.OK);
     }
 
     /*

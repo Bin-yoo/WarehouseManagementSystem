@@ -1,10 +1,17 @@
 package me.zhengjie.modules.tb_warehouse.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.yulichang.query.MPJQueryWrapper;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.modules.tb_employee.domain.TbEmployee;
+import me.zhengjie.modules.tb_employee.domain.vo.TbEmployeeVo;
+import me.zhengjie.modules.tb_employee.service.mapper.TbEmployeeMapper;
+import me.zhengjie.modules.tb_warehouse.domain.vo.TbWarehouseVo;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import me.zhengjie.modules.tb_warehouse.domain.TbWarehouse;
@@ -12,6 +19,7 @@ import me.zhengjie.modules.tb_warehouse.service.TbWarehouseService;
 import me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseDto;
 import me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseQueryParam;
 import me.zhengjie.modules.tb_warehouse.service.mapper.TbWarehouseMapper;
+import me.zhengjie.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +42,37 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
 
     // private final RedisUtils redisUtils;
     private final TbWarehouseMapper tbWarehouseMapper;
+    private final TbEmployeeMapper tbEmployeeMapper;
 
     @Override
-    public PageInfo<TbWarehouseDto> queryAll(TbWarehouseQueryParam query, Pageable pageable) {
+    public PageInfo<TbWarehouseVo> queryAll(TbWarehouseQueryParam query, Pageable pageable) {
         IPage<TbWarehouse> queryPage = PageUtil.toMybatisPage(pageable);
-        IPage<TbWarehouse> page = tbWarehouseMapper.selectPage(queryPage, QueryHelpMybatisPlus.getPredicate(query));
-        return ConvertUtil.convertPage(page, TbWarehouseDto.class);
+        //QueryWrapper queryWrapper = new QueryWrapper<TbWarehouseDto>();
+        //IPage<TbWarehouseDto> page = tbWarehouseMapper.queryAll(queryPage, queryWrapper);
+        MPJQueryWrapper<TbWarehouse> mpjQueryWrapper = new MPJQueryWrapper<>();
+        mpjQueryWrapper.selectAll(TbWarehouse.class)
+                .select("k.name as keeper")
+                .select("d.name as director")
+                .select("dept.name as dept_name")
+                .leftJoin("tb_employee k on t.keeper_id = k.id")
+                .leftJoin("tb_employee d on t.director_id = d.id")
+                .leftJoin("sys_dept dept on t.dept_id = dept.dept_id");
+        if (StringUtils.isNotEmpty(query.getWhName())) {
+            mpjQueryWrapper.like("t.wh_name", query.getWhName());
+        }
+        if (query.getDeptId() != null) {
+            mpjQueryWrapper.eq("t.dept_id", query.getDeptId());
+        }
+        if (StringUtils.isNotEmpty(query.getKeeper())) {
+            mpjQueryWrapper.like("k.name", query.getKeeper());
+        }
+        if (StringUtils.isNotEmpty(query.getDirector())) {
+            mpjQueryWrapper.like("d.name", query.getDirector());
+        }
+
+        IPage<TbWarehouseVo> page = tbWarehouseMapper.selectJoinPage(queryPage, TbWarehouseVo.class ,mpjQueryWrapper);
+
+        return ConvertUtil.convertPage(page, TbWarehouseVo.class);
     }
 
     @Override
@@ -87,6 +120,18 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
         Set<Long> set = new HashSet<>(1);
         set.add(id);
         return this.removeByIds(set);
+    }
+
+    @Override
+    public Object getQueryParamAdviceList(String name) {
+        QueryWrapper<TbEmployee> wrapper = new QueryWrapper<>();
+        wrapper.like("name", name);
+        return tbEmployeeMapper.selectList(wrapper);
+    }
+
+    @Override
+    public Object getEmpSelect() {
+        return ConvertUtil.convertList(tbEmployeeMapper.selectList(null), TbEmployeeVo.class);
     }
 
     /*

@@ -1,30 +1,19 @@
-package me.zhengjie.modules.tb_warehouse.service.dto;
+package me.zhengjie.modules.tb_warehouse.domain.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import java.io.Serializable;
-import java.util.Date;
-import java.sql.Timestamp;
-import io.swagger.annotations.ApiModelProperty;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
-* @author LiangBin
-* @date 2021-12-01
-*/
+ * @author LiangBin
+ * @Description
+ * @date 2021/12/14 17:32
+ */
 @Data
-@Builder
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class TbWarehouseDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class TbWarehouseVo implements Serializable {
 
     @ApiModelProperty(value = "货品id")
     /** 防止精度丢失 */
@@ -39,6 +28,12 @@ public class TbWarehouseDto implements Serializable {
 
     @ApiModelProperty(value = "所属部门名称")
     private String deptName;
+
+    @ApiModelProperty(value = "库管")
+    private String keeper;
+
+    @ApiModelProperty(value = "负责人")
+    private String director;
 
     @ApiModelProperty(value = "库管id")
     /** 防止精度丢失 */
@@ -61,4 +56,5 @@ public class TbWarehouseDto implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
 }

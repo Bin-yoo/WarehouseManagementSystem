@@ -1,5 +1,7 @@
 package me.zhengjie.modules.tb_warehouse.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 import me.zhengjie.base.CommonModel;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -45,11 +47,11 @@ public class TbWarehouse extends CommonModel<TbWarehouse> implements Serializabl
     @ApiModelProperty(value = "所属部门")
     private Long deptId;
 
-    @ApiModelProperty(value = "库管")
-    private String keeper;
+    @ApiModelProperty(value = "库管id")
+    private Long keeperId;
 
-    @ApiModelProperty(value = "负责人")
-    private String director;
+    @ApiModelProperty(value = "负责人id")
+    private Long directorId;
 
     @ApiModelProperty(value = "联系电话")
     private String phone;

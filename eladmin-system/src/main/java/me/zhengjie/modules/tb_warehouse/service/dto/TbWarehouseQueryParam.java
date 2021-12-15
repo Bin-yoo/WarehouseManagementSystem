@@ -15,4 +15,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class TbWarehouseQueryParam{
 
+    @Query(type = Query.Type.INNER_LIKE)
+    private String whName;
+
+    /** 精确 */
+    @Query
+    private String deptId;
+
+    @Query(type = Query.Type.INNER_LIKE)
+    private String keeper;
+
+    @Query(type = Query.Type.INNER_LIKE)
+    private String director;
+
 }

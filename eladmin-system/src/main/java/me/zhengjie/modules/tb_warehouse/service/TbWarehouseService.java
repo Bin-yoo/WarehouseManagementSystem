@@ -3,6 +3,7 @@ package me.zhengjie.modules.tb_warehouse.service;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.CommonService;
 import me.zhengjie.modules.tb_warehouse.domain.TbWarehouse;
+import me.zhengjie.modules.tb_warehouse.domain.vo.TbWarehouseVo;
 import me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseDto;
 import me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public interface TbWarehouseService extends CommonService<TbWarehouse>  {
     * @param pageable 分页参数
     * @return PageInfo<TbWarehouseDto>
     */
-    PageInfo<TbWarehouseDto> queryAll(TbWarehouseQueryParam query, Pageable pageable);
+    PageInfo<TbWarehouseVo> queryAll(TbWarehouseQueryParam query, Pageable pageable);
 
     /**
     * 查询所有数据不分页
@@ -42,6 +43,10 @@ public interface TbWarehouseService extends CommonService<TbWarehouse>  {
     int updateById(TbWarehouseDto resources);
     int removeById(Long id);
     int removeByIds(Set<Long> ids);
+
+    Object getQueryParamAdviceList(String name);
+
+    Object getEmpSelect();
 
     /**
     * 导出数据
