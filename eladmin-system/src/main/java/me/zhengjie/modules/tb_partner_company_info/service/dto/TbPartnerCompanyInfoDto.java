@@ -31,10 +31,10 @@ public class TbPartnerCompanyInfoDto implements Serializable {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
-    @ApiModelProperty(value = "货品编码")
+    @ApiModelProperty(value = "单位编码")
     private String cCode;
 
-    @ApiModelProperty(value = "货品名称")
+    @ApiModelProperty(value = "单位名称")
     private String cName;
 
     @ApiModelProperty(value = "拼音码")
@@ -53,16 +53,16 @@ public class TbPartnerCompanyInfoDto implements Serializable {
     private String contactPerson;
 
     @ApiModelProperty(value = "联系电话")
-    private Integer contactPhone;
+    private String contactPhone;
 
     @ApiModelProperty(value = "手机")
-    private Integer mobile;
+    private String mobile;
 
     @ApiModelProperty(value = "传真")
     private String fax;
 
     @ApiModelProperty(value = "邮编")
-    private Integer zip;
+    private String zip;
 
     @ApiModelProperty(value = "邮箱")
     private String email;
@@ -71,7 +71,7 @@ public class TbPartnerCompanyInfoDto implements Serializable {
     private String website;
 
     @ApiModelProperty(value = "QQ号码")
-    private Integer qq;
+    private String qq;
 
     @ApiModelProperty(value = "银行名称")
     private String bank;

@@ -14,5 +14,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 public class TbPartnerCompanyInfoQueryParam{
+    @Query(blurry = "cCode,cName")
+    private String blurry;
 
+    @Query(type = Query.Type.INNER_LIKE)
+    private String contactPerson;
+
+    /** 精确 */
+    @Query
+    private Long type;
 }

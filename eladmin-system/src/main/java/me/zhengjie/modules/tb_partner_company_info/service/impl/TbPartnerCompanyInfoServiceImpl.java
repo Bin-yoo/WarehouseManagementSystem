@@ -89,6 +89,13 @@ public class TbPartnerCompanyInfoServiceImpl extends CommonServiceImpl<TbPartner
         return this.removeByIds(set);
     }
 
+    @Override
+    public Object getCompanyCode() {
+        Integer count = tbPartnerCompanyInfoMapper.selectCount(null);
+        String format = String.format("C%05d", count+1);
+        return format;
+    }
+
     /*
     private void delCaches(Long id) {
         redisUtils.delByKey(CACHE_KEY + "::id:", id);

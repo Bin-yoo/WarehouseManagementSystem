@@ -38,11 +38,11 @@ public class TbPartnerCompanyInfo extends CommonModel<TbPartnerCompanyInfo> impl
     @TableId(type= IdType.ASSIGN_ID)
     private Long id;
 
-    @ApiModelProperty(value = "货品编码")
+    @ApiModelProperty(value = "单位编码")
     @NotBlank
     private String cCode;
 
-    @ApiModelProperty(value = "货品名称")
+    @ApiModelProperty(value = "单位名称")
     @NotBlank
     private String cName;
 
@@ -65,18 +65,17 @@ public class TbPartnerCompanyInfo extends CommonModel<TbPartnerCompanyInfo> impl
     private String contactPerson;
 
     @ApiModelProperty(value = "联系电话")
-    @NotNull
-    private Integer contactPhone;
+    private String contactPhone;
 
     @ApiModelProperty(value = "手机")
-    @NotNull
-    private Integer mobile;
+    @NotBlank
+    private String mobile;
 
     @ApiModelProperty(value = "传真")
     private String fax;
 
     @ApiModelProperty(value = "邮编")
-    private Integer zip;
+    private String zip;
 
     @ApiModelProperty(value = "邮箱")
     private String email;
@@ -85,7 +84,7 @@ public class TbPartnerCompanyInfo extends CommonModel<TbPartnerCompanyInfo> impl
     private String website;
 
     @ApiModelProperty(value = "QQ号码")
-    private Integer qq;
+    private String qq;
 
     @ApiModelProperty(value = "银行名称")
     private String bank;

@@ -43,6 +43,8 @@ public interface TbPartnerCompanyInfoService extends CommonService<TbPartnerComp
     int removeById(Long id);
     int removeByIds(Set<Long> ids);
 
+    Object getCompanyCode();
+
     /**
     * 导出数据
     * @param all 待导出的数据

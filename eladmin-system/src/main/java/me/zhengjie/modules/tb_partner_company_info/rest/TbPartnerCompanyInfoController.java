@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 /**
@@ -39,7 +41,7 @@ public class TbPartnerCompanyInfoController {
     @Log("新增tb_partner_company_info")
     @ApiOperation("新增tb_partner_company_info")
     @PreAuthorize("@el.check('tbPartnerCompanyInfo:add')")
-    public ResponseEntity create(@Validated @RequestBody TbPartnerCompanyInfoDto resources){
+    public ResponseEntity create(@Validated @RequestBody TbPartnerCompanyInfoDto resources) throws UnsupportedEncodingException {
         return new ResponseEntity<>(tbPartnerCompanyInfoService.insert(resources),HttpStatus.CREATED);
     }
 
@@ -59,6 +61,14 @@ public class TbPartnerCompanyInfoController {
     public ResponseEntity delete(@RequestBody Set<Long> ids) {
         tbPartnerCompanyInfoService.removeByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/getCompanyCode")
+    @Log("获取新的公司编码")
+    @ApiOperation("获取新的公司编码")
+    @PreAuthorize("@el.check('tbPartnerCompanyInfo:add', 'tbPartnerCompanyInfo:edit')")
+    public ResponseEntity getCompanyCode(){
+        return new ResponseEntity<>(tbPartnerCompanyInfoService.getCompanyCode(),HttpStatus.OK);
     }
 
     /*
