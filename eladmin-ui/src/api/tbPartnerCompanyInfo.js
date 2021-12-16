@@ -24,4 +24,11 @@ export function edit(data) {
   })
 }
 
-export default { add, edit, del }
+export function getCompanyCode() {
+  return request({
+    url: 'api/tbPartnerCompanyInfo/getCompanyCode',
+    method: 'get'
+  })
+}
+
+export default { add, edit, del, getCompanyCode }
