@@ -17,7 +17,7 @@
             <el-input v-model="form.specification" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="拼音码">
-            <el-input v-model="form.pyCode" style="width: 280px;" />
+            <el-input v-model="form.pyCode" disabled placeholder="自动生成" style="width: 280px;" />
           </el-form-item>
           <el-form-item label="单位" prop="gUnit">
             <el-input v-model="form.gUnit" style="width: 280px;" />
