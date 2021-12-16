@@ -31,7 +31,7 @@
             <el-input v-model="form.name" style="width: 250px;" @input="convertPinyin" />
           </el-form-item>
           <el-form-item label="拼音码">
-            <el-input v-model="form.pyCode" disabled style="width: 250px;" />
+            <el-input v-model="form.pyCode" disabled placeholder="自动生成" style="width: 250px;" />
           </el-form-item>
           <el-form-item label="性别">
             <el-radio-group v-model="form.gender" style="width: 250px">
@@ -54,7 +54,7 @@
           <el-form-item label="联系电话">
             <el-input v-model="form.phone" style="width: 250px;" />
           </el-form-item>
-          <el-form-item label="手机号码">
+          <el-form-item label="手机号码" prop="mobile">
             <el-input v-model="form.mobile" style="width: 250px;" />
           </el-form-item>
           <el-form-item label="家庭住址">
@@ -156,6 +156,9 @@ export default {
         ],
         deptId: [
           { required: true, message: '所属部门不能为空', trigger: 'blur' }
+        ],
+        mobile: [
+          { message: '手机号格式不正确', trigger: 'blur', pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/ }
         ]
       },
       depts: [],
