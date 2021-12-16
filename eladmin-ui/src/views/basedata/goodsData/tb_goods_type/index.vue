@@ -157,16 +157,16 @@ export default {
       this.tableLoading= true
       setTimeout(() => {
         crudTbGoodsType.getTypeDatas().then(res => {
-          this.types = res;
+          this.types = res
           this.tableLoading= false
           // resolve(res.content)
         })
       }, 100)
     },
     // 获取弹窗内分类数据
-    loadTypesSelectTree () {
+    loadTypesSelectTree() {
         crudTbGoodsType.getTypesSelectTree().then(res => {
-          this.typesSelectTree = res;
+          this.typesSelectTree = res
         })
     },
     submitForm() {

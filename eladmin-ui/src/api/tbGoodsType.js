@@ -30,6 +30,7 @@ export function getTypeDatas() {
     method: 'get'
   })
 }
+
 export function getTypesSelectTree() {
   return request({
     url: 'api/tbGoodsType/getTypesSelectTree',
