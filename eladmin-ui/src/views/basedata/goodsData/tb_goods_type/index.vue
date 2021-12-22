@@ -59,8 +59,8 @@
         <template slot-scope="scope">
           <el-button v-if="checkPer(['admin',permission.add]) && scope.row.isFolder == 1" v-permission="permission.add" :loading="status" class="filter-item" size="mini"
             type="primary" icon="el-icon-plus" @click="toAdd(scope.row.id)" />
-          <el-button style="margin-left: 0px;" v-if="scope.row.id != 1" v-permission="permission.edit" :loading="status" size="mini" type="primary" icon="el-icon-edit" @click="toEdit(scope.row.id)" />
-          <myDoperation v-if="scope.row.id != 1 && scope.row.children.length == 0" :permission="permission" :status="status" :id='scope.row.id' @doDelete="doDelete"/>
+          <el-button v-if="scope.row.id != 1" v-permission="permission.edit" :loading="status" size="mini" type="primary" icon="el-icon-edit" @click="toEdit(scope.row.id)" style="margin-left: 0px;" />
+          <myDoperation v-if="scope.row.id != 1 && scope.row.children.length == 0" :id="scope.row.id" :permission="permission" :status="status" @doDelete="doDelete" />
         </template>
       </el-table-column>
     </el-table>
@@ -154,20 +154,20 @@ export default {
       this.CUstatus = 2
     },
     getTypeDatas() {
-      this.tableLoading= true
+      this.tableLoading = true
       setTimeout(() => {
         crudTbGoodsType.getTypeDatas().then(res => {
           this.types = res
-          this.tableLoading= false
+          this.tableLoading = false
           // resolve(res.content)
         })
       }, 100)
     },
     // 获取弹窗内分类数据
     loadTypesSelectTree() {
-        crudTbGoodsType.getTypesSelectTree().then(res => {
-          this.typesSelectTree = res
-        })
+      crudTbGoodsType.getTypesSelectTree().then(res => {
+        this.typesSelectTree = res
+      })
     },
     submitForm() {
       this.status = true
@@ -185,7 +185,7 @@ export default {
         }
       })
     },
-    addType(){
+    addType() {
       crudTbGoodsType.add(this.defaultForm).then(res => {
         this.cancel()
         this.notifyMsg('新增成功', 'success')
@@ -212,7 +212,7 @@ export default {
     handleDocumentClick(event) {
       this.pop = false
     },
-    editType(){
+    editType() {
       crudTbGoodsType.edit(this.defaultForm).then(res => {
         this.cancel()
         this.notifyMsg('修改成功', 'success')
@@ -222,11 +222,11 @@ export default {
       })
     },
     doDelete(id) {
-      this.status= true
+      this.status = true
       crudTbGoodsType.del(id).then(res => {
         this.notifyMsg('删除成功', 'success')
         this.refresh()
-        this.status= false
+        this.status = false
       }).catch(err => {
         this.notifyMsg(err.response.data.message, 'error')
       })

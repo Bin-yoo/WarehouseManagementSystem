@@ -14,7 +14,8 @@
           class="filter-item"
           @keyup.enter.native="crud.toQuery"
         />
-        <el-select v-model="query.type"
+        <el-select
+          v-model="query.type"
           placeholder="请选择单位类别"
           class="filter-item"
           style="width: 200px;"
@@ -54,15 +55,15 @@
           <el-row>
             <el-col :span="11">
               <el-form-item label="拼音码" prop="pyCode">
-                <el-input v-model="form.pyCode" disabled placeholder="自动生成"/>
+                <el-input v-model="form.pyCode" disabled placeholder="自动生成" />
               </el-form-item>
             </el-col>
             <el-col :span="11" :offset="1">
               <el-form-item label="单位类别" prop="type">
                 <el-select v-model="form.type" placeholder="请选择单位类别" style="width: 100%;">
-                  <el-option label="供应商" value="1" />
-                  <el-option label="客户" value="2" />
-                  <el-option label="供应商、客户" value="3" />
+                  <el-option label="供应商" :value="1" />
+                  <el-option label="客户" :value="2" />
+                  <el-option label="供应商、客户" :value="3" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -142,7 +143,7 @@
           <el-row>
             <el-col :span="23">
               <el-form-item label="备注" prop="remark">
-                <el-input type="textarea" row="2" v-model="form.remark"/>
+                <el-input type="textarea" row="2" v-model="form.remark" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -154,16 +155,15 @@
       </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="55" />
+        <el-table-column type="selection" width="55" fixed="left" />
         <el-table-column prop="cCode" label="单位编码" />
         <el-table-column prop="cName" label="单位名称" />
         <el-table-column prop="pyCode" label="拼音码" />
-        <el-table-column prop="type" label="单位类别" />
+        <el-table-column prop="type" label="单位类别">
           <template slot-scope="scope">
-            {{ scope.row.type | transferCompanyType()}}
+            {{ scope.row.type | transferCompanyType() }}
           </template>
         </el-table-column>
-        
         <el-table-column prop="province" label="所在省份" width="200">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.province" placement="top-start">
@@ -225,7 +225,7 @@ import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import pinyin from 'js-pinyin'
 
-const defaultForm = { id: null, cCode: null, cName: null, pyCode: null, type: '3', province: null, address: null, contactPerson: null, contactPhone: null, mobile: null, fax: null, zip: null, email: null, website: null, qq: null, bank: null, bankAccount: null, remark: null }
+const defaultForm = { id: null, cCode: null, cName: null, pyCode: null, type: 3, province: null, address: null, contactPerson: null, contactPhone: null, mobile: null, fax: null, zip: null, email: null, website: null, qq: null, bank: null, bankAccount: null, remark: null }
 export default {
   name: 'TbPartnerCompanyInfo',
   components: { pagination, crudOperation, rrOperation, udOperation },
@@ -293,13 +293,13 @@ export default {
   },
   filters: {
     transferCompanyType(val) {
-      if(val == 1) {
+      if (val === 1) {
         return '供应商'
       }
-      if(val == 2) {
+      if (val === 2) {
         return '客户'
       }
-      if(val == 3) {
+      if (val === 3) {
         return '供应商、客户'
       }
     }

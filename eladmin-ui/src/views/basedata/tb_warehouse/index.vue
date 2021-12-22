@@ -29,7 +29,7 @@
           clearable
           class="filter-item"
           @clear="crud.toQuery()"
-        ></el-autocomplete>
+        />
         <el-autocomplete
           v-model="query.director"
           :fetch-suggestions="QuerySearchAsync"
@@ -38,7 +38,7 @@
           clearable
           class="filter-item"
           @clear="crud.toQuery()"
-        ></el-autocomplete>
+        />
         <rrOperation />
       </div>
       <crudOperation :permission="permission" />
@@ -65,8 +65,7 @@
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="负责人">
@@ -76,8 +75,7 @@
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="联系电话" prop="phone">
@@ -136,13 +134,13 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import { getDepts, getDeptSuperior } from '@/api/system/dept'
 
-const defaultForm = { id: null, whName: null, deptId: null, deptName: null, keeper: null, director: null, keeperId: null, directorId: null, phone: null, address: null, goodsType: null, remark: null }
+const defaultForm = { whId: null, whName: null, deptId: null, deptName: null, keeper: null, director: null, keeperId: null, directorId: null, phone: null, address: null, goodsType: null, remark: null }
 export default {
   name: 'TbWarehouse',
   components: { pagination, crudOperation, rrOperation, udOperation, Treeselect },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '仓库', url: 'api/tbWarehouse', idField: 'id', sort: 'id,desc', crudMethod: { ...crudTbWarehouse }})
+    return CRUD({ title: '仓库', url: 'api/tbWarehouse', idField: 'whId', sort: 'whId,desc', crudMethod: { ...crudTbWarehouse }})
   },
   data() {
     return {
@@ -152,9 +150,6 @@ export default {
         del: ['admin', 'tbWarehouse:del']
       },
       rules: {
-        id: [
-          { required: true, message: '货品id不能为空', trigger: 'blur' }
-        ],
         whName: [
           { required: true, message: '仓库名称不能为空', trigger: 'blur' }
         ],
@@ -230,7 +225,7 @@ export default {
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
       this.getEmpSelect()
-      if (form.id == null) {
+      if (form.whId == null) {
         this.getDepts()
       } else {
         this.getSupDepts(form.deptId)
