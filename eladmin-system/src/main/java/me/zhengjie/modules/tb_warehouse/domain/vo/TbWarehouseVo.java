@@ -15,10 +15,10 @@ import java.io.Serializable;
 @Data
 public class TbWarehouseVo implements Serializable {
 
-    @ApiModelProperty(value = "货品id")
+    @ApiModelProperty(value = "仓库id")
     /** 防止精度丢失 */
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long id;
+    private Long whId;
 
     @ApiModelProperty(value = "仓库名称")
     private String whName;

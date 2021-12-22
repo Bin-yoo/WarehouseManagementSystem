@@ -26,10 +26,10 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 public class TbWarehouseDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "货品id")
+    @ApiModelProperty(value = "仓库id")
     /** 防止精度丢失 */
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long id;
+    private Long whId;
 
     @ApiModelProperty(value = "仓库名称")
     private String whName;
