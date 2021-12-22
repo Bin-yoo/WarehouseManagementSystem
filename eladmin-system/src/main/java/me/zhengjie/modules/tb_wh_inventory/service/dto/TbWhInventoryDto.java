@@ -28,7 +28,7 @@ public class TbWhInventoryDto implements Serializable {
     private Long goodId;
 
     @ApiModelProperty(value = "仓库id")
-    private String whId;
+    private Long whId;
 
     @ApiModelProperty(value = "货品数量")
     private Integer count;
