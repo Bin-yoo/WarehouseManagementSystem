@@ -15,6 +15,7 @@
  */
 package me.zhengjie;
 
+import com.github.yulichang.injector.MPJSqlInjector;
 import io.swagger.annotations.Api;
 import me.zhengjie.annotation.rest.AnonymousGetMapping;
 import me.zhengjie.utils.SpringContextHolder;
@@ -37,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAsync
 @RestController
 @Api(hidden = true)
-@SpringBootApplication
+@SpringBootApplication(exclude = {MPJSqlInjector.class})
 @EnableTransactionManagement
 public class AppRun {
 

@@ -47,11 +47,11 @@
 		</dependency>
 
         <!-- mybatis-plus-join -->
-        <dependency>
-            <groupId>com.github.yulichang</groupId>
-            <artifactId>mybatis-plus-join</artifactId>
-            <version>1.1.8</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.yulichang</groupId>-->
+<!--            <artifactId>mybatis-plus-join</artifactId>-->
+<!--            <version>1.1.8</version>-->
+<!--        </dependency>-->
 
         <!-- jwt -->
         <dependency>

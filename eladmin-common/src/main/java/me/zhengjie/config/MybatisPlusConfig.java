@@ -34,4 +34,9 @@ public class MybatisPlusConfig {
         globalConfig.setMetaObjectHandler(new MybatisPlusFillHandler());
         return globalConfig;
     }
+
+    @Bean
+    public EasySqlInjector easySqlInjector() {
+        return new EasySqlInjector();
+    }
 }

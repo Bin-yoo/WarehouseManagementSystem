@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 * @date 2021-12-08
 */
 @Repository
-public interface TbEmployeeMapper extends MPJBaseMapper<TbEmployee> {
+public interface TbEmployeeMapper extends CommonMapper<TbEmployee> {
 
 }

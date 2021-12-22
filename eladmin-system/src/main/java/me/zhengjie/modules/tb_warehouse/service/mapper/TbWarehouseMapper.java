@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
 * @date 2021-12-01
 */
 @Repository
-public interface TbWarehouseMapper extends MPJBaseMapper<TbWarehouse> {
+public interface TbWarehouseMapper extends CommonMapper<TbWarehouse> {
     IPage<TbWarehouseDto> queryAll(IPage<TbWarehouseDto> queryPage, @Param(Constants.WRAPPER) Wrapper<TbWarehouseDto> wrapper);
 }
