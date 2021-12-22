@@ -36,9 +36,9 @@ import java.sql.Timestamp;
 public class TbWarehouse extends CommonModel<TbWarehouse> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "货品id")
+    @ApiModelProperty(value = "仓库id")
     @TableId(type= IdType.ASSIGN_ID)
-    private Long id;
+    private Long whId;
 
     @ApiModelProperty(value = "仓库名称")
     @NotBlank
