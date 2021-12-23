@@ -36,6 +36,8 @@ public interface TbGoodsTypeService extends CommonService<TbGoodsType>  {
 
     List<TbGoodsTypeVo> queryAll(Long id);
 
+    List<TbGoodsTypeTreeSelectVo> getTypesFolderSelectTree(long pid);
+
     List<TbGoodsTypeTreeSelectVo> getTypesSelectTree(long pid);
 
     TbGoodsType getById(Long id);

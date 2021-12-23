@@ -66,9 +66,26 @@ public class TbGoodsTypeServiceImpl extends CommonServiceImpl<TbGoodsTypeMapper,
     }
 
     @Override
-    public List<TbGoodsTypeTreeSelectVo> getTypesSelectTree(long pid) {
+    public List<TbGoodsTypeTreeSelectVo> getTypesFolderSelectTree(long pid) {
         List<TbGoodsType> tbGoodsTypeList = tbGoodsTypeMapper.lambdaQuery()
                 .eq(TbGoodsType::getParentId, pid).eq(TbGoodsType::getIsFolder, "1").list();
+        List<TbGoodsTypeTreeSelectVo> list = new ArrayList<>();
+        if (tbGoodsTypeList.size() >0) {
+            for (TbGoodsType tbGoodsType: tbGoodsTypeList) {
+                TbGoodsTypeTreeSelectVo tbGoodsTypeTreeSelectVo = new TbGoodsTypeTreeSelectVo();
+                tbGoodsTypeTreeSelectVo.setId(tbGoodsType.getId());
+                tbGoodsTypeTreeSelectVo.setLabel(tbGoodsType.getGtName());
+                tbGoodsTypeTreeSelectVo.setChildren(getTypesSelectTree(tbGoodsType.getId()));
+                list.add(tbGoodsTypeTreeSelectVo);
+            }
+        }
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
+    public List<TbGoodsTypeTreeSelectVo> getTypesSelectTree(long pid) {
+        List<TbGoodsType> tbGoodsTypeList = tbGoodsTypeMapper.lambdaQuery()
+                .eq(TbGoodsType::getParentId, pid).list();
         List<TbGoodsTypeTreeSelectVo> list = new ArrayList<>();
         if (tbGoodsTypeList.size() >0) {
             for (TbGoodsType tbGoodsType: tbGoodsTypeList) {

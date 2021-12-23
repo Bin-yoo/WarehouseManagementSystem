@@ -165,7 +165,7 @@ export default {
     },
     // 获取弹窗内分类数据
     loadTypesSelectTree() {
-      crudTbGoodsType.getTypesSelectTree().then(res => {
+      crudTbGoodsType.getTypesFolderSelectTree().then(res => {
         this.typesSelectTree = res
       })
     },

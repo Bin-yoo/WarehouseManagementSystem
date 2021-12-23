@@ -46,6 +46,14 @@ public class TbGoodsTypeController {
         return new ResponseEntity<>(tbGoodsTypeService.queryAll(0l),HttpStatus.OK);
     }
 
+    @GetMapping("/getTypesFolderSelectTree")
+    @Log("查询tb_goods_type树形选择数据")
+    @ApiOperation("查询tb_goods_type树形选择数据")
+    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    public ResponseEntity getTypesFolderSelectTree(){
+        return new ResponseEntity<>(tbGoodsTypeService.getTypesFolderSelectTree(0l),HttpStatus.OK);
+    }
+
     @GetMapping("/getTypesSelectTree")
     @Log("查询tb_goods_type树形选择数据")
     @ApiOperation("查询tb_goods_type树形选择数据")
