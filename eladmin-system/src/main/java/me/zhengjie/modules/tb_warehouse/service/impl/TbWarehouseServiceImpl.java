@@ -124,9 +124,9 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
 
     @Override
     public Object getQueryParamAdviceList(String name) {
-        QueryWrapper<TbEmployee> wrapper = new QueryWrapper<>();
-        wrapper.like("name", name);
-        return tbEmployeeMapper.selectList(wrapper);
+        //QueryWrapper<TbEmployee> wrapper = new QueryWrapper<>();
+        //wrapper.like("name", name);
+        return tbEmployeeMapper.lambdaQuery().like(TbEmployee::getName, name).list();
     }
 
     @Override

@@ -106,7 +106,18 @@
         <el-table-column prop="phone" label="联系电话" />
         <el-table-column prop="address" label="地址" />
         <el-table-column prop="goodsType" label="存货分类" />
-        <el-table-column prop="remark" label="备注" />
+        <el-table-column prop="remark" label="备注">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover"
+              :content="scope.row.remark">
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+              <span slot="reference">{{ scope.row.remark ? scope.row.remark.length > 12 ? scope.row.remark.substr(0,12)+'...' : scope.row.remark : '' }}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column v-if="checkPer(['admin','tbWarehouse:edit','tbWarehouse:del'])" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -161,10 +172,12 @@ export default {
       options: []
     }
   },
+  created() {
+    this.getDepts()
+  },
   methods: {
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
-      this.getDepts()
       return true
     },
     getDepts() {

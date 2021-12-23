@@ -165,10 +165,12 @@ export default {
       jobs: []
     }
   },
+  created() {
+    this.getDepts()
+  },
   methods: {
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
-      this.getDepts()
       return true
     },
     // 新增与编辑前做的操作

@@ -166,16 +166,32 @@
         </el-table-column>
         <el-table-column prop="province" label="所在省份" width="200">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.province" placement="top-start">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover"
+              :content="scope.row.province">
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+              <span slot="reference">{{ scope.row.province ? scope.row.province.length > 12 ? scope.row.province.substr(0,12)+'...' : scope.row.province : '' }}</span>
+            </el-popover>
+            <!-- <el-tooltip class="item" effect="dark" :content="scope.row.province" placement="top-start">
               <div>{{ scope.row.province ? scope.row.province.length > 12 ? scope.row.province.substr(0,12)+'...' : scope.row.province : '' }}</div>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
         </el-table-column>
         <el-table-column prop="address" label="详细地址" width="200">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.address" placement="top-start">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover"
+              :content="scope.row.address">
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+              <span slot="reference">{{ scope.row.address ? scope.row.address.length > 12 ? scope.row.address.substr(0,12)+'...' : scope.row.address : '' }}</span>
+            </el-popover>
+            <!-- <el-tooltip class="item" effect="dark" :content="scope.row.address" placement="top-start">
               <div>{{ scope.row.address ? scope.row.address.length > 12 ? scope.row.address.substr(0,12)+'...' : scope.row.address : '' }}</div>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
         </el-table-column>
         <el-table-column prop="contactPerson" label="联系人" />
@@ -186,9 +202,17 @@
         <el-table-column prop="email" label="邮箱" width="150" />
         <el-table-column prop="website" label="公司网址" width="200">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.website" placement="top-start">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover"
+              :content="scope.row.website">
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+              <span slot="reference">{{ scope.row.website ? scope.row.website.length > 12 ? scope.row.website.substr(0,12)+'...' : scope.row.website : '' }}</span>
+            </el-popover>
+            <!-- <el-tooltip class="item" effect="dark" :content="scope.row.website" placement="top-start">
               <div>{{ scope.row.website ? scope.row.website.length > 12 ? scope.row.website.substr(0,12)+'...' : scope.row.website : '' }}</div>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
         </el-table-column>
         <el-table-column prop="qq" label="QQ号码" />
@@ -196,9 +220,17 @@
         <el-table-column prop="bankAccount" label="银行卡号" />
         <el-table-column prop="remark" label="备注" width="200">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover"
+              :content="scope.row.remark">
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+              <span slot="reference">{{ scope.row.remark ? scope.row.remark.length > 12 ? scope.row.remark.substr(0,12)+'...' : scope.row.remark : '' }}</span>
+            </el-popover>
+            <!-- <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
               <div>{{ scope.row.remark ? scope.row.remark.length > 12 ? scope.row.remark.substr(0,12)+'...' : scope.row.remark : '' }}</div>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
         </el-table-column>
         <el-table-column fixed="right" v-if="checkPer(['admin','tbPartnerCompanyInfo:edit','tbPartnerCompanyInfo:del'])" label="操作" width="150px" align="center">

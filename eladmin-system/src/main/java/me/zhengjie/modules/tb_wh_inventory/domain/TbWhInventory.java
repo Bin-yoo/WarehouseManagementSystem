@@ -35,15 +35,13 @@ public class TbWhInventory extends CommonModel<TbWhInventory> implements Seriali
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "货品id")
-    //@TableId(type= IdType.ASSIGN_ID)
-    @TableField
+    @TableField(value = "good_id")
     @NotNull
     private Long goodId;
 
     @ApiModelProperty(value = "仓库id")
-    //@TableId(type= IdType.ASSIGN_ID)
+    @TableField(value = "wh_id")
     @NotNull
-    @TableField
     private Long whId;
 
     @ApiModelProperty(value = "货品数量")

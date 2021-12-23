@@ -38,6 +38,13 @@ export function getTypesSelectTree() {
   })
 }
 
+export function getTypesFolderSelectTree() {
+  return request({
+    url: 'api/tbGoodsType/getTypesFolderSelectTree',
+    method: 'get'
+  })
+}
+
 export function getTypeDetail(id) {
   return request({
     url: 'api/tbGoodsType/getGoodsTypeById?id=' + id,
@@ -45,4 +52,4 @@ export function getTypeDetail(id) {
   })
 }
 
-export default { add, edit, del, getTypeDatas, getTypesSelectTree, getTypeDetail }
+export default { add, edit, del, getTypeDatas, getTypesSelectTree, getTypesFolderSelectTree, getTypeDetail }
