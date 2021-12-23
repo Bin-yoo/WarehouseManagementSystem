@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: 'eladmin-plus 后台管理',
+      title: '仓储管理系统',
       logo: Logo
     }
   }
