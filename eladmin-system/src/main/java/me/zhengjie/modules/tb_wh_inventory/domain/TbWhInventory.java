@@ -34,6 +34,10 @@ import java.sql.Timestamp;
 public class TbWhInventory extends CommonModel<TbWhInventory> implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "id")
+    @TableId(type= IdType.ASSIGN_ID)
+    private Long id;
+
     @ApiModelProperty(value = "货品id")
     @TableField(value = "good_id")
     @NotNull
