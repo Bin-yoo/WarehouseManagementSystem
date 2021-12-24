@@ -247,7 +247,7 @@
                         :on-preview="handlePictureCardPreview"
                         :limit="1"
                       >
-                      <i slot="default" class="el-icon-plus" />
+                        <i slot="default" class="el-icon-plus" />
                       </el-upload>
                       <el-dialog :visible.sync="dialogVisible" append-to-body width="600px">
                         <img width="100%" :src="form.pic" alt="">
@@ -336,6 +336,7 @@ import pagination from '@crud/Pagination'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import pinyin from 'js-pinyin'
+import image from '@/api/image'
 
 const defaultForm = { id: null, gCode: null, gName: null, specification: null, pyCode: null, manufacturer: null, remark: null, barCode: null, qrCode: null, type: null, model: null, weight: null, color: null, unit: null, purchasePrice: null, sellPrice: null, allocation: null, pic: null, whGoodsList: null }
 export default {
@@ -404,11 +405,7 @@ export default {
       this.loadTypesSelectTree()
       this.getGoodUnitsSelect()
       if (form.pic != null) {
-        const obj = {
-          url: form.pic
-        }
-        this.imgList.push(obj)
-        this.disUpload = true
+        this.loadGoodPic(form.pic)
       }
     },
     dialogClose() {
@@ -486,7 +483,6 @@ export default {
       })
     },
     handleRemove(file, fileList) {
-      this.form.pic = null
       this.disUpload = fileList.length >= 1
       this.imgList = []
     },
@@ -496,6 +492,15 @@ export default {
     handlePictureCardPreview(file) {
       // this.form.pic = file.url
       this.dialogVisible = true
+    },
+    loadGoodPic(id) {
+      image.loadBase64Img(id).then(res => {
+        const obj = {
+          url: 'data:image/png;base64,' + res
+        }
+        this.imgList.push(obj)
+        this.disUpload = true
+      })
     },
     handleDownload(file) {
       console.log(file)
