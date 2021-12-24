@@ -15,23 +15,16 @@
  */
 package me.zhengjie.rest;
 
+import cn.hutool.core.codec.Base64;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.AnonymousAccess;
-import me.zhengjie.annotation.Log;
 import me.zhengjie.domain.LocalStorage;
-import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.service.LocalStorageService;
-import me.zhengjie.service.dto.LocalStorageQueryParam;
-import me.zhengjie.utils.FileUtil;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +46,7 @@ public class ImageController {
 
     private final LocalStorageService localStorageService;
 
-    @ApiOperation("查询图片")
+    @ApiOperation("查询图片(图片流)")
     @GetMapping
     @AnonymousAccess
     public void viewPic(Long id, HttpServletResponse response) throws IOException {
@@ -75,6 +68,25 @@ public class ImageController {
                 os.flush();
                 os.close();
             }
+        }
+    }
+
+    @ApiOperation("查询图片(base64)")
+    @GetMapping("/base64")
+    @AnonymousAccess
+    public ResponseEntity viewBase64Pic(Long id) throws IOException {
+        LocalStorage localStorage = localStorageService.getById(id);
+        FileInputStream fileInputStream;
+        byte[] data;
+        try {
+//        读取图片
+            fileInputStream = new FileInputStream(new File(localStorage.getPath()));
+            data = new byte[fileInputStream.available()];
+            fileInputStream.read(data);
+            fileInputStream.close();
+            return new ResponseEntity<>(Base64.encode(data), HttpStatus.OK);
+        } catch (IOException e) {
+            throw e;
         }
     }
 
