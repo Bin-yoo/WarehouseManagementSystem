@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="me.zhengjie.modules.tb_warehouse.service.mapper.TbWarehouseMapper">
+<mapper namespace="me.zhengjie.modules.warehouse.service.mapper.TbWarehouseMapper">
 
   <!-- 通用查询结果列 -->
   <!--
@@ -8,7 +8,7 @@
       a.wh_id, a.wh_name, a.dept_id, a.keeper_id, a.director_id, a.phone, a.address, a.goods_type, a.remark
   </sql>
   -->
-  <select id="queryAll" resultType="me.zhengjie.modules.tb_warehouse.service.dto.TbWarehouseDto">
+  <select id="queryAll" resultType="me.zhengjie.modules.warehouse.service.dto.TbWarehouseDto">
     SELECT a.wh_id, a.wh_name, a.dept_id, a.keeper_id, a.director_id, a.phone, a.address, a.goods_type, a.remark, k.name as keeper, d.name as director, dept.name as dept_name
         FROM `tb_warehouse` a
         LEFT JOIN tb_employee k on a.keeper_id = k.id
