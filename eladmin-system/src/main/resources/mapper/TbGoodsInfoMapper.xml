@@ -5,7 +5,7 @@
   <!-- 通用查询结果列 -->
   <!--
   <sql id="Base_Column_List">
-      a.id, a.g_code, a.g_name, a.specification, a.py_code, a.g_unit, a.g_type, a.p_price, a.s_price, a.u_limit, a.l_limit, a.g_allocation, a.manufacturer, a.remark, a.batch, a.product_date, a.valid_date, a.source, a.bar_code, a.qr_code
+      a.id, a.g_code, a.g_name, a.specification, a.py_code, a.manufacturer, a.remark, a.bar_code, a.qr_code, a.type, a.model, a.weight, a.color, a.unit, a.purchase_price, a.sell_price, a.upper_limit, a.lower_limit, a.allocation, a.pic
   </sql>
   -->
 </mapper>

@@ -1,30 +1,22 @@
-package me.zhengjie.modules.tb_goods_info.service.dto;
+package me.zhengjie.modules.tb_goods_info.domain.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import java.math.BigDecimal;
-import java.io.Serializable;
-
-import io.swagger.annotations.ApiModelProperty;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import lombok.experimental.Accessors;
+import me.zhengjie.modules.tb_wh_goods.domain.vo.TbWhGoodsVo;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
 * @author LiangBin
 * @date 2021-12-21
 */
 @Data
-@Builder
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class TbGoodsInfoDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class TbGoodsInfoVo implements Serializable {
 
     @ApiModelProperty(value = "货品id")
     /** 防止精度丢失 */
@@ -91,4 +83,7 @@ public class TbGoodsInfoDto implements Serializable {
 
     @ApiModelProperty(value = "货品图片")
     private String pic;
+
+    @ApiModelProperty(value = "库存信息")
+    private List<TbWhGoodsVo> whGoodsList;
 }

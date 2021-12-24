@@ -1,8 +1,8 @@
-package me.zhengjie.modules.tb_goods_info.service.mapper;
+package me.zhengjie.modules.tb_wh_goods.service.mapper;
 
 import com.github.yulichang.base.MPJBaseMapper;
 import me.zhengjie.base.CommonMapper;
-import me.zhengjie.modules.tb_goods_info.domain.TbGoodsInfo;
+import me.zhengjie.modules.tb_wh_goods.domain.TbWhGoods;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 * @date 2021-12-21
 */
 @Repository
-public interface TbGoodsInfoMapper extends CommonMapper<TbGoodsInfo> {
+public interface TbWhGoodsMapper extends CommonMapper<TbWhGoods> {
 
 }
