@@ -292,7 +292,8 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
                     FileUtil.getSize(multipartFile.getSize())
             );
             localStorageMapper.insert(localStorage);
-            return "http://localhost:8001/api/pic?id=" + localStorage.getId();
+            //return "/api/pic?id=" + localStorage.getId();
+            return localStorage.getId();
         } catch (IOException e) {
             FileUtil.del(file);
             throw e;
