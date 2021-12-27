@@ -239,7 +239,7 @@
                         :class="{uploadBtn:uploadBtn,disUpload:disUpload}"
                         action="#"
                         list-type="picture-card"
-                        ref="upload"
+                        ref="uploadImg"
                         :file-list="imgList"
                         :http-request="upload"
                         :on-remove="handleRemove"
@@ -250,7 +250,7 @@
                         <i slot="default" class="el-icon-plus" />
                       </el-upload>
                       <el-dialog :visible.sync="dialogVisible" append-to-body width="600px">
-                        <img width="100%" :src="form.pic" alt="">
+                        <img width="100%" :src="dialogImageUrl" alt="">
                       </el-dialog>
                     </el-form-item>
                   </el-col>
@@ -383,6 +383,7 @@ export default {
       disabled: false,
       uploadBtn: true,
       disUpload: false,
+      dialogImageUrl: ''
     }
   },
   created() {
@@ -410,7 +411,7 @@ export default {
     },
     dialogClose() {
       this.activeName = 'base_info'
-      this.$refs.upload.clearFiles()
+      this.$refs.uploadImg.clearFiles()
       this.disUpload = false
       this.imgList = []
     },
@@ -485,9 +486,11 @@ export default {
     handleRemove(file, fileList) {
       this.disUpload = fileList.length >= 1
       this.imgList = []
+      this.dialogImageUrl = ''
     },
     handleChange(file, fileList) {
       this.disUpload = fileList.length >= 1
+      this.dialogImageUrl = file.url
     },
     handlePictureCardPreview(file) {
       // this.form.pic = file.url
@@ -499,6 +502,7 @@ export default {
           url: 'data:image/png;base64,' + res
         }
         this.imgList.push(obj)
+        this.dialogImageUrl = obj.url
         this.disUpload = true
       })
     },
