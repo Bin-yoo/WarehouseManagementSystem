@@ -24,4 +24,18 @@ export function edit(data) {
   })
 }
 
-export default { add, edit, del }
+export function getWareHouseSelect(id) {
+  return request({
+    url: 'api/tbWhInventory/getWareHouseSelect',
+    method: 'get'
+  })
+}
+
+export function getWhInOutDetail(id) {
+  return request({
+    url: 'api/tbWhInventory/getWhInOutDetail',
+    method: 'get'
+  })
+}
+
+export default { add, edit, del, getWareHouseSelect, getWhInOutDetail }
