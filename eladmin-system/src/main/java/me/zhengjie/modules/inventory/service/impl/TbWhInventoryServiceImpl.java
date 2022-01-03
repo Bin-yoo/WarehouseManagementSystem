@@ -1,10 +1,14 @@
 package me.zhengjie.modules.inventory.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.modules.goodsinfo.domain.TbGoodsInfo;
+import me.zhengjie.modules.warehouse.service.dto.TbWarehouseDto;
+import me.zhengjie.modules.warehouse.service.mapper.TbWarehouseMapper;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
@@ -12,6 +16,7 @@ import me.zhengjie.modules.inventory.service.TbWhInventoryService;
 import me.zhengjie.modules.inventory.service.dto.TbWhInventoryDto;
 import me.zhengjie.modules.inventory.service.dto.TbWhInventoryQueryParam;
 import me.zhengjie.modules.inventory.service.mapper.TbWhInventoryMapper;
+import me.zhengjie.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,11 +39,41 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
 
     // private final RedisUtils redisUtils;
     private final TbWhInventoryMapper tbWhInventoryMapper;
+    private final TbWarehouseMapper tbWarehouseMapper;
 
     @Override
     public PageInfo<TbWhInventoryDto> queryAll(TbWhInventoryQueryParam query, Pageable pageable) {
-        IPage<TbWhInventory> queryPage = PageUtil.toMybatisPage(pageable);
-        IPage<TbWhInventory> page = tbWhInventoryMapper.selectPage(queryPage, QueryHelpMybatisPlus.getPredicate(query));
+        IPage<TbWhInventoryDto> queryPage = PageUtil.toMybatisPage(pageable);
+        IPage<TbWhInventoryDto> page;
+        QueryWrapper<TbWhInventoryDto> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(query.getGName())) {
+            wrapper.like("g.name", query.getGName());
+        }
+        if (StringUtils.isNotEmpty(query.getGCode())) {
+            wrapper.like("g.g_code", query.getGCode());
+        }
+        if (StringUtils.isNotEmpty(query.getPyCode())) {
+            wrapper.like("g.py_code", query.getPyCode());
+        }
+        if (query.getTypeId() != null) {
+            wrapper.like("t.id", query.getTypeId());
+        }
+        if (query.getUnitId() != null) {
+            wrapper.like("u.id", query.getUnitId());
+        }
+        if (query.getWhId() != null) {
+            wrapper.eq("w.wh_id", query.getWhId());
+            ArrayList<String> list = new ArrayList<>();
+            list.add("g.id");
+            list.add("w.wh_id");
+            wrapper.groupBy(list);
+            wrapper.orderByDesc("g.g_name");
+            page = tbWhInventoryMapper.queryByWareHouse(queryPage, wrapper);
+        } else {
+            wrapper.groupBy("g.id");
+            wrapper.orderByDesc("g.g_name");
+            page = tbWhInventoryMapper.queryAllWareHouse(queryPage, wrapper);
+        }
         return ConvertUtil.convertPage(page, TbWhInventoryDto.class);
     }
 
@@ -87,6 +122,16 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
         Set<String> set = new HashSet<>(1);
         set.add(id);
         return this.removeByIds(set);
+    }
+
+    @Override
+    public Object getWareHouseSelect() {
+        return ConvertUtil.convertList(tbWarehouseMapper.lambdaQuery().list(), TbWarehouseDto.class);
+    }
+
+    @Override
+    public Object getWhInOutDetail() {
+        return null;
     }
 
     /*

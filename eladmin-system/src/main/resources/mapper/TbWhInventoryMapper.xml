@@ -8,4 +8,25 @@
       a.id, a.good_id, a.wh_id, a.count
   </sql>
   -->
+  <select id="queryByWareHouse" resultType="me.zhengjie.modules.inventory.service.dto.TbWhInventoryDto">
+      SELECT g.id as good_id, w.wh_id, w.wh_name, g.g_code, g.g_name, g.py_code, g.specification, g.type AS type_id,
+             t.gt_name AS type, g.model, g.weight, g.color, g.unit AS unit_id, u.gu_name AS unit, g.allocation, g.manufacturer, g.bar_code, g.qr_code,
+             SUM(i.count) AS count, SUM(wg.lower_limit) AS lower_limit, SUM(wg.upper_limit) AS upper_limit
+      FROM `tb_wh_inventory` i
+          LEFT JOIN `tb_goods_info` g ON g.id = i.good_id
+          LEFT JOIN `tb_goods_type` t ON t.id = g.type
+          LEFT JOIN `tb_goods_unit` u ON u.id = g.unit
+          LEFT JOIN `tb_warehouse` w ON w.wh_id = i.wh_id
+          LEFT JOIN `tb_wh_goods` wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id ${ew.customSqlSegment}
+  </select>
+    <select id="queryAllWareHouse" resultType="me.zhengjie.modules.inventory.service.dto.TbWhInventoryDto">
+        SELECT g.id as good_id, '' as wh_id, '全部仓库' as wh_name, g.g_code, g.g_name, g.py_code, g.specification, g.type AS type_id,
+               t.gt_name AS type, g.model, g.weight, g.color, g.unit AS unit_id, u.gu_name AS unit, g.allocation, g.manufacturer, g.bar_code, g.qr_code,
+               SUM(i.count) AS count, SUM(wg.lower_limit) AS lower_limit, SUM(wg.upper_limit) AS upper_limit
+        FROM `tb_wh_inventory` i
+            LEFT JOIN `tb_goods_info` g ON g.id = i.good_id
+            LEFT JOIN `tb_goods_type` t ON t.id = g.type
+            LEFT JOIN `tb_goods_unit` u ON u.id = g.unit
+            LEFT JOIN `tb_wh_goods` wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id ${ew.customSqlSegment}
+    </select>
 </mapper>

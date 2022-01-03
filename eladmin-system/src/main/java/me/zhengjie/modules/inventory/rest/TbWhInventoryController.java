@@ -34,7 +34,7 @@ public class TbWhInventoryController {
         return new ResponseEntity<>(tbWhInventoryService.queryAll(query,pageable),HttpStatus.OK);
     }
 
-    @PostMapping
+    /*@PostMapping
     @Log("新增tb_wh_inventory")
     @ApiOperation("新增tb_wh_inventory")
     @PreAuthorize("@el.check('tbWhInventory:add')")
@@ -58,6 +58,22 @@ public class TbWhInventoryController {
     public ResponseEntity delete(@RequestBody Set<String> ids) {
         tbWhInventoryService.removeByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }*/
+
+    @GetMapping("/getWareHouseSelect")
+    @Log("获取仓库列表下拉")
+    @ApiOperation("获取仓库列表下拉")
+    @PreAuthorize("@el.check('tbWhInventory:list')")
+    public ResponseEntity getWareHouseSelect(){
+        return new ResponseEntity<>(tbWhInventoryService.getWareHouseSelect(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getWhInOutDetail")
+    @Log("获取仓库库存出入详情")
+    @ApiOperation("获取仓库列表下拉")
+    @PreAuthorize("@el.check('tbWhInventory:list')")
+    public ResponseEntity getWhInOutDetail(){
+        return new ResponseEntity<>(tbWhInventoryService.getWhInOutDetail(),HttpStatus.OK);
     }
 
     /*

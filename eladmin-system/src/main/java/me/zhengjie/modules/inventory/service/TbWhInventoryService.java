@@ -43,6 +43,10 @@ public interface TbWhInventoryService extends CommonService<TbWhInventory>  {
     int removeById(String id);
     int removeByIds(Set<String> ids);
 
+    Object getWareHouseSelect();
+
+    Object getWhInOutDetail();
+
     /**
     * 导出数据
     * @param all 待导出的数据
