@@ -29,4 +29,8 @@ public class TbGoodsInfoQueryParam{
     @Query
     private Long unit;
 
+    /** 精确 */
+    @Query
+    private Long whId;
+
 }

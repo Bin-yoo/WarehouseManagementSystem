@@ -151,34 +151,43 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
         TbGoodsInfo entity = ConvertUtil.convert(resources, TbGoodsInfo.class);
         int ret = tbGoodsInfoMapper.updateById(entity);
 
-        // 旧的货品基础库存表数据
-        List<TbWhGoods> lastUpdateList = tbWhGoodsMapper.lambdaQuery().eq(TbWhGoods::getGoodId, entity.getId()).orderByAsc(TbWhGoods::getGoodId).list();
-        // 旧的货品库存信息
-        List<TbWhInventory> inventoryList = tbWhInventoryMapper.lambdaQuery().eq(TbWhInventory::getGoodId, entity.getId()).orderByAsc(TbWhInventory::getGoodId).list();
+        //另起线程处理库存变更计算
+        Runnable runnable = () -> {
+            try {
+                // 旧的货品基础库存表数据
+                List<TbWhGoods> lastUpdateList = tbWhGoodsMapper.lambdaQuery().eq(TbWhGoods::getGoodId, entity.getId()).orderByAsc(TbWhGoods::getGoodId).list();
+                // 旧的货品库存信息
+                List<TbWhInventory> inventoryList = tbWhInventoryMapper.lambdaQuery().eq(TbWhInventory::getGoodId, entity.getId()).orderByAsc(TbWhInventory::getGoodId).list();
 
-        //Set<Long> ids = tbWhGoodsList.stream().map(TbWhGoods::getId).collect(Collectors.toSet());
-        //Set<Long> ids = new HashSet<>();
+                //Set<Long> ids = tbWhGoodsList.stream().map(TbWhGoods::getId).collect(Collectors.toSet());
+                //Set<Long> ids = new HashSet<>();
 
-        List<TbWhGoods> tbWhGoodsList = ConvertUtil.convertList(resources.getWhGoodsList(), TbWhGoods.class);
-        for (int i = 0; i < tbWhGoodsList.size(); i++) {
-            //ids.add(item.getId());
-            int count = 0;
-            TbWhGoods oldData = lastUpdateList.get(i);
-            TbWhGoods newData = tbWhGoodsList.get(i);
-            /*
-             * 计算相差数量
-             * 相差数量=新的初库数量-旧的初库数量
-             * 如果数量不变,直接进入下一轮循环
-             */
-            if ((count = newData.getInitialCount() - oldData.getInitialCount()) == 0){
-                continue;
+                List<TbWhGoods> tbWhGoodsList = ConvertUtil.convertList(resources.getWhGoodsList(), TbWhGoods.class);
+                for (int i = 0; i < tbWhGoodsList.size(); i++) {
+                    //ids.add(item.getId());
+                    int count = 0;
+                    TbWhGoods oldData = lastUpdateList.get(i);
+                    TbWhGoods newData = tbWhGoodsList.get(i);
+                    /*
+                     * 计算相差数量
+                     * 相差数量=新的初库数量-旧的初库数量
+                     * 如果数量不变,直接进入下一轮循环
+                     */
+                    if ((count = newData.getInitialCount() - oldData.getInitialCount()) == 0){
+                        continue;
+                    }
+
+                    Integer oldCount = inventoryList.get(i).getCount();
+                    inventoryList.get(i).setCount(Math.abs(oldCount + count));
+                }
+                tbWhInventoryService.updateBatchById(inventoryList);
+                tbWhGoodsService.updateBatchById(tbWhGoodsList);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        };
+        new Thread(runnable).start();
 
-            Integer oldCount = inventoryList.get(i).getCount();
-            inventoryList.get(i).setCount(Math.abs(oldCount + count));
-        }
-        tbWhInventoryService.updateBatchById(inventoryList);
-        tbWhGoodsService.updateBatchById(tbWhGoodsList);
         // delCaches(resources.id);
         return ret;
     }

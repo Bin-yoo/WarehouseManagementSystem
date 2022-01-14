@@ -70,7 +70,7 @@ public class TbWhInventoryController {
 
     @GetMapping("/getWhInOutDetail")
     @Log("获取仓库库存出入详情")
-    @ApiOperation("获取仓库列表下拉")
+    @ApiOperation("获取仓库库存出入详情")
     @PreAuthorize("@el.check('tbWhInventory:list')")
     public ResponseEntity getWhInOutDetail(){
         return new ResponseEntity<>(tbWhInventoryService.getWhInOutDetail(),HttpStatus.OK);

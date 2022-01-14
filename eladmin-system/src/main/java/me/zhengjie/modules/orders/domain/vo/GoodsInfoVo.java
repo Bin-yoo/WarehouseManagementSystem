@@ -1,30 +1,20 @@
-package me.zhengjie.modules.goodsinfo.service.dto;
+package me.zhengjie.modules.orders.domain.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import java.math.BigDecimal;
-import java.io.Serializable;
-
-import io.swagger.annotations.ApiModelProperty;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
 * @author LiangBin
 * @date 2021-12-21
 */
 @Data
-@Builder
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class TbGoodsInfoDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class GoodsInfoVo implements Serializable {
 
     @ApiModelProperty(value = "货品id")
     /** 防止精度丢失 */
@@ -94,4 +84,10 @@ public class TbGoodsInfoDto implements Serializable {
 
     @ApiModelProperty(value = "货品库存")
     private String count;
+
+    @ApiModelProperty(value = "数量")
+    private Integer goodNum = 1;
+
+    @ApiModelProperty(value = "总金额")
+    private BigDecimal totalPrice = new BigDecimal(0);
 }
