@@ -40,6 +40,9 @@ public class MybatisPlusFillHandler implements MetaObjectHandler{
         if (metaObject.hasSetter("updateBy")) {
             setFieldValByName("updateBy", getUsername(), metaObject);
         }
+        if (metaObject.hasSetter("delFlag")) {
+            setFieldValByName("delFlag", false, metaObject);
+        }
     }
     
     @Override
