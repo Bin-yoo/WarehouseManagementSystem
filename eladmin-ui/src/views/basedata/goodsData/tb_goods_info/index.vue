@@ -258,7 +258,7 @@
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="库存信息" name="inventory_info">
-              <el-table :data="form.whGoodsList" border size="small" style="width: 100%;">
+              <el-table :data="form.whGoodsList" border size="small" style="width: 100%;" max-height="600">
                 <el-table-column type="index" label="#" />
                 <el-table-column prop="whName" label="仓库名称" />
                 <el-table-column label="库初数量">

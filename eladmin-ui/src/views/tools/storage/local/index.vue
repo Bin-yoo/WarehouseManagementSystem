@@ -56,7 +56,7 @@
       <el-table-column type="selection" width="55" />
       <el-table-column prop="name" label="文件名">
         <template slot-scope="scope">
-          <el-popover
+          <!-- <el-popover
             :content="'file/' + scope.row.type + '/' + scope.row.realName"
             placement="top-start"
             title="路径"
@@ -69,6 +69,20 @@
               class="el-link--primary"
               style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
               target="_blank"
+            > -->
+          <el-popover
+            :content="'file/' + scope.row.realName"
+            placement="top-start"
+            title="路径"
+            width="200"
+            trigger="hover"
+          >
+            <a
+              slot="reference"
+              :href="baseApi + '/file/' + scope.row.realName"
+              class="el-link--primary"
+              style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
+              target="_blank"
             >
               {{ scope.row.name }}
             </a>
@@ -77,9 +91,16 @@
       </el-table-column>
       <el-table-column prop="path" label="预览图">
         <template slot-scope="{row}">
-          <el-image
+          <!-- <el-image
             :src=" baseApi + '/file/' + row.type + '/' + row.realName"
             :preview-src-list="[baseApi + '/file/' + row.type + '/' + row.realName]"
+            fit="contain"
+            lazy
+            class="el-avatar"
+          > -->
+          <el-image
+            :src=" baseApi + '/file/' + row.realName"
+            :preview-src-list="[baseApi + '/file/' + row.realName]"
             fit="contain"
             lazy
             class="el-avatar"
