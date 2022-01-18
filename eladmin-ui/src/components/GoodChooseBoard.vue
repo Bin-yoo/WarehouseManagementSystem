@@ -113,7 +113,7 @@ export default {
     }
   },
   watch: {
-    innerVisible: function (val) {
+    innerVisible: function(val) {
       this.visible = val
     }
   }

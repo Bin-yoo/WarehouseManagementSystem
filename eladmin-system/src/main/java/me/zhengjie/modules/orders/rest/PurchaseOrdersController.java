@@ -8,6 +8,7 @@ import me.zhengjie.modules.goodsinfo.service.dto.TbGoodsInfoQueryParam;
 import me.zhengjie.modules.orders.domain.vo.OrderVo;
 import me.zhengjie.modules.orders.service.PurchaseOrdersService;
 import me.zhengjie.modules.orders.service.dto.TbOrdersQueryParam;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -128,5 +130,22 @@ public class PurchaseOrdersController {
     public ResponseEntity reApproveOrders(@RequestBody Set<Long> ids) {
         purchaseOrdersService.reApproveOrders(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/printOrderReport")
+    @Log("打印单据")
+    @ApiOperation("打印单据")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
+    public ResponseEntity printOrderReport(String id, HttpServletResponse response) throws Exception {
+        purchaseOrdersService.printOrderReport(id, response);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/getOrderPrintingInfo")
+    @Log("获取打印单据信息")
+    @ApiOperation("获取打印单据信息")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
+    public ResponseEntity getOrderPrintingInfo(String id) throws Exception {
+        return new ResponseEntity<>(purchaseOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }
 }

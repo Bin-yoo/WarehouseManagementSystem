@@ -9,8 +9,8 @@ public enum OrderTypeEnum {
 
     PURCHASE(1, "采购入库单"),
     PRODUCE(2, "生产入库单"),
-    SELL_RETURN(3, "销售退货单"),
-    PURCHASE_RETURN(4, "采购退货单"),
+    SELL_REFUND(3, "销售退货单"),
+    PURCHASE_REFUND(4, "采购退货单"),
     SELL(5, "销售提货单"),
     TRANSFER(6, "库存调拨单"),
     INVENTORY(7, "库存盘点单");

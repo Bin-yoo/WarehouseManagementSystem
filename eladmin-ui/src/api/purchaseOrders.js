@@ -76,4 +76,31 @@ export function reApproveOrders(data) {
   })
 }
 
-export default { add, edit, del, getSupplierSelect, getManagerSelect, getOrderNo, getGoodChooseList, getOrderGoodList, approveOrders, reApproveOrders }
+export function printOrderReport(id) {
+  return request({
+    url: 'api/purchaseOrders/printOrderReport?id=' + id,
+    method: 'get'
+  })
+}
+
+export function getOrderPrintingInfo(id) {
+  return request({
+    url: 'api/purchaseOrders/getOrderPrintingInfo?id=' + id,
+    method: 'get'
+  })
+}
+
+export default {
+  add,
+  edit,
+  del,
+  getSupplierSelect,
+  getManagerSelect,
+  getOrderNo,
+  getGoodChooseList,
+  getOrderGoodList,
+  approveOrders,
+  reApproveOrders,
+  printOrderReport,
+  getOrderPrintingInfo
+}

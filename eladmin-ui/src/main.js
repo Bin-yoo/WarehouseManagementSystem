@@ -31,6 +31,9 @@ import './assets/icons' // icon
 import './router/index' // permission control
 import 'echarts-gl'
 
+import Print from '@/utils/vue-print-nb/src'
+Vue.use(Print)
+
 Vue.use(checkPer)
 Vue.use(VueHighlightJS)
 Vue.use(mavonEditor)

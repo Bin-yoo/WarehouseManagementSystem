@@ -193,7 +193,7 @@
           <div class="order_info" style="margin-top: 12px;">
             <span class="order_info_title">单据信息</span>
             <el-button v-if="!showDisable" type="primary" size="mini" @click="pickGood">添加货品</el-button>
-            <el-table ref="goodsTable" v-loading="crud.loading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="600">
+            <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="600">
               <el-table-column v-if="!showDisable" width="80px">
                 <template slot-scope="scope">
                   <el-button type="danger" size="mini" @click="removePick(scope.$index)">移除</el-button>
@@ -283,18 +283,19 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPer(['admin','purchaseOrders:edit','purchaseOrders:del'])" fixed="right" label="操作" width="208px" align="center">
+        <el-table-column v-if="checkPer(['admin','purchaseOrders:edit','purchaseOrders:del'])" fixed="right" label="操作" width="295px" align="center">
           <template slot-scope="scope">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="8" :offset="2">
                 <udOperation
                   :data="scope.row"
                   :permission="permission"
                 />
               </el-col>
-              <el-col :span="12">
-                <el-button type="warning" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-refresh-left" @click="toReApprove(scope.row)" />
+              <el-col :span="13">
                 <el-button type="success" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-check" @click="toApprove(scope.row)" />
+                <el-button type="warning" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-refresh-left" @click="toReApprove(scope.row)" />
+                <el-button size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
               </el-col>
             </el-row>
           </template>
@@ -302,6 +303,7 @@
       </el-table>
       <!--分页组件-->
       <pagination />
+      <OrderPrinting :printOrderId="printOrderId" :innerVisible="printVisible" @cancel="cancelprinting" />
     </div>
   </div>
 </template>
@@ -318,11 +320,12 @@ import crudTbWhInventory from '@/api/tbWhInventory'
 import { mapGetters } from 'vuex'
 import { getFormatDate, changeMoneyToChinese } from '@/utils/common.js'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
+import OrderPrinting from '@/components/OrderPrinting'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
   name: 'PurchaseOrders',
-  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard },
+  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard, OrderPrinting },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
     return CRUD({ title: '采购入库单', url: 'api/purchaseOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...PurchaseOrders }})
@@ -362,7 +365,10 @@ export default {
       innerVisible: false,
       approveAllLoading: false,
       reApproveAllLoading: false,
-      showDisable: false
+      showDisable: false,
+      goodListLoading: false,
+      printVisible: false,
+      printOrderId: null
     }
   },
   computed: {
@@ -512,8 +518,12 @@ export default {
       this.form.upperCasePrice = changeMoneyToChinese(price)
     },
     getOrderGoodList(id) {
+      this.goodListLoading = true
       PurchaseOrders.getOrderGoodList(id).then(res => {
         this.form.goodList = res
+        this.goodListLoading = false
+      }).catch(() => {
+        this.goodListLoading = false
       })
     },
     toApprove(datas) {
@@ -611,6 +621,14 @@ export default {
     },
     showOrder() {
       this.showDisable = true
+    },
+    toPrint(data) {
+      this.printOrderId = data.id
+      this.printVisible = true
+    },
+    cancelprinting() {
+      this.printVisible = false
+      this.printOrderId = null
     }
   },
   filters: {

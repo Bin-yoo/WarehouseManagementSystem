@@ -20,6 +20,7 @@ import me.zhengjie.modules.inventory.service.mapper.TbWhInventoryMapper;
 import me.zhengjie.modules.orders.domain.TbOrders;
 import me.zhengjie.modules.orders.domain.vo.GoodsInfoVo;
 import me.zhengjie.modules.orders.domain.vo.OrderVo;
+import me.zhengjie.modules.orders.domain.vo.ReportGoodsListVo;
 import me.zhengjie.modules.orders.service.PurchaseOrdersService;
 import me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
@@ -34,16 +35,17 @@ import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
 import me.zhengjie.utils.RedisUtils;
 import me.zhengjie.utils.StringUtils;
+import me.zhengjie.utlis.JasperReportUtil;
 import me.zhengjie.utlis.OrderUtil;
+import net.sf.jasperreports.engine.JRException;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
 * @author LiangBin
@@ -67,7 +69,7 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     public PageInfo<TbOrdersDto> queryAll(TbOrdersQueryParam query, Pageable pageable) {
         IPage<TbOrders> queryPage = PageUtil.toMybatisPage(pageable);
         QueryWrapper<TbOrders> predicate = QueryHelpMybatisPlus.getPredicate(query);
-        predicate.eq("order_type", OrderTypeEnum.getCode("采购入库单"));
+        predicate.eq("order_type", OrderTypeEnum.PURCHASE.getCode());
         IPage<TbOrders> page = tbOrdersMapper.selectPage(queryPage, predicate);
         return ConvertUtil.convertPage(page, TbOrdersDto.class);
     }
@@ -329,7 +331,7 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     }
 
     @Override
-    public Object getOrderGoodList(String id) {
+    public List<GoodsInfoVo> getOrderGoodList(String id) {
         List<OrderGoodsInfoDto> list = tbOrdersMapper.getOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
@@ -366,5 +368,68 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             order.setStatus(OrderStatusEnum.RE_APPROVE.getCode());
             tbOrdersMapper.updateById(order);
         });
+    }
+
+    @Override
+    public void printOrderReport(String id, HttpServletResponse response) throws Exception {
+        // 订单信息
+        TbOrders order = tbOrdersMapper.lambdaQuery()
+                .eq(TbOrders::getId, id)
+                .eq(TbOrders::getOrderType, OrderTypeEnum.PURCHASE.getCode())
+                .one();
+
+        List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
+        List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
+        //定义参数
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("orderNo", order.getOrderNo());
+        params.put("inDate", DateFormatUtils.format(order.getDate(), "yyyy-MM-dd"));
+        params.put("printDate", DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+        params.put("whName", order.getWhName());
+        params.put("supplier", order.getSourceName());
+        params.put("orderPerson", order.getOrderPerson());
+        params.put("manager", order.getManager());
+        params.put("originOrderNo", order.getOriginOrderNo());
+        params.put("remark", order.getRemark() == null ? "" : order.getRemark());
+        params.put("upperPrice", order.getUpperCasePrice());
+        params.put("amountCount", order.getAmountCount());
+        params.put("amountPrice", order.getAmountPrice());
+
+        for (int i = 0; i < reportGoodsListVos.size(); i++) {
+            reportGoodsListVos.get(i).setIndex(String.valueOf(i+1));
+        }
+        params.put("goodList", reportGoodsListVos);
+
+        String jasperPath = JasperReportUtil.getJasperFileDir("purchase");
+        JasperReportUtil.exportToHtml(jasperPath, params, null, response);
+    }
+
+    @Override
+    public Object getOrderPrintingInfo(String id) {
+        // 订单信息
+        TbOrders order = tbOrdersMapper.lambdaQuery()
+                .eq(TbOrders::getId, id)
+                .eq(TbOrders::getOrderType, OrderTypeEnum.PURCHASE.getCode())
+                .one();
+
+        List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
+        //定义参数
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("orderNo", order.getOrderNo());
+        resultMap.put("inDate", DateFormatUtils.format(order.getDate(), "yyyy-MM-dd"));
+        resultMap.put("printDate", DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+        resultMap.put("whName", order.getWhName());
+        resultMap.put("supplier", order.getSourceName());
+        resultMap.put("orderPerson", order.getOrderPerson());
+        resultMap.put("manager", order.getManager());
+        resultMap.put("originOrderNo", order.getOriginOrderNo());
+        resultMap.put("remark", order.getRemark() == null ? "" : order.getRemark());
+        resultMap.put("upperPrice", order.getUpperCasePrice());
+        resultMap.put("amountCount", order.getAmountCount());
+        resultMap.put("amountPrice", order.getAmountPrice());
+
+        resultMap.put("goodList", orderGoodList);
+
+        return resultMap;
     }
 }

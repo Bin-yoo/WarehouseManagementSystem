@@ -4,11 +4,14 @@ import me.zhengjie.base.CommonService;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.modules.goodsinfo.service.dto.TbGoodsInfoQueryParam;
 import me.zhengjie.modules.orders.domain.TbOrders;
+import me.zhengjie.modules.orders.domain.vo.GoodsInfoVo;
 import me.zhengjie.modules.orders.domain.vo.OrderVo;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersQueryParam;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
 
@@ -54,11 +57,15 @@ public interface PurchaseOrdersService extends CommonService<TbOrders>  {
 
     Object getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable);
 
-    Object getOrderGoodList(String id);
+    List<GoodsInfoVo> getOrderGoodList(String id);
 
     void approveOrders(Set<Long> ids);
 
     void reApproveOrders(Set<Long> ids);
+
+    void printOrderReport(String id, HttpServletResponse response) throws Exception;
+
+    Object getOrderPrintingInfo(String id);
 
     /**
     * 导出数据
