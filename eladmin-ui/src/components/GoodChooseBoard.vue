@@ -76,7 +76,7 @@ export default {
       goodName: null,
       goodCode: null,
       tableData: [],
-      page: 0,
+      page: 1,
       size: 10,
       total: 0
     }
@@ -96,7 +96,7 @@ export default {
           gName: this.goodName,
           gCode: this.goodCode,
           whId: this.whId,
-          page: this.page,
+          page: this.page - 1,
           size: this.size
       }
       PurchaseOrders.getGoodChooseList(params).then(res => {

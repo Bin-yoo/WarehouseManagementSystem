@@ -75,7 +75,7 @@
         </el-button>
       </crudOperation>
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="showDisable ? '查看单据' : crud.status.title" width="1000px" @close="closeDialog">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="showDisable ? '查看单据' : crud.status.title" width="1000px" @closed="closeDialog">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
           <div class="order_info">
             <span class="order_info_title">单据信息</span>
@@ -193,7 +193,7 @@
           <div class="order_info" style="margin-top: 12px;">
             <span class="order_info_title">单据信息</span>
             <el-button v-if="!showDisable" type="primary" size="mini" @click="pickGood">添加货品</el-button>
-            <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="600">
+            <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
               <el-table-column v-if="!showDisable" width="80px">
                 <template slot-scope="scope">
                   <el-button type="danger" size="mini" @click="removePick(scope.$index)">移除</el-button>
@@ -236,9 +236,9 @@
           </div>
         </el-form>
         <GoodChooseBoard :inner-visible="innerVisible" :wh-id="form.whId" @cancel="cancelPickUp" @pickup="pickup" />
-        <div v-if="!showDisable" slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
-          <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+          <el-button v-if="!showDisable" :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </el-dialog>
       <!--表格渲染-->
@@ -320,7 +320,7 @@ import crudTbWhInventory from '@/api/tbWhInventory'
 import { mapGetters } from 'vuex'
 import { getFormatDate, changeMoneyToChinese } from '@/utils/common.js'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
-import OrderPrinting from '@/components/OrderPrinting'
+import OrderPrinting from '@/components/OrderPrintingTemplate/PurchaseOrderTemplate'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {

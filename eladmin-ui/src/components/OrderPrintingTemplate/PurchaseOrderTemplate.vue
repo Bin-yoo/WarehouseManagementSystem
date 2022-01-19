@@ -19,35 +19,35 @@
       </el-row>
       <el-row style="margin: 20px 0 0 0; font-size: 12px;">
         <el-col :span="9">
-          <span>单&nbsp;&nbsp;&nbsp;&nbsp;号:{{ templateData.orderNo }}</span>
+          <span>单&nbsp;&nbsp;&nbsp;&nbsp;号:&nbsp;&nbsp;{{ templateData.orderNo }}</span>
         </el-col>
         <el-col :span="9">
-          <span>入库日期:{{ templateData.inDate }}</span>
+          <span>入库日期:&nbsp;&nbsp;{{ templateData.inDate }}</span>
         </el-col>
         <el-col :span="6">
-          <span>打印日期:{{ templateData.printDate }}</span>
+          <span>打印日期:&nbsp;&nbsp;{{ templateData.printDate }}</span>
         </el-col>
       </el-row>
       <el-row style="margin: 20px 0 0 0; font-size: 12px;">
         <el-col :span="9">
-          <span>入库仓库:{{ templateData.whName }}</span>
+          <span>入库仓库:&nbsp;&nbsp;{{ templateData.whName }}</span>
         </el-col>
         <el-col :span="9">
-          <span>供&nbsp;应&nbsp;商:{{ templateData.supplier }}</span>
+          <span>供&nbsp;应&nbsp;商:&nbsp;&nbsp;{{ templateData.supplier }}</span>
         </el-col>
         <el-col :span="6">
-          <span>制&nbsp;单&nbsp;人:{{ templateData.orderPerson }}</span>
+          <span>制&nbsp;单&nbsp;人:&nbsp;&nbsp;{{ templateData.orderPerson }}</span>
         </el-col>
       </el-row>
       <el-row style="margin: 20px 0 0 0; font-size: 12px;">
         <el-col :span="9">
-          <span>经&nbsp;办&nbsp;人:{{ templateData.manager }}</span>
+          <span>经&nbsp;办&nbsp;人:&nbsp;&nbsp;{{ templateData.manager }}</span>
         </el-col>
         <el-col :span="9">
-          <span>原始单号:{{ templateData.originOrderNo }}</span>
+          <span>原始单号:&nbsp;&nbsp;{{ templateData.originOrderNo }}</span>
         </el-col>
         <el-col :span="6">
-          <span>备&nbsp;&nbsp;&nbsp;&nbsp;注:{{ templateData.remark }}</span>
+          <span>备&nbsp;&nbsp;&nbsp;&nbsp;注:&nbsp;&nbsp;{{ templateData.remark }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -76,13 +76,13 @@
       </el-row>
       <el-row style="font-size: 12px;">
         <el-col :span="9">
-          <span>大写金额:{{ templateData.upperPrice }}</span>
+          <span>大写金额:&nbsp;&nbsp;{{ templateData.upperPrice }}</span>
         </el-col>
         <el-col :span="9">
-          <span>合计数量:{{ templateData.amountCount }}</span>
+          <span>合计数量:&nbsp;&nbsp;{{ templateData.amountCount }}</span>
         </el-col>
         <el-col :span="6">
-          <span>合计金额:{{ templateData.amountPrice }}</span>
+          <span>合计金额:&nbsp;&nbsp;{{ templateData.amountPrice }}</span>
         </el-col>
       </el-row>
       <el-row style="margin: 20px 0 0 0; font-size: 12px;">
@@ -104,7 +104,7 @@
 import PurchaseOrders from '@/api/purchaseOrders.js'
 
 export default {
-  name: 'OrderPrinting',
+  name: 'PurchaseOrderTemplate',
   props: {
     innerVisible: {
       type: Boolean,
