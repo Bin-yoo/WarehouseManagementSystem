@@ -31,10 +31,7 @@ import me.zhengjie.modules.partnercompanyinfo.service.dto.TbPartnerCompanyInfoDt
 import me.zhengjie.modules.partnercompanyinfo.service.mapper.TbPartnerCompanyInfoMapper;
 import me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods;
 import me.zhengjie.modules.tb_order_goods.service.mapper.TbOrderGoodsMapper;
-import me.zhengjie.utils.ConvertUtil;
-import me.zhengjie.utils.PageUtil;
-import me.zhengjie.utils.RedisUtils;
-import me.zhengjie.utils.StringUtils;
+import me.zhengjie.utils.*;
 import me.zhengjie.utlis.JasperReportUtil;
 import me.zhengjie.utlis.OrderUtil;
 import net.sf.jasperreports.engine.JRException;
@@ -299,7 +296,9 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
 
     @Override
     public Object getSupplierSelect() {
-        return ConvertUtil.convertList(tbPartnerCompanyInfoMapper.lambdaQuery().eq(TbPartnerCompanyInfo::getType, 1).list(), TbPartnerCompanyInfoDto.class);
+        List<TbPartnerCompanyInfo> list = tbPartnerCompanyInfoMapper.lambdaQuery()
+                .in(TbPartnerCompanyInfo::getType, 1,3).list();
+        return ConvertUtil.convertList(list, TbPartnerCompanyInfoDto.class);
     }
 
     @Override
@@ -349,6 +348,9 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
                 throw new BadRequestException("订单编号:" + order.getOrderNo() + "已审批!");
             }
             order.setStatus(OrderStatusEnum.APPROVE.getCode());
+            order.setVerifyDate(new Date());
+            order.setVerifyPerson(SecurityUtils.getCurrentUsername());
+            order.setVerifyPersonId(SecurityUtils.getCurrentUserId());
             tbOrdersMapper.updateById(order);
         });
     }
