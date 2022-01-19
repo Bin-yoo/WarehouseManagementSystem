@@ -49,6 +49,7 @@ public class OrderUtil {
     public void refleshIncrOrderConut(){
         log.info("刷新计数器 start...");
         redisTemplate.opsForValue().set(CommonConstant.CG, 0);
+        redisTemplate.opsForValue().set(CommonConstant.SC, 0);
         log.info("刷新计数器 end...");
     }
 
