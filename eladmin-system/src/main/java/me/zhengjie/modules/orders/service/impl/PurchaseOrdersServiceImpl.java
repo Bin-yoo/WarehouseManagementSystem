@@ -8,6 +8,7 @@ import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.constants.CommonConstant;
+import me.zhengjie.enums.EnterpriseTypeEnum;
 import me.zhengjie.enums.OrderStatusEnum;
 import me.zhengjie.enums.OrderTypeEnum;
 import me.zhengjie.exception.BadRequestException;
@@ -297,7 +298,7 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     @Override
     public Object getSupplierSelect() {
         List<TbPartnerCompanyInfo> list = tbPartnerCompanyInfoMapper.lambdaQuery()
-                .in(TbPartnerCompanyInfo::getType, 1,3).list();
+                .in(TbPartnerCompanyInfo::getType, EnterpriseTypeEnum.SUPPLIER.getCode(), EnterpriseTypeEnum.BOTH.getCode()).list();
         return ConvertUtil.convertList(list, TbPartnerCompanyInfoDto.class);
     }
 
