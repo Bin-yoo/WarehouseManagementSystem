@@ -39,7 +39,7 @@ public class ProductOrdersController {
     }
 
     @PostMapping
-    @Log("新增查询生产入库单据")
+    @Log("新增生产入库单据")
     @ApiOperation("新增查询生产入库单据")
     @PreAuthorize("@el.check('productOrders:add')")
     public ResponseEntity create(@Validated @RequestBody OrderVo vo){
@@ -47,7 +47,7 @@ public class ProductOrdersController {
     }
 
     @PutMapping
-    @Log("修改查询生产入库单据")
+    @Log("修改生产入库单据")
     @ApiOperation("修改查询生产入库单据")
     @PreAuthorize("@el.check('productOrders:edit')")
     public ResponseEntity update(@Validated @RequestBody OrderVo vo){
@@ -56,7 +56,7 @@ public class ProductOrdersController {
     }
 
     @DeleteMapping
-    @Log("删除查询生产入库单据")
+    @Log("删除生产入库单据")
     @ApiOperation("删除查询生产入库单据")
     @PreAuthorize("@el.check('productOrders:del')")
     public ResponseEntity delete(@RequestBody Set<Long> ids) {
@@ -65,7 +65,7 @@ public class ProductOrdersController {
     }
 
     /*
-    @Log("导出查询生产入库单据")
+    @Log("导出生产入库单据")
     @ApiOperation("导出查询生产入库单据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('productOrders:list')")

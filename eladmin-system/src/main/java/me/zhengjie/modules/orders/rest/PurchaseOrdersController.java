@@ -40,16 +40,16 @@ public class PurchaseOrdersController {
     }
 
     @PostMapping
-    @Log("新增查询采购入库单据")
-    @ApiOperation("新增查询采购入库单据")
+    @Log("新增采购入库单据")
+    @ApiOperation("新增采购入库单据")
     @PreAuthorize("@el.check('purchaseOrders:add')")
     public ResponseEntity create(@Validated @RequestBody OrderVo vo){
         return new ResponseEntity<>(purchaseOrdersService.insert(vo),HttpStatus.CREATED);
     }
 
     @PutMapping
-    @Log("修改查询采购入库单据")
-    @ApiOperation("修改查询采购入库单据")
+    @Log("修改采购入库单据")
+    @ApiOperation("修改采购入库单据")
     @PreAuthorize("@el.check('purchaseOrders:edit')")
     public ResponseEntity update(@Validated @RequestBody OrderVo vo){
         purchaseOrdersService.updateById(vo);
@@ -57,8 +57,8 @@ public class PurchaseOrdersController {
     }
 
     @DeleteMapping
-    @Log("删除查询采购入库单据")
-    @ApiOperation("删除查询采购入库单据")
+    @Log("删除采购入库单据")
+    @ApiOperation("删除采购入库单据")
     @PreAuthorize("@el.check('purchaseOrders:del')")
     public ResponseEntity delete(@RequestBody Set<Long> ids) {
         purchaseOrdersService.removeByIds(ids);
@@ -66,8 +66,8 @@ public class PurchaseOrdersController {
     }
 
     /*
-    @Log("导出查询采购入库单据")
-    @ApiOperation("导出查询采购入库单据")
+    @Log("导出采购入库单据")
+    @ApiOperation("导出采购入库单据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('purchaseOrders:list')")
     public void download(HttpServletResponse response, TbOrdersQueryParam query) throws IOException {
