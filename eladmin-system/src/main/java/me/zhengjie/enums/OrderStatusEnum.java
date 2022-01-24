@@ -2,7 +2,7 @@ package me.zhengjie.enums;
 
 /**
  * @author LiangBin
- * @Description 订单类型枚举类
+ * @Description 订单状态枚举类
  * @date 2022/1/3 20:08
  */
 public enum OrderStatusEnum {
