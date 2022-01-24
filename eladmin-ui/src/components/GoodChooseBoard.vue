@@ -20,7 +20,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-table v-loading="tableLoading" :data="tableData" size="small" style="width: 100%;">
+      <el-table v-loading="tableLoading" :data="tableData" size="small" border style="width: 100%; margin-top: 8px;">
         <el-table-column prop="gCode" label="货品编码" width="180px" />
         <el-table-column prop="gName" label="货品名称" />
         <el-table-column prop="unitName" label="计量单位" />
@@ -83,6 +83,7 @@ export default {
   },
   methods: {
     cancel() {
+      this.tableData = []
       this.$emit('cancel')
       this.resetQuery()
     },
