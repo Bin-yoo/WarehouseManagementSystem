@@ -51,7 +51,7 @@ public class OrderUtil {
         redisTemplate.opsForValue().set(CommonConstant.CG, 0);
         redisTemplate.opsForValue().set(CommonConstant.SC, 0);
         redisTemplate.opsForValue().set(CommonConstant.XT, 0);
-        redisTemplate.opsForValue().set(CommonConstant.GT, 0);
+        redisTemplate.opsForValue().set(CommonConstant.CT, 0);
         redisTemplate.opsForValue().set(CommonConstant.XS, 0);
         redisTemplate.opsForValue().set(CommonConstant.TB, 0);
         log.info("刷新计数器 end...");

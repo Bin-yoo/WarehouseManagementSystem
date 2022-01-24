@@ -34,8 +34,8 @@ public class OrderIncrCountRunner implements ApplicationRunner {
         if (!redisUtils.hasKey(CommonConstant.XT)) {
             redisUtils.set(CommonConstant.XT, 0);
         }
-        if (!redisUtils.hasKey(CommonConstant.GT)) {
-            redisUtils.set(CommonConstant.GT, 0);
+        if (!redisUtils.hasKey(CommonConstant.CT)) {
+            redisUtils.set(CommonConstant.CT, 0);
         }
         if (!redisUtils.hasKey(CommonConstant.XS)) {
             redisUtils.set(CommonConstant.XS, 0);
