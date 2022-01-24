@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     width="1000px"
-    title="选择货品"
+    title="查看打印单据"
     :visible.sync="visible"
     :close-on-click-modal="false"
     append-to-body
