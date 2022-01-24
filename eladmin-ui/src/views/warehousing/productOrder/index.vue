@@ -179,7 +179,8 @@
           </div>
           <div class="order_info" style="margin-top: 12px;">
             <span class="order_info_title">单据信息</span>
-            <el-button v-if="!showDisable" type="primary" size="mini" @click="pickGood">添加货品</el-button>
+            <el-button v-if="!showDisable" type="primary" size="mini" icon="el-icon-plus" @click="pickGood">添加货品</el-button>
+            <el-button v-if="!showDisable" type="danger" size="mini" icon="el-icon-delete" @click="deleteAllPicked">清空货品</el-button>
             <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
               <el-table-column v-if="!showDisable" width="80px">
                 <template slot-scope="scope">
@@ -651,6 +652,12 @@ export default {
     cancelprinting() {
       this.printVisible = false
       this.printOrderId = null
+    },
+    deleteAllPicked() {
+      this.form.goodList = []
+      this.$nextTick(() => {
+        this.calculate()
+      })
     }
   },
   filters: {

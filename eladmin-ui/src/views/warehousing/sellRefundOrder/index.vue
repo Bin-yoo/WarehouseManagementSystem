@@ -192,7 +192,8 @@
           </div>
           <div class="order_info" style="margin-top: 12px;">
             <span class="order_info_title">单据信息</span>
-            <el-button v-if="!showDisable" type="primary" size="mini" @click="pickGood">添加货品</el-button>
+            <el-button v-if="!showDisable" type="primary" size="mini" icon="el-icon-plus" @click="pickGood">添加货品</el-button>
+            <el-button v-if="!showDisable" type="danger" size="mini" icon="el-icon-delete" @click="deleteAllPicked">清空货品</el-button>
             <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
               <el-table-column v-if="!showDisable" width="80px">
                 <template slot-scope="scope">
@@ -245,7 +246,7 @@
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="orderType" label="单据类型">
-          <span>采购入库单</span>
+          <span>销售退货单</span>
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" width="150">
           <template slot-scope="scope">
@@ -267,7 +268,7 @@
         <el-table-column prop="whName" label="退入仓库" />
         <el-table-column prop="sourceName" label="客户" />
         <el-table-column prop="originOrderNo" label="原始单号" />
-        <el-table-column prop="status" label="采购单状态">
+        <el-table-column prop="status" label="销退单状态">
           <template slot-scope="scope">
             {{ scope.row.status | convertStatus("") }}
           </template>
@@ -328,7 +329,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard, OrderPrinting },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '采购入库单', url: 'api/sellRefundOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SellRefundOrders }})
+    return CRUD({ title: '销售退货单', url: 'api/sellRefundOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SellRefundOrders }})
   },
   data() {
     return {
@@ -629,6 +630,12 @@ export default {
     cancelprinting() {
       this.printVisible = false
       this.printOrderId = null
+    },
+    deleteAllPicked() {
+      this.form.goodList = []
+      this.$nextTick(() => {
+        this.calculate()
+      })
     }
   },
   filters: {
