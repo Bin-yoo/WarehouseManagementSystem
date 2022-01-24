@@ -52,7 +52,7 @@ import java.util.*;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbOrders> implements ProductOrdersService {
 
-    private final RedisUtils redisUtils;
+    //private final RedisUtils redisUtils;
     private final TbOrdersMapper tbOrdersMapper;
     private final TbOrderGoodsMapper tbOrderGoodsMapper;
     private final TbWhInventoryMapper tbWhInventoryMapper;

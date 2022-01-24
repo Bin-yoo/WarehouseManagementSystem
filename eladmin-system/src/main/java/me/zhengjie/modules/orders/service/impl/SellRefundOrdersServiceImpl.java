@@ -54,7 +54,7 @@ import java.util.*;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class SellRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbOrders> implements SellRefundOrdersService {
 
-    private final RedisUtils redisUtils;
+    //private final RedisUtils redisUtils;
     private final TbOrdersMapper tbOrdersMapper;
     private final TbOrderGoodsMapper tbOrderGoodsMapper;
     private final TbWhInventoryMapper tbWhInventoryMapper;
