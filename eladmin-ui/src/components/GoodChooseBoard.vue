@@ -108,7 +108,7 @@ export default {
     resetQuery() {
       this.goodName = null
       this.goodCode = null
-      this.page = 0
+      this.page = 1
       this.size = 10
     }
   },
