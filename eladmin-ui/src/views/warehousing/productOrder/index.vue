@@ -5,8 +5,8 @@
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input v-model="query.orderNo" clearable placeholder="单号" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-input v-model="query.orderPerson" clearable placeholder="制单人名称" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-input v-model="query.manager" clearable placeholder="经办人名称" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.orderPerson" clearable placeholder="制单人" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.manager" clearable placeholder="经办人" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <el-select
           v-model="query.whId"
           placeholder="存入仓库"
@@ -178,7 +178,7 @@
             </el-row>
           </div>
           <div class="order_info" style="margin-top: 12px;">
-            <span class="order_info_title">单据信息</span>
+            <span class="order_info_title">货品明细</span>
             <el-button v-if="!showDisable" type="primary" size="mini" icon="el-icon-plus" @click="pickGood">添加货品</el-button>
             <el-button v-if="!showDisable" type="danger" size="mini" icon="el-icon-delete" @click="deleteAllPicked">清空货品</el-button>
             <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
@@ -245,8 +245,8 @@
             {{ scope.row.orderDate | formatDate("") }}
           </template>
         </el-table-column>
-        <el-table-column prop="orderPerson" label="制单人名称" />
-        <el-table-column prop="manager" label="经办人名称" />
+        <el-table-column prop="orderPerson" label="制单人" />
+        <el-table-column prop="manager" label="经办人" />
         <el-table-column prop="date" label="入库日期" width="90px">
           <template slot-scope="scope">
             {{ scope.row.date | formatDate("") }}
@@ -260,7 +260,7 @@
             {{ scope.row.status | convertStatus("") }}
           </template>
         </el-table-column>
-        <el-table-column prop="verifyPerson" label="审核人名称" />
+        <el-table-column prop="verifyPerson" label="审核人" />
         <el-table-column prop="verifyDate" label="审核日期" width="90px" />
         <el-table-column prop="updateBy" label="修改人" />
         <el-table-column prop="updateTime" label="修改日期" width="90px" />
