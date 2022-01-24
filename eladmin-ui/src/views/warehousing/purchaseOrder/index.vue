@@ -120,7 +120,7 @@
                 <el-form-item label="存入仓库" prop="whId">
                   <el-select
                     v-model="form.whId"
-                    placeholder="请选择存放仓库"
+                    placeholder="请选择存入仓库"
                     style="width: 90%"
                     :disabled="showDisable"
                     clearable
