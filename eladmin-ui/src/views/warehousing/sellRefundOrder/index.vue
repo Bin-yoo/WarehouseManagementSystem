@@ -137,7 +137,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="sourceId">
-                  <span slot="label">供&nbsp;&nbsp;应&nbsp;&nbsp;商</span>
+                  <span slot="label">客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户</span>
                   <el-select
                     v-model="form.sourceId"
                     placeholder="请选择客户"
