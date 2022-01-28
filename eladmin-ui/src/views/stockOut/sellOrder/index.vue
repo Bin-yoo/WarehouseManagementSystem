@@ -106,12 +106,12 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="入库日期" prop="date">
+                <el-form-item label="出库日期" prop="date">
                   <el-date-picker
                     v-model="form.date"
                     type="date"
                     style="width: 90%"
-                    placeholder="选择入库日期"
+                    placeholder="选择出库日期"
                     :disabled="showDisable"
                   />
                 </el-form-item>
@@ -260,7 +260,7 @@
         </el-table-column>
         <el-table-column prop="orderPerson" label="制单人" />
         <el-table-column prop="manager" label="经办人" />
-        <el-table-column prop="date" label="入库日期" width="90px">
+        <el-table-column prop="date" label="出库日期" width="90px">
           <template slot-scope="scope">
             {{ scope.row.date | formatDate("") }}
           </template>
@@ -321,7 +321,7 @@ import crudTbWhInventory from '@/api/tbWhInventory'
 import { mapGetters } from 'vuex'
 import { getFormatDate, changeMoneyToChinese } from '@/utils/common.js'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
-import OrderPrinting from '@/components/OrderPrintingTemplate/SellRefundOrderTemplate'
+import OrderPrinting from '@/components/OrderPrintingTemplate/SellOrderTemplate'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
@@ -343,7 +343,7 @@ export default {
           { required: true, message: '必须选择经办人', trigger: 'blur' }
         ],
         date: [
-          { required: true, message: '入库日期不能为空', trigger: 'blur' }
+          { required: true, message: '出库日期不能为空', trigger: 'blur' }
         ],
         whId: [
           { required: true, message: '必须选择出货仓库', trigger: 'blur' }
