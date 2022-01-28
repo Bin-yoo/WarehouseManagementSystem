@@ -194,13 +194,13 @@
             <span class="order_info_title">货品明细</span>
             <el-button v-if="!showDisable" type="primary" size="mini" icon="el-icon-plus" @click="pickGood">添加货品</el-button>
             <el-button v-if="!showDisable" type="danger" size="mini" icon="el-icon-delete" @click="deleteAllPicked">清空货品</el-button>
+            <el-button v-if="!showDisable" type="info" size="mini" icon="el-icon-link" @click="chooseOrder">选择单据</el-button>
             <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
               <el-table-column v-if="!showDisable" width="80px">
                 <template slot-scope="scope">
                   <el-button type="danger" size="mini" @click="removePick(scope.$index)">移除</el-button>
                 </template>
               </el-table-column>
-              <el-table-column type="index" label="#" width="40px" />
               <el-table-column prop="gCode" label="货品编码" />
               <el-table-column prop="gName" label="货品名称" />
               <el-table-column prop="unitName" label="单位" width="70px" />
@@ -237,6 +237,7 @@
           </div>
         </el-form>
         <GoodChooseBoard :inner-visible="innerVisible" :wh-id="form.whId" @cancel="cancelPickUp" @pickup="pickup" />
+        <SellOrderSelectBoard :inner-visible="chooseOrderVisible" @cancel="cancelChoose" @selectGood="selectGood" />
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button v-if="!showDisable" :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
@@ -322,11 +323,12 @@ import { mapGetters } from 'vuex'
 import { getFormatDate, changeMoneyToChinese } from '@/utils/common.js'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
 import OrderPrinting from '@/components/OrderPrintingTemplate/SellRefundOrderTemplate'
+import SellOrderSelectBoard from '@/components/SellOrderSelectBoard'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
   name: 'SellRefundOrders',
-  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard, OrderPrinting },
+  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard, OrderPrinting, SellOrderSelectBoard },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
     return CRUD({ title: '销售退货单', url: 'api/sellRefundOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SellRefundOrders }})
@@ -369,7 +371,8 @@ export default {
       showDisable: false,
       goodListLoading: false,
       printVisible: false,
-      printOrderId: null
+      printOrderId: null,
+      chooseOrderVisible: false
     }
   },
   computed: {
@@ -633,6 +636,30 @@ export default {
     },
     deleteAllPicked() {
       this.form.goodList = []
+      this.$nextTick(() => {
+        this.calculate()
+      })
+    },
+    chooseOrder() {
+      if (this.form.goodList.length == 0 || this.form.goodList == []) {
+        this.chooseOrderVisible = true
+      } else {
+        this.$notify({
+          title: '选择单据前,需清空货品明细!',
+          type: 'warning',
+          duration: 2500
+        })
+      }
+    },
+    cancelChoose() {
+      this.chooseOrderVisible = false
+    },
+    selectGood(val) {
+      this.form.goodList = val.selectGoodList
+      this.form.whId = val.whId
+      this.form.whName = val.whName
+      this.form.sourceId = val.sourceId
+      this.form.sourceName = val.sourceName
       this.$nextTick(() => {
         this.calculate()
       })

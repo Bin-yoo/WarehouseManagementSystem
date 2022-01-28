@@ -90,6 +90,14 @@ export function getOrderPrintingInfo(id) {
   })
 }
 
+export function getOrderChooseList(params) {
+  return request({
+    url: 'api/sellRefundOrders/getOrderChooseList',
+    method: 'get',
+    params
+  })
+}
+
 export default {
   add,
   edit,
@@ -102,5 +110,6 @@ export default {
   approveOrders,
   reApproveOrders,
   printOrderReport,
-  getOrderPrintingInfo
+  getOrderPrintingInfo,
+  getOrderChooseList
 }

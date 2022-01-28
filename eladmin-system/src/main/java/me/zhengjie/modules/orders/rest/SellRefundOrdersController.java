@@ -147,4 +147,12 @@ public class SellRefundOrdersController {
     public ResponseEntity getOrderPrintingInfo(String id) throws Exception {
         return new ResponseEntity<>(sellRefundOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }
+
+    @GetMapping("/getOrderChooseList")
+    @Log("获取选择订单列表")
+    @ApiOperation("获取选择订单列表")
+    @PreAuthorize("@el.check('sellRefundOrders:add','sellRefundOrders:edit')")
+    public ResponseEntity getOrderChooseList(TbOrdersQueryParam query, Pageable pageable) throws Exception {
+        return new ResponseEntity<>(sellRefundOrdersService.getOrderChooseList(query, pageable), HttpStatus.OK);
+    }
 }

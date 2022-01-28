@@ -66,6 +66,8 @@ public interface SellRefundOrdersService extends CommonService<TbOrders>  {
 
     Object getOrderPrintingInfo(String id);
 
+    Object getOrderChooseList(TbOrdersQueryParam query, Pageable pageable);
+
     /**
     * 导出数据
     * @param all 待导出的数据

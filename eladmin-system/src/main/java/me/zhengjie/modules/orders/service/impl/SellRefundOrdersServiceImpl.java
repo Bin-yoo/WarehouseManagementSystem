@@ -433,4 +433,14 @@ public class SellRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersMappe
 
         return resultMap;
     }
+
+    @Override
+    public PageInfo<TbOrdersDto> getOrderChooseList(TbOrdersQueryParam query, Pageable pageable) {
+        IPage<TbOrders> queryPage = PageUtil.toMybatisPage(pageable);
+        QueryWrapper<TbOrders> predicate = QueryHelpMybatisPlus.getPredicate(query);
+        predicate.eq("order_type", OrderTypeEnum.SELL.getCode());
+        predicate.eq("status", OrderStatusEnum.APPROVE.getCode());
+        IPage<TbOrders> page = tbOrdersMapper.selectPage(queryPage, predicate);
+        return ConvertUtil.convertPage(page, TbOrdersDto.class);
+    }
 }
