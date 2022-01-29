@@ -21,5 +21,7 @@ public interface TbOrdersMapper extends CommonMapper<TbOrders> {
 
     IPage<TbGoodsInfoDto> getGoodChooseList(IPage<TbGoodsInfoDto> queryPage, @Param(Constants.WRAPPER) QueryWrapper<Object> wrapper);
 
-    List<OrderGoodsInfoDto> getOrderGoodList(@Param("id") String id);
+    List<OrderGoodsInfoDto> getInOrderGoodList(@Param("id") String id);
+
+    List<OrderGoodsInfoDto> getOutOrderGoodList(@Param("id") String id);
 }

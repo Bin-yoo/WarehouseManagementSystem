@@ -108,7 +108,7 @@ public class SellRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersMappe
             tbOrderGoods.setOrderId(entity.getId());
             tbOrderGoods.setGoodId(goodsInfoVo.getId());
             tbOrderGoods.setGoodNum(goodsInfoVo.getGoodNum().toString());
-            tbOrderGoods.setPrice(goodsInfoVo.getPurchasePrice());
+            tbOrderGoods.setPrice(goodsInfoVo.getSellPrice());
             tbOrderGoods.setTotalPrice(goodsInfoVo.getTotalPrice());
             orderGoodList.add(tbOrderGoods);
         }
@@ -176,7 +176,7 @@ public class SellRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersMappe
             tbOrderGoods.setOrderId(entity.getId());
             tbOrderGoods.setGoodId(goodsInfoVo.getId());
             tbOrderGoods.setGoodNum(goodsInfoVo.getGoodNum().toString());
-            tbOrderGoods.setPrice(goodsInfoVo.getPurchasePrice());
+            tbOrderGoods.setPrice(goodsInfoVo.getSellPrice());
             tbOrderGoods.setTotalPrice(goodsInfoVo.getTotalPrice());
             newOrderGoodList.add(tbOrderGoods);
         }
@@ -330,7 +330,7 @@ public class SellRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersMappe
 
     @Override
     public List<GoodsInfoVo> getOrderGoodList(String id) {
-        List<OrderGoodsInfoDto> list = tbOrdersMapper.getOrderGoodList(id);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getOutOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
 

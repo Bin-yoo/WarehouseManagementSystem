@@ -207,7 +207,7 @@
               <el-table-column prop="specification" label="规格" width="70px" />
               <el-table-column label="单价">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.purchasePrice" :disabled="showDisable" :min="0" :precision="2" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
+                  <el-input-number v-model="scope.row.sellPrice" :disabled="showDisable" :min="0" :precision="2" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
               <el-table-column label="数量">
@@ -246,7 +246,7 @@
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="orderType" label="单据类型">
-          <span>销售退货单</span>
+          <span>销售提货单</span>
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" width="150">
           <template slot-scope="scope">
@@ -268,7 +268,7 @@
         <el-table-column prop="whName" label="出货仓库" />
         <el-table-column prop="sourceName" label="客户" />
         <el-table-column prop="originOrderNo" label="原始单号" />
-        <el-table-column prop="status" label="销退单状态">
+        <el-table-column prop="status" label="提货单状态">
           <template slot-scope="scope">
             {{ scope.row.status | convertStatus("") }}
           </template>
@@ -329,7 +329,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, GoodChooseBoard, OrderPrinting },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '销售退货单', url: 'api/sellOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SellOrders }})
+    return CRUD({ title: '销售提货单', url: 'api/sellOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SellOrders }})
   },
   data() {
     return {
@@ -482,13 +482,13 @@ export default {
       for (const [i, v] of this.form.goodList.entries()) {
         if (v.gCode === val.gCode) {
           this.form.goodList[i].goodNum += 1
-          this.form.goodList[i].totalPrice = this.form.goodList[i].goodNum * this.form.goodList[i].purchasePrice
+          this.form.goodList[i].totalPrice = this.form.goodList[i].goodNum * this.form.goodList[i].sellPrice
           flag = false
           break
         }
       }
       if (flag) {
-        val.totalPrice = val.goodNum * val.purchasePrice
+        val.totalPrice = val.goodNum * val.sellPrice
         this.form.goodList.push(val)
       }
       this.$nextTick(() => {
@@ -502,7 +502,7 @@ export default {
       })
     },
     changeNumOrPrice(val, index) {
-      this.form.goodList[index].totalPrice = val.goodNum * val.purchasePrice
+      this.form.goodList[index].totalPrice = val.goodNum * val.sellPrice
       this.$nextTick(() => {
         this.calculate()
       })

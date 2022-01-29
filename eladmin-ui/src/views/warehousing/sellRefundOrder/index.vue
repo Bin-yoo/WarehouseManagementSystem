@@ -207,7 +207,7 @@
               <el-table-column prop="specification" label="规格" width="70px" />
               <el-table-column label="单价">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.purchasePrice" :disabled="showDisable" :min="0" :precision="2" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
+                  <el-input-number v-model="scope.row.sellPrice" :disabled="showDisable" :min="0" :precision="2" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
               <el-table-column label="数量">
@@ -485,13 +485,13 @@ export default {
       for (const [i, v] of this.form.goodList.entries()) {
         if (v.gCode === val.gCode) {
           this.form.goodList[i].goodNum += 1
-          this.form.goodList[i].totalPrice = this.form.goodList[i].goodNum * this.form.goodList[i].purchasePrice
+          this.form.goodList[i].totalPrice = this.form.goodList[i].goodNum * this.form.goodList[i].sellPrice
           flag = false
           break
         }
       }
       if (flag) {
-        val.totalPrice = val.goodNum * val.purchasePrice
+        val.totalPrice = val.goodNum * val.sellPrice
         this.form.goodList.push(val)
       }
       this.$nextTick(() => {
@@ -505,7 +505,7 @@ export default {
       })
     },
     changeNumOrPrice(val, index) {
-      this.form.goodList[index].totalPrice = val.goodNum * val.purchasePrice
+      this.form.goodList[index].totalPrice = val.goodNum * val.sellPrice
       this.$nextTick(() => {
         this.calculate()
       })

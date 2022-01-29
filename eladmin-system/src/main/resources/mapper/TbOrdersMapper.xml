@@ -9,8 +9,7 @@
   </sql>
   -->
 
-
-  <select id="getGoodChooseList" resultType="me.zhengjie.modules.goodsinfo.service.dto.TbGoodsInfoDto">
+    <select id="getGoodChooseList" resultType="me.zhengjie.modules.goodsinfo.service.dto.TbGoodsInfoDto">
     SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
            g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.purchase_price, g.sell_price, g.allocation,
            u.gu_name AS unitName, t.gt_name AS typeName, i.count
@@ -18,9 +17,9 @@
     LEFT JOIN tb_goods_unit u ON u.id = g.unit
     LEFT JOIN tb_goods_type t ON t.id = g.type
     LEFT JOIN tb_wh_inventory i ON i.good_id = g.id ${ew.customSqlSegment}
-  </select>
+    </select>
 
-  <select id="getOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+    <select id="getInOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
       SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
              g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
              u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price
@@ -29,5 +28,16 @@
                LEFT JOIN tb_goods_type t ON t.id = g.type
                LEFT JOIN tb_order_goods og ON og.good_id = g.id
       where og.order_id = #{id}
-  </select>
+    </select>
+
+    <select id="getOutOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+        SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
+               g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
+               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as sellPrice, og.total_price
+        FROM tb_goods_info g
+                 LEFT JOIN tb_goods_unit u ON u.id = g.unit
+                 LEFT JOIN tb_goods_type t ON t.id = g.type
+                 LEFT JOIN tb_order_goods og ON og.good_id = g.id
+        where og.order_id = #{id}
+    </select>
 </mapper>

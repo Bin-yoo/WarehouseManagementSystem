@@ -26,8 +26,6 @@ import me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersQueryParam;
 import me.zhengjie.modules.orders.service.mapper.TbOrdersMapper;
-import me.zhengjie.modules.partnercompanyinfo.domain.TbPartnerCompanyInfo;
-import me.zhengjie.modules.partnercompanyinfo.service.dto.TbPartnerCompanyInfoDto;
 import me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods;
 import me.zhengjie.modules.tb_order_goods.service.mapper.TbOrderGoodsMapper;
 import me.zhengjie.utils.*;
@@ -320,7 +318,7 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
 
     @Override
     public List<GoodsInfoVo> getOrderGoodList(String id) {
-        List<OrderGoodsInfoDto> list = tbOrdersMapper.getOrderGoodList(id);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
 

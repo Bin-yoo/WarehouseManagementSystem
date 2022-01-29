@@ -35,7 +35,6 @@ import me.zhengjie.modules.tb_order_goods.service.mapper.TbOrderGoodsMapper;
 import me.zhengjie.utils.*;
 import me.zhengjie.utlis.JasperReportUtil;
 import me.zhengjie.utlis.OrderUtil;
-import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -332,7 +331,7 @@ public class PurchaseOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
 
     @Override
     public List<GoodsInfoVo> getOrderGoodList(String id) {
-        List<OrderGoodsInfoDto> list = tbOrdersMapper.getOrderGoodList(id);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
 

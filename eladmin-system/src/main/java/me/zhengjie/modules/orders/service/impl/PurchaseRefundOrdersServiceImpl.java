@@ -330,7 +330,7 @@ public class PurchaseRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersM
 
     @Override
     public List<GoodsInfoVo> getOrderGoodList(String id) {
-        List<OrderGoodsInfoDto> list = tbOrdersMapper.getOrderGoodList(id);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
 
