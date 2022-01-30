@@ -4,15 +4,16 @@
     title="选择货品"
     :visible.sync="visible"
     :close-on-click-modal="false"
+    append-to-body
     @open="toQuery()"
     @close="cancel()"
-    append-to-body>
+  >
     <el-row>
       <el-col :span="5">
-        <el-input v-model="goodCode" clearable placeholder="请输入货品编号"></el-input>
+        <el-input v-model="goodCode" clearable placeholder="请输入货品编号" />
       </el-col>
       <el-col :span="5">
-        <el-input v-model="goodName" clearable placeholder="请输入货品名称" style="margin-left: 10px;"></el-input>
+        <el-input v-model="goodName" clearable placeholder="请输入货品名称" style="margin-left: 10px;" />
       </el-col>
       <el-col :span="5" :offset="1">
         <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
@@ -106,11 +107,11 @@ export default {
     toQuery() {
       this.tableLoading = true
       const params = {
-          gName: this.goodName,
-          gCode: this.goodCode,
-          whId: this.whId,
-          page: this.page - 1,
-          size: this.size
+        gName: this.goodName,
+        gCode: this.goodCode,
+        whId: this.whId,
+        page: this.page - 1,
+        size: this.size
       }
       PurchaseOrders.getGoodChooseList(params).then(res => {
         this.tableData = res.content
@@ -134,5 +135,5 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  
+
 </style>
