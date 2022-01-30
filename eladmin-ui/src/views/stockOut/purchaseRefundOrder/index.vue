@@ -237,7 +237,7 @@
             </div>
           </div>
         </el-form>
-        <GoodChooseBoard :inner-visible="innerVisible" :wh-id="form.whId" @cancel="cancelPickUp" @pickup="pickup" />
+        <GoodChooseBoard :inner-visible="innerVisible" :wh-id="form.whId" stock-out @cancel="cancelPickUp" @pickup="pickup" />
         <PurchaseOrderSelectBoard :inner-visible="chooseOrderVisible" @cancel="cancelChoose" @selectGood="selectGood" />
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -306,7 +306,7 @@
       </el-table>
       <!--分页组件-->
       <pagination />
-      <OrderPrinting :printOrderId="printOrderId" :innerVisible="printVisible" @cancel="cancelprinting" />
+      <OrderPrinting :print-order-id="printOrderId" :inner-visible="printVisible" @cancel="cancelprinting" />
     </div>
   </div>
 </template>

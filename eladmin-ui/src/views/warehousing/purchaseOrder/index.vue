@@ -304,7 +304,7 @@
       </el-table>
       <!--分页组件-->
       <pagination />
-      <OrderPrinting :printOrderId="printOrderId" :innerVisible="printVisible" @cancel="cancelprinting" />
+      <OrderPrinting :print-order-id="printOrderId" :inner-visible="printVisible" @cancel="cancelprinting" />
     </div>
   </div>
 </template>
