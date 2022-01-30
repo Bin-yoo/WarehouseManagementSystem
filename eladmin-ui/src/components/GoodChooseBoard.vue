@@ -66,6 +66,10 @@ export default {
     whId: {
       type: String,
       default: ''
+    },
+    stockOut: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -88,6 +92,14 @@ export default {
       this.resetQuery()
     },
     pick(val, index) {
+      if (val.count == 0 && this.stockOut) {
+        this.$notify({
+          title: '所选择的货品库存不足!请先入库!',
+          type: 'warning',
+          duration: 2500
+        })
+        return
+      }
       this.$emit('pickup', val)
       this.tableData.splice(index, 1)
     },
