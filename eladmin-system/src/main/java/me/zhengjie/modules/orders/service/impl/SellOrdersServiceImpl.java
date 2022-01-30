@@ -118,23 +118,6 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
         // 批量插入单据货品
         tbOrderGoodsMapper.insertBatchSomeColumn(orderGoodList);
 
-        //另起线程更新库存信息
-        Runnable runnable = () -> {
-            try {
-                for (GoodsInfoVo goodInfo : goodList) {
-                    TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
-                            .eq(TbWhInventory::getWhId, vo.getWhId())
-                            .eq(TbWhInventory::getGoodId, goodInfo.getId())
-                            .one();
-                    one.setCount(one.getCount() - goodInfo.getGoodNum());
-                    tbWhInventoryMapper.updateById(one);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-        new Thread(runnable).start();
-
         return insert;
     }
 
@@ -155,17 +138,6 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
         int ret = tbOrdersMapper.updateById(entity);
         // delCaches(resources.id);
 
-        // 还原库存数量
-        List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, entity.getId()).list();
-        for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
-            TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
-                    .eq(TbWhInventory::getWhId, vo.getWhId())
-                    .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                    .one();
-            one.setCount(one.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
-            tbWhInventoryMapper.updateById(one);
-        }
-
         // 清除旧的订单货品数据
         LambdaQueryWrapper<TbOrderGoods> wrapper = new LambdaQueryWrapper();
         wrapper.eq(TbOrderGoods::getOrderId, entity.getId());
@@ -185,23 +157,6 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
         }
         // 批量插入单据货品
         tbOrderGoodsMapper.insertBatchSomeColumn(newOrderGoodList);
-
-        //另起线程更新库存信息
-        Runnable runnable = () -> {
-            try {
-                for (GoodsInfoVo goodInfo : goodList) {
-                    TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
-                            .eq(TbWhInventory::getWhId, vo.getWhId())
-                            .eq(TbWhInventory::getGoodId, goodInfo.getId())
-                            .one();
-                    one.setCount(one.getCount() - goodInfo.getGoodNum());
-                    tbWhInventoryMapper.updateById(one);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-        new Thread(runnable).start();
 
         return ret;
     }
@@ -225,30 +180,6 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
                 throw new BadRequestException("该订单不存在!");
             } else if (order.getStatus().equals(OrderStatusEnum.APPROVE.getCode())) {
                 throw new BadRequestException("订单编号:" + order.getOrderNo() + "已审批，无法删除!");
-            } else {
-                //另起线程更新库存信息
-                Runnable runnable = () -> {
-                    try {
-                        // 还原库存数量
-                        List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
-                        for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
-                            TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
-                                    .eq(TbWhInventory::getWhId, order.getWhId())
-                                    .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                                    .one();
-                            one.setCount(one.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
-                            tbWhInventoryMapper.updateById(one);
-                        }
-
-                        // 清除旧的订单货品数据
-                        /*LambdaQueryWrapper<TbOrderGoods> wrapper = new LambdaQueryWrapper();
-                        wrapper.eq(TbOrderGoods::getOrderId, order.getId());
-                        tbOrderGoodsMapper.delete(wrapper);*/
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                };
-                new Thread(runnable).start();
             }
         });
         return tbOrdersMapper.deleteBatchIds(ids);
@@ -354,6 +285,30 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
             order.setVerifyPerson(SecurityUtils.getCurrentUsername());
             order.setVerifyPersonId(SecurityUtils.getCurrentUserId());
             tbOrdersMapper.updateById(order);
+
+            //另起线程更新库存信息
+            Runnable runnable = () -> {
+                try {
+                    // 减少库存数量
+                    List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
+                    for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
+                        TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
+                                .eq(TbWhInventory::getWhId, order.getWhId())
+                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                                .one();
+                        one.setCount(one.getCount() - Integer.parseInt(tbOrderGoods.getGoodNum()));
+                        tbWhInventoryMapper.updateById(one);
+                    }
+
+                    // 清除旧的订单货品数据
+                        /*LambdaQueryWrapper<TbOrderGoods> wrapper = new LambdaQueryWrapper();
+                        wrapper.eq(TbOrderGoods::getOrderId, order.getId());
+                        tbOrderGoodsMapper.delete(wrapper);*/
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+            new Thread(runnable).start();
         });
     }
 
@@ -371,6 +326,25 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
             }
             order.setStatus(OrderStatusEnum.RE_APPROVE.getCode());
             tbOrdersMapper.updateById(order);
+
+            //另起线程更新库存信息
+            Runnable runnable = () -> {
+                try {
+                    // 还原库存数量
+                    List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
+                    for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
+                        TbWhInventory one = tbWhInventoryMapper.lambdaQuery()
+                                .eq(TbWhInventory::getWhId, order.getWhId())
+                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                                .one();
+                        one.setCount(one.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
+                        tbWhInventoryMapper.updateById(one);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+            new Thread(runnable).start();
         });
     }
 
