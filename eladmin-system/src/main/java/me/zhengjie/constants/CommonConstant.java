@@ -12,7 +12,7 @@ public class CommonConstant {
     // 销售提货单号前缀
     public static final String XS = "XS";
     // 调拨单号前缀
-    public static final String TB = "TB";
+    public static final String DC = "DC";
     // 盘点单号前缀
     public static final String PD = "PD";
 }
