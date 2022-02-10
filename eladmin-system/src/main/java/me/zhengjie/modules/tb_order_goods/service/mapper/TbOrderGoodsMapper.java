@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 */
 @Repository
 public interface TbOrderGoodsMapper extends CommonMapper<TbOrderGoods> {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 */
 public interface TbOrderGoodsService extends CommonService<TbOrderGoods>  {
 
@@ -32,16 +32,16 @@ public interface TbOrderGoodsService extends CommonService<TbOrderGoods>  {
     */
     List<TbOrderGoodsDto> queryAll(TbOrderGoodsQueryParam query);
 
-    TbOrderGoods getById(String id);
-    TbOrderGoodsDto findById(String id);
+    TbOrderGoods getById(Long id);
+    TbOrderGoodsDto findById(Long id);
 
     /**
      * 插入一条新数据。
      */
     int insert(TbOrderGoodsDto resources);
     int updateById(TbOrderGoodsDto resources);
-    int removeById(String id);
-    int removeByIds(Set<String> ids);
+    int removeById(Long id);
+    int removeByIds(Set<Long> ids);
 
     /**
     * 导出数据

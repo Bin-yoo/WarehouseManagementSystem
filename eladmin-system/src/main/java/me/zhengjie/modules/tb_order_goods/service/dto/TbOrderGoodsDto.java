@@ -11,10 +11,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.sql.Timestamp;
 import io.swagger.annotations.ApiModelProperty;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 */
 @Data
 @Builder
@@ -25,10 +27,14 @@ import io.swagger.annotations.ApiModelProperty;
 public class TbOrderGoodsDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "采购单id")
+    @ApiModelProperty(value = "采购单d")
+    /** 防止精度丢失 */
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long orderId;
 
     @ApiModelProperty(value = "货品id")
+    /** 防止精度丢失 */
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long goodId;
 
     @ApiModelProperty(value = "货品数量")
@@ -51,4 +57,16 @@ public class TbOrderGoodsDto implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "账面数量")
+    private String paperGoodNum;
+
+    @ApiModelProperty(value = "实盘数量")
+    private String inventoryGoodNum;
+
+    @ApiModelProperty(value = "盈亏数量")
+    private String plGoodNum;
+
+    @ApiModelProperty(value = "盈亏金额")
+    private BigDecimal plPrice;
 }

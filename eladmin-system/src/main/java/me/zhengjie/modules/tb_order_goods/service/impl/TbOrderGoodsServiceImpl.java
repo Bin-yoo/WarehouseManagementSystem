@@ -24,7 +24,7 @@ import java.util.*;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 */
 @Service
 @AllArgsConstructor
@@ -48,13 +48,13 @@ public class TbOrderGoodsServiceImpl extends CommonServiceImpl<TbOrderGoodsMappe
     }
 
     @Override
-    public TbOrderGoods getById(String id) {
+    public TbOrderGoods getById(Long id) {
         return tbOrderGoodsMapper.selectById(id);
     }
 
     @Override
     // @Cacheable(key = "'id:' + #p0")
-    public TbOrderGoodsDto findById(String id) {
+    public TbOrderGoodsDto findById(Long id) {
         return ConvertUtil.convert(getById(id), TbOrderGoodsDto.class);
     }
 
@@ -76,26 +76,26 @@ public class TbOrderGoodsServiceImpl extends CommonServiceImpl<TbOrderGoodsMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByIds(Set<String> ids){
+    public int removeByIds(Set<Long> ids){
         // delCaches(ids);
         return tbOrderGoodsMapper.deleteBatchIds(ids);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeById(String id){
-        Set<String> set = new HashSet<>(1);
+    public int removeById(Long id){
+        Set<Long> set = new HashSet<>(1);
         set.add(id);
         return this.removeByIds(set);
     }
 
     /*
-    private void delCaches(String id) {
+    private void delCaches(Long id) {
         redisUtils.delByKey(CACHE_KEY + "::id:", id);
     }
 
-    private void delCaches(Set<String> ids) {
-        for (String id: ids) {
+    private void delCaches(Set<Long> ids) {
+        for (Long id: ids) {
             delCaches(id);
         }
     }*/
@@ -113,6 +113,10 @@ public class TbOrderGoodsServiceImpl extends CommonServiceImpl<TbOrderGoodsMappe
               map.put("生产日期", tbOrderGoods.getProductDate());
               map.put("有效日期", tbOrderGoods.getValidDate());
               map.put("备注", tbOrderGoods.getRemark());
+              map.put("账面数量", tbOrderGoods.getPaperGoodNum());
+              map.put("实盘数量", tbOrderGoods.getInventoryGoodNum());
+              map.put("盈亏数量", tbOrderGoods.getPlGoodNum());
+              map.put("盈亏金额", tbOrderGoods.getPlPrice());
         list.add(map);
       }
       FileUtil.downloadExcel(list, response);

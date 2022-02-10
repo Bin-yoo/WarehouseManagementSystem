@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 */
 @Data
 @Builder
@@ -35,7 +35,7 @@ import java.sql.Timestamp;
 public class TbOrderGoods extends CommonModel<TbOrderGoods> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "采购单id")
+    @ApiModelProperty(value = "采购单d")
     //@TableId(type= IdType.ASSIGN_ID)
     @NotNull
     private Long orderId;
@@ -46,15 +46,12 @@ public class TbOrderGoods extends CommonModel<TbOrderGoods> implements Serializa
     private Long goodId;
 
     @ApiModelProperty(value = "货品数量")
-    @NotBlank
     private String goodNum;
 
     @ApiModelProperty(value = "单价")
-    @NotNull
     private BigDecimal price;
 
     @ApiModelProperty(value = "总价金额")
-    @NotNull
     private BigDecimal totalPrice;
 
     @ApiModelProperty(value = "批次")
@@ -68,6 +65,18 @@ public class TbOrderGoods extends CommonModel<TbOrderGoods> implements Serializa
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "账面数量")
+    private String paperGoodNum;
+
+    @ApiModelProperty(value = "实盘数量")
+    private String inventoryGoodNum;
+
+    @ApiModelProperty(value = "盈亏数量")
+    private String plGoodNum;
+
+    @ApiModelProperty(value = "盈亏金额")
+    private BigDecimal plPrice;
 
     public void copyFrom(TbOrderGoods source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));

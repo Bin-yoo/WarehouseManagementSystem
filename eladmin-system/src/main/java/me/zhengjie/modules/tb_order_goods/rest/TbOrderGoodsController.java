@@ -17,7 +17,7 @@ import java.util.Set;
 
 /**
 * @author LiangBin
-* @date 2021-12-20
+* @date 2022-02-10
 **/
 @RestController
 @RequiredArgsConstructor
@@ -56,7 +56,7 @@ public class TbOrderGoodsController {
     @Log("删除tb_order_goods")
     @ApiOperation("删除tb_order_goods")
     @PreAuthorize("@el.check('tbOrderGoods:del')")
-    public ResponseEntity delete(@RequestBody Set<String> ids) {
+    public ResponseEntity delete(@RequestBody Set<Long> ids) {
         tbOrderGoodsService.removeByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
