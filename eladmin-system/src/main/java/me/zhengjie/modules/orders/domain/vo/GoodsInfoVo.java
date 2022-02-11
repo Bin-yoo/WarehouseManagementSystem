@@ -90,4 +90,16 @@ public class GoodsInfoVo implements Serializable {
 
     @ApiModelProperty(value = "总金额")
     private BigDecimal totalPrice = new BigDecimal(0);
+
+    @ApiModelProperty(value = "账面数量")
+    private Integer paperGoodNum = 0;
+
+    @ApiModelProperty(value = "实盘数量")
+    private Integer inventoryGoodNum = 0;
+
+    @ApiModelProperty(value = "盈亏数量")
+    private Integer plGoodNum = 0;
+
+    @ApiModelProperty(value = "盈亏金额")
+    private BigDecimal plPrice = new BigDecimal(0);
 }

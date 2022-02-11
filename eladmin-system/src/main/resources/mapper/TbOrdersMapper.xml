@@ -33,7 +33,18 @@
     <select id="getOutOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
-               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as sellPrice, og.total_price
+               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price
+        FROM tb_goods_info g
+                 LEFT JOIN tb_goods_unit u ON u.id = g.unit
+                 LEFT JOIN tb_goods_type t ON t.id = g.type
+                 LEFT JOIN tb_order_goods og ON og.good_id = g.id
+        where og.order_id = #{id}
+    </select>
+
+    <select id="getInventoryOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+        SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
+               g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
+               u.gu_name AS unitName, t.gt_name AS typeName, og.price as purchasePrice, og.paper_good_num, og.inventory_good_num, og.pl_good_num, og.pl_price
         FROM tb_goods_info g
                  LEFT JOIN tb_goods_unit u ON u.id = g.unit
                  LEFT JOIN tb_goods_type t ON t.id = g.type

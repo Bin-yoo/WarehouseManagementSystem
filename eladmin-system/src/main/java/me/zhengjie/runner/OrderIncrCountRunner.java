@@ -43,6 +43,9 @@ public class OrderIncrCountRunner implements ApplicationRunner {
         if (!redisUtils.hasKey(CommonConstant.DC)) {
             redisUtils.set(CommonConstant.DC, 0);
         }
+        if (!redisUtils.hasKey(CommonConstant.PD)) {
+            redisUtils.set(CommonConstant.PD, 0);
+        }
         logger.info("初始化单据自增序号 end...");
     }
 }

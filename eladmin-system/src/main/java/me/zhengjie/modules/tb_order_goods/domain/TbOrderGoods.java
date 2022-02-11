@@ -67,13 +67,13 @@ public class TbOrderGoods extends CommonModel<TbOrderGoods> implements Serializa
     private String remark;
 
     @ApiModelProperty(value = "账面数量")
-    private String paperGoodNum;
+    private Integer paperGoodNum;
 
     @ApiModelProperty(value = "实盘数量")
-    private String inventoryGoodNum;
+    private Integer inventoryGoodNum;
 
     @ApiModelProperty(value = "盈亏数量")
-    private String plGoodNum;
+    private Integer plGoodNum;
 
     @ApiModelProperty(value = "盈亏金额")
     private BigDecimal plPrice;

@@ -100,4 +100,16 @@ public class OrderGoodsInfoDto implements Serializable {
 
     @ApiModelProperty(value = "总金额")
     private BigDecimal totalPrice;
+
+    @ApiModelProperty(value = "账面数量")
+    private Integer paperGoodNum;
+
+    @ApiModelProperty(value = "实盘数量")
+    private Integer inventoryGoodNum;
+
+    @ApiModelProperty(value = "盈亏数量")
+    private Integer plGoodNum;
+
+    @ApiModelProperty(value = "盈亏金额")
+    private BigDecimal plPrice;
 }

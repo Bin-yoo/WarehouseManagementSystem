@@ -24,4 +24,6 @@ public interface TbOrdersMapper extends CommonMapper<TbOrders> {
     List<OrderGoodsInfoDto> getInOrderGoodList(@Param("id") String id);
 
     List<OrderGoodsInfoDto> getOutOrderGoodList(@Param("id") String id);
+
+    List<OrderGoodsInfoDto> getInventoryOrderGoodList(@Param("id") String id);
 }
