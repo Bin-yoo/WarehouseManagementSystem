@@ -390,7 +390,6 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
         resultMap.put("inDate", DateFormatUtils.format(order.getDate(), "yyyy-MM-dd"));
         resultMap.put("printDate", DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
         resultMap.put("whName", order.getWhName());
-        resultMap.put("supplier", order.getSourceName());
         resultMap.put("orderPerson", order.getOrderPerson());
         resultMap.put("manager", order.getManager());
         resultMap.put("originOrderNo", order.getOriginOrderNo());

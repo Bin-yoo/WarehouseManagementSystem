@@ -299,7 +299,7 @@ import crudTbWhInventory from '@/api/tbWhInventory'
 import { mapGetters } from 'vuex'
 import { getFormatDate, changeMoneyToChinese } from '@/utils/common.js'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
-import OrderPrinting from '@/components/OrderPrintingTemplate/TransferOrderTemplate'
+import OrderPrinting from '@/components/OrderPrintingTemplate/InventoryOrderTemplate'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
