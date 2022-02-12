@@ -29,4 +29,24 @@
             LEFT JOIN `tb_goods_unit` u ON u.id = g.unit
             LEFT JOIN `tb_wh_goods` wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id ${ew.customSqlSegment}
     </select>
+    <select id="getWhInOutDetail" resultType="me.zhengjie.modules.inventory.service.dto.InventoryDetailDto">
+        SELECT o.order_no, o.order_type, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
+            og.price,
+            (CASE WHEN og.pl_good_num IS NOT NULL THEN og.pl_good_num ELSE og.good_num END) AS count,
+            (CASE WHEN og.pl_price IS NOT NULL THEN og.pl_price ELSE og.total_price END) AS total_price,
+            w.wh_name,
+            (CASE WHEN c.c_name IS NOT NULL THEN c.c_name ELSE
+                (CASE WHEN d.name IS NOT NULL THEN d.name ELSE sw.wh_name END)
+            END) AS source
+        FROM `tb_orders` o
+            LEFT JOIN tb_order_goods og ON og.order_id = o.id
+            LEFT JOIN tb_goods_info g ON g.id = og.good_id
+            LEFT JOIN tb_goods_unit u ON u.id = g.unit
+            LEFT JOIN tb_warehouse w ON w.wh_id = o.wh_id
+            LEFT JOIN tb_warehouse sw ON sw.wh_id = o.source_id
+            LEFT JOIN tb_partner_company_info c ON c.id = o.source_id
+            LEFT JOIN sys_dept d ON d.dept_id = o.source_id
+        WHERE g.id = #{goodId}
+        ORDER BY o.order_date DESC
+    </select>
 </mapper>

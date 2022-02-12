@@ -3,6 +3,7 @@ package me.zhengjie.modules.inventory.service;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.CommonService;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
+import me.zhengjie.modules.inventory.service.dto.InventoryDetailDto;
 import me.zhengjie.modules.inventory.service.dto.TbWhInventoryDto;
 import me.zhengjie.modules.inventory.service.dto.TbWhInventoryQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,7 @@ public interface TbWhInventoryService extends CommonService<TbWhInventory>  {
 
     Object getWareHouseSelect();
 
-    Object getWhInOutDetail();
+    PageInfo<InventoryDetailDto> getWhInOutDetail(Long goodId, Pageable pageable);
 
     /**
     * 导出数据

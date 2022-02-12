@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
-import me.zhengjie.modules.goodsinfo.domain.TbGoodsInfo;
+import me.zhengjie.modules.inventory.service.dto.InventoryDetailDto;
 import me.zhengjie.modules.warehouse.service.dto.TbWarehouseDto;
 import me.zhengjie.modules.warehouse.service.mapper.TbWarehouseMapper;
 import me.zhengjie.utils.ConvertUtil;
@@ -130,8 +130,10 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
     }
 
     @Override
-    public Object getWhInOutDetail() {
-        return null;
+    public PageInfo<InventoryDetailDto> getWhInOutDetail(Long goodId, Pageable pageable) {
+        IPage<InventoryDetailDto> queryPage = PageUtil.toMybatisPage(pageable);
+        IPage<InventoryDetailDto> page = tbWhInventoryMapper.getWhInOutDetail(goodId, queryPage);
+        return ConvertUtil.convertPage(page, InventoryDetailDto.class);
     }
 
     /*
