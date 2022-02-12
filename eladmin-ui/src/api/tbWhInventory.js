@@ -31,10 +31,11 @@ export function getWareHouseSelect(id) {
   })
 }
 
-export function getWhInOutDetail(id) {
+export function getWhInOutDetail(params) {
   return request({
     url: 'api/tbWhInventory/getWhInOutDetail',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

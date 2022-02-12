@@ -71,31 +71,38 @@
       </div>
       <!-- <crudOperation :permission="permission" /> -->
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialogShow" :title="title" width="500px">
-        <el-table :data="detailData" size="small" style="width: 100%;">
-          <el-table-column prop="gCode" label="货品编码" />
-          <el-table-column prop="gName" label="货品名称" />
-          <el-table-column prop="pyCode" label="拼音码" />
-          <el-table-column prop="typeName" label="货品类别" />
-          <el-table-column prop="specification" label="规格" />
-          <el-table-column prop="model" label="型号" />
-          <el-table-column prop="weight" label="重量" />
-          <el-table-column prop="color" label="颜色" />
-          <el-table-column prop="unitName" label="计量单位" />
-          <el-table-column prop="purchasePrice" label="进价" />
-          <el-table-column prop="sellPrice" label="售价" />
-          <el-table-column prop="allocation" label="货位(m²)" />
-          <el-table-column prop="manufacturer" label="生产厂家" />
-          <el-table-column prop="barCode" label="条形码" />
-          <el-table-column prop="qrCode" label="二维码" />
-          <el-table-column prop="remark" label="备注" width="200">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
-              <div>{{ scope.row.remark ? scope.row.remark.length > 12 ? scope.row.remark.substr(0,12)+'...' : scope.row.remark : '' }}</div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        </el-table>
+      <el-dialog :close-on-click-modal="false" :visible.sync="dialogShow" title="查看库存明细" width="1000px" @closed="dialogClose">
+        <el-row>
+          <el-table v-loading="detailDataLoading" :data="detailData" size="small" style="width: 100%;">
+            <el-table-column prop="orderNo" label="单号" width="150"/>
+            <el-table-column prop="orderType" label="单据类型">
+              <template slot-scope="scope">
+                {{ formatOrderType(scope.row.orderType) }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="gCode" label="货品编码" />
+            <el-table-column prop="gName" label="货品名称" />
+            <el-table-column prop="pyCode" label="拼音码" />
+            <el-table-column prop="specification" label="规格" />
+            <el-table-column prop="unitName" label="单位" />
+            <el-table-column prop="price" label="单价" />
+            <el-table-column prop="count" label="数量" />
+            <el-table-column prop="totalPrice" label="金额" />
+            <el-table-column prop="whName" label="仓库" />
+            <el-table-column prop="source" label="来源" />
+          </el-table>
+        </el-row>
+        <el-row>
+          <el-pagination
+            :page-size.sync="size"
+            :total="total"
+            :current-page.sync="page"
+            style="margin-top: 8px;"
+            layout="total, prev, pager, next, sizes"
+            @size-change="showDetail()"
+            @current-change="showDetail()"
+          />
+        </el-row>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="dialogShow = false">关闭</el-button>
         </div>
@@ -113,6 +120,9 @@
         <el-table-column prop="typeName" label="货品类别" />
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="model" label="型号" />
+        <el-table-column prop="count" label="库存数量" />
+        <el-table-column prop="lower_limit" label="库存下限" />
+        <el-table-column prop="upper_limit" label="库存上限" />
         <el-table-column prop="weight" label="重量" />
         <el-table-column prop="color" label="颜色" />
         <el-table-column prop="unitName" label="计量单位" />
@@ -122,10 +132,7 @@
         <el-table-column prop="manufacturer" label="生产厂家" />
         <el-table-column prop="barCode" label="条形码" />
         <el-table-column prop="qrCode" label="二维码" />
-        <el-table-column prop="count" label="库存数量" />
-        <el-table-column prop="lower_limit" label="库存下限" />
-        <el-table-column prop="upper_limit" label="库存上限" />
-        <el-table-column v-if="checkPer(['admin','tbWhInventory:edit','tbWhInventory:del'])" label="操作" width="150px" align="center">
+        <el-table-column v-if="checkPer(['admin','tbWhInventory:edit','tbWhInventory:del'])" fixed="right" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <!-- <udOperation
               :data="scope.row"
@@ -160,6 +167,7 @@ export default {
   cruds() {
     return CRUD({ title: '查看库存详情', url: 'api/tbWhInventory', idField: 'whId', sort: 'whId,desc', crudMethod: { ...crudTbWhInventory }})
   },
+  dicts: ['order_type'],
   data() {
     return {
       permission: {
@@ -167,22 +175,16 @@ export default {
         edit: ['admin', 'tbWhInventory:edit'],
         del: ['admin', 'tbWhInventory:del']
       },
-      rules: {
-        goodId: [
-          { required: true, message: '货品id不能为空', trigger: 'blur' }
-        ],
-        whId: [
-          { required: true, message: '仓库id不能为空', trigger: 'blur' }
-        ],
-        count: [
-          { required: true, message: '货品数量不能为空', trigger: 'blur' }
-        ]
-      },
       whSelect: [],
       types: [],
       unitSelect: [],
       dialogShow: false,
-      detailData: []
+      detailData: [],
+      detailDataLoading: false,
+      page: 1,
+      size: 10,
+      total: 0,
+      goodId: null
     }
   },
   created() {
@@ -211,10 +213,46 @@ export default {
       })
     },
     showDetail(goodId) {
-      crudTbWhInventory.getWhInOutDetail(goodId).then(res => {
-        this.detailData = res
+      this.dialogShow = true
+      if (goodId) {
+        this.goodId = goodId
+      }
+      this.detailDataLoading = true
+      const params = {
+        goodId: this.goodId,
+        page: this.page - 1,
+        size: this.size
+      }
+      crudTbWhInventory.getWhInOutDetail(params).then(res => {
+        this.detailData = res.content
+        this.total = res.totalElements
+        this.detailDataLoading = false
       })
+    },
+    dialogClose() {
+      this.goodId = null
+      this.size = 10
+      this.detailData = []
+    },
+    formatOrderType(val) {
+      let label = ''
+      for (const [i, v] of this.dict.order_type.entries()) {
+        if (v.value == val) {
+          label = v.label
+          break
+        }
+      }
+      return label
     }
+  },
+  filters: {
+    // formatOrderType(val) {
+    //   for (const [i, v] of this.dict.order_type.entries()) {
+    //     if (v => v.value == val) {
+    //       return v.lable
+    //     }
+    //   }
+    // }
   }
 }
 </script>
