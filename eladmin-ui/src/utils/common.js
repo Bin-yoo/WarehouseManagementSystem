@@ -13,6 +13,8 @@ export function changeMoneyToChinese(money, currencyunit) {
   var cnDecUnits = new Array("角", "分", "毫", "厘"); // 对应小数部分单位
   var cnInteger = "整"; // 整数金额时后面跟的字符
   var cnIntLast = "元"; // 整型完以后的单位
+  var cnIntFirst = "负"; // 整型完以后的负数前缀
+  var cnIntFirstFlag = false; // 负数flag
   var IntegerNum; // 金额整数部分
   var DecimalNum; // 金额小数部分
   // 新增金额小数部分字符串 
@@ -22,10 +24,14 @@ export function changeMoneyToChinese(money, currencyunit) {
   
   var parts; // 分离金额后用的数组，预定义
 
-  if (money == "") {
-    return "";
+  // if (money == "") {
+  //   console.log(money);
+  //   return "";
+  // }
+  if (money < 0) {
+    cnIntFirstFlag = true;
   }
-  money = parseFloat(money);
+  money = Math.abs(parseFloat(money));
   if (money == 0) {
     ChineseStr = cnNums[0] + cnIntLast + cnInteger;
     // ChineseStr = cnNums[0] + cnIntLast
@@ -97,6 +103,9 @@ export function changeMoneyToChinese(money, currencyunit) {
   //单位是万元每亩时在末尾添加每亩
   if (currencyunit == "万元/亩") {
     ChineseStr = ChineseStr + "每亩";
+  }
+  if (cnIntFirstFlag) {
+    ChineseStr = cnIntFirst + ChineseStr;
   }
   return ChineseStr;
 }
