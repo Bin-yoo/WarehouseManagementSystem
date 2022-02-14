@@ -248,15 +248,6 @@ export default {
       }
       return label
     }
-  },
-  filters: {
-    // formatOrderType(val) {
-    //   for (const [i, v] of this.dict.order_type.entries()) {
-    //     if (v => v.value == val) {
-    //       return v.lable
-    //     }
-    //   }
-    // }
   }
 }
 </script>

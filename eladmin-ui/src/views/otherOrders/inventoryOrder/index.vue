@@ -176,29 +176,14 @@
                   <el-input-number v-model="scope.row.purchasePrice" :disabled="showDisable" :min="0" :precision="2" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
-              <el-table-column label="账面数量">
-                <template slot-scope="scope">
-                  {{ scope.row.paperGoodNum }}
-                  <!-- <el-input-number v-model="scope.row.paperGoodNum" disabled controls-position="right" style="width: 100%" /> -->
-                </template>
-              </el-table-column>
+              <el-table-column prop="paperGoodNum" label="账面数量" />
               <el-table-column label="实盘数量">
                 <template slot-scope="scope">
                   <el-input-number v-model="scope.row.inventoryGoodNum" :disabled="showDisable" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
-              <el-table-column label="盈亏数量">
-                <template slot-scope="scope">
-                  {{ scope.row.plGoodNum }}
-                  <!-- <el-input-number v-model="scope.row.plGoodNum" disabled controls-position="right" style="width: 100%" /> -->
-                </template>
-              </el-table-column>
-              <el-table-column label="盈亏金额">
-                <template slot-scope="scope">
-                  {{ scope.row.plPrice }}
-                  <!-- <el-input-number v-model="scope.row.plPrice" disabled :precision="2" controls-position="right" style="width: 100%" /> -->
-                </template>
-              </el-table-column>
+              <el-table-column prop="plGoodNum" label="盈亏数量" />
+              <el-table-column prop="plPrice" label="盈亏金额" />
             </el-table>
             <div style="margin: 10px 0;">
               <el-row>
