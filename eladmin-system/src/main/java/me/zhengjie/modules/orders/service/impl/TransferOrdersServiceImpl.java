@@ -159,7 +159,7 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
 
         TbOrders transferIn = tbOrdersMapper.lambdaQuery().eq(TbOrders::getPid, vo.getId()).one();
         LambdaQueryWrapper<TbOrderGoods> wrapper1 = new LambdaQueryWrapper();
-        wrapper.eq(TbOrderGoods::getOrderId, transferIn.getId());
+        wrapper1.eq(TbOrderGoods::getOrderId, transferIn.getId());
         tbOrderGoodsMapper.delete(wrapper1);
 
         List<TbOrderGoods> newOrderGoodList = new ArrayList<>();
