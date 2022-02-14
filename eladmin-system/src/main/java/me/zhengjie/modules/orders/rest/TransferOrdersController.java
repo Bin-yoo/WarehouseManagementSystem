@@ -101,7 +101,7 @@ public class TransferOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('transferOrders:edit')")
-    public ResponseEntity getOrderGoodList(String id){
+    public ResponseEntity getOrderGoodList(Long id){
         return new ResponseEntity<>(transferOrdersService.getOrderGoodList(id),HttpStatus.OK);
     }
 
@@ -127,7 +127,7 @@ public class TransferOrdersController {
     @Log("打印单据")
     @ApiOperation("打印单据")
     @PreAuthorize("@el.check('transferOrders:list')")
-    public ResponseEntity printOrderReport(String id, HttpServletResponse response) throws Exception {
+    public ResponseEntity printOrderReport(Long id, HttpServletResponse response) throws Exception {
         transferOrdersService.printOrderReport(id, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -136,7 +136,7 @@ public class TransferOrdersController {
     @Log("获取打印单据信息")
     @ApiOperation("获取打印单据信息")
     @PreAuthorize("@el.check('transferOrders:list')")
-    public ResponseEntity getOrderPrintingInfo(String id) throws Exception {
+    public ResponseEntity getOrderPrintingInfo(Long id) throws Exception {
         return new ResponseEntity<>(transferOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }
 }

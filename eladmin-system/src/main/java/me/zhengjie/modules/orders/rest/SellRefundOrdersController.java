@@ -109,7 +109,7 @@ public class SellRefundOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('sellRefundOrders:edit')")
-    public ResponseEntity getOrderGoodList(String id){
+    public ResponseEntity getOrderGoodList(Long id){
         return new ResponseEntity<>(sellRefundOrdersService.getOrderGoodList(id),HttpStatus.OK);
     }
 
@@ -135,7 +135,7 @@ public class SellRefundOrdersController {
     @Log("打印单据")
     @ApiOperation("打印单据")
     @PreAuthorize("@el.check('sellRefundOrders:list')")
-    public ResponseEntity printOrderReport(String id, HttpServletResponse response) throws Exception {
+    public ResponseEntity printOrderReport(Long id, HttpServletResponse response) throws Exception {
         sellRefundOrdersService.printOrderReport(id, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -144,7 +144,7 @@ public class SellRefundOrdersController {
     @Log("获取打印单据信息")
     @ApiOperation("获取打印单据信息")
     @PreAuthorize("@el.check('sellRefundOrders:list')")
-    public ResponseEntity getOrderPrintingInfo(String id) throws Exception {
+    public ResponseEntity getOrderPrintingInfo(Long id) throws Exception {
         return new ResponseEntity<>(sellRefundOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }
 

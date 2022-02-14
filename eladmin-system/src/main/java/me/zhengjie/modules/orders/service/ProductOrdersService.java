@@ -54,15 +54,15 @@ public interface ProductOrdersService extends CommonService<TbOrders>  {
 
     Object getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable);
 
-    List<GoodsInfoVo> getOrderGoodList(String id);
+    List<GoodsInfoVo> getOrderGoodList(Long id);
 
     void approveOrders(Set<Long> ids);
 
     void reApproveOrders(Set<Long> ids);
 
-    void printOrderReport(String id, HttpServletResponse response) throws Exception;
+    void printOrderReport(Long id, HttpServletResponse response) throws Exception;
 
-    Object getOrderPrintingInfo(String id);
+    Object getOrderPrintingInfo(Long id);
 
     /**
     * 导出数据

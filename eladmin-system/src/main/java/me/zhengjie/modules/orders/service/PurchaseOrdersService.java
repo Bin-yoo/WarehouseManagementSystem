@@ -8,7 +8,6 @@ import me.zhengjie.modules.orders.domain.vo.GoodsInfoVo;
 import me.zhengjie.modules.orders.domain.vo.OrderVo;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersQueryParam;
-import net.sf.jasperreports.engine.JRException;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,15 +56,15 @@ public interface PurchaseOrdersService extends CommonService<TbOrders>  {
 
     Object getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable);
 
-    List<GoodsInfoVo> getOrderGoodList(String id);
+    List<GoodsInfoVo> getOrderGoodList(Long id);
 
     void approveOrders(Set<Long> ids);
 
     void reApproveOrders(Set<Long> ids);
 
-    void printOrderReport(String id, HttpServletResponse response) throws Exception;
+    void printOrderReport(Long id, HttpServletResponse response) throws Exception;
 
-    Object getOrderPrintingInfo(String id);
+    Object getOrderPrintingInfo(Long id);
 
     /**
     * 导出数据

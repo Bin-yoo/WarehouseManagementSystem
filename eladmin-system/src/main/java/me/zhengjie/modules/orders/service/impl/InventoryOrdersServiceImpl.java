@@ -8,7 +8,6 @@ import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.constants.CommonConstant;
-import me.zhengjie.enums.EnterpriseTypeEnum;
 import me.zhengjie.enums.OrderStatusEnum;
 import me.zhengjie.enums.OrderTypeEnum;
 import me.zhengjie.exception.BadRequestException;
@@ -23,13 +22,10 @@ import me.zhengjie.modules.orders.domain.vo.GoodsInfoVo;
 import me.zhengjie.modules.orders.domain.vo.OrderVo;
 import me.zhengjie.modules.orders.domain.vo.ReportGoodsListVo;
 import me.zhengjie.modules.orders.service.InventoryOrdersService;
-import me.zhengjie.modules.orders.service.PurchaseOrdersService;
 import me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
 import me.zhengjie.modules.orders.service.dto.TbOrdersQueryParam;
 import me.zhengjie.modules.orders.service.mapper.TbOrdersMapper;
-import me.zhengjie.modules.partnercompanyinfo.domain.TbPartnerCompanyInfo;
-import me.zhengjie.modules.partnercompanyinfo.service.dto.TbPartnerCompanyInfoDto;
 import me.zhengjie.modules.partnercompanyinfo.service.mapper.TbPartnerCompanyInfoMapper;
 import me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods;
 import me.zhengjie.modules.tb_order_goods.service.mapper.TbOrderGoodsMapper;
@@ -261,7 +257,7 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
     }
 
     @Override
-    public List<GoodsInfoVo> getOrderGoodList(String id) {
+    public List<GoodsInfoVo> getOrderGoodList(Long id) {
         List<OrderGoodsInfoDto> list = tbOrdersMapper.getInventoryOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
@@ -342,12 +338,9 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
     }
 
     @Override
-    public void printOrderReport(String id, HttpServletResponse response) throws Exception {
+    public void printOrderReport(Long id, HttpServletResponse response) throws Exception {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.INVENTORY.getCode())
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
         List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
@@ -376,12 +369,9 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
     }
 
     @Override
-    public Object getOrderPrintingInfo(String id) {
+    public Object getOrderPrintingInfo(Long id) {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.INVENTORY.getCode())
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
         //定义参数

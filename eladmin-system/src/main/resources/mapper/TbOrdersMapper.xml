@@ -19,7 +19,7 @@
     LEFT JOIN tb_wh_inventory i ON i.good_id = g.id ${ew.customSqlSegment}
     </select>
 
-    <select id="getInOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+    <select id="getInOrderGoodList" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
       SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
              g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
              u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price
@@ -30,7 +30,7 @@
       where og.order_id = #{id}
     </select>
 
-    <select id="getOutOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+    <select id="getOutOrderGoodList" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
                u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price
@@ -41,7 +41,7 @@
         where og.order_id = #{id}
     </select>
 
-    <select id="getInventoryOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
+    <select id="getInventoryOrderGoodList" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
                u.gu_name AS unitName, t.gt_name AS typeName, og.price as purchasePrice, og.paper_good_num, og.inventory_good_num, og.pl_good_num, og.pl_price

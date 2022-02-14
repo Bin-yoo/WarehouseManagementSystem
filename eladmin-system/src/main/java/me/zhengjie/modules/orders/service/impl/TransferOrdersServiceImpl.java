@@ -285,7 +285,7 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     }
 
     @Override
-    public List<GoodsInfoVo> getOrderGoodList(String id) {
+    public List<GoodsInfoVo> getOrderGoodList(Long id) {
         List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
@@ -393,12 +393,9 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     }
 
     @Override
-    public void printOrderReport(String id, HttpServletResponse response) throws Exception {
+    public void printOrderReport(Long id, HttpServletResponse response) throws Exception {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER_OUT.getCode())
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
         List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
@@ -427,12 +424,9 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     }
 
     @Override
-    public Object getOrderPrintingInfo(String id) {
+    public Object getOrderPrintingInfo(Long id) {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER_OUT.getCode())
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
         //定义参数

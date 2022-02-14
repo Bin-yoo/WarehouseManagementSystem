@@ -31,6 +31,9 @@ public class TbOrdersDto implements Serializable {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
+    @ApiModelProperty(value = "单据出入类型(1.入 2.出)")
+    private Integer inOutType;
+
     @ApiModelProperty(value = "单据类型")
     private Integer orderType;
 
@@ -112,4 +115,7 @@ public class TbOrdersDto implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "父订单id")
+    private Long pid;
 }
