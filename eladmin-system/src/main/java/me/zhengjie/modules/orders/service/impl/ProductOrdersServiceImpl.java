@@ -92,6 +92,8 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
         entity.setOrderType(OrderTypeEnum.PRODUCE.getCode());
         // 单据状态
         entity.setStatus(OrderStatusEnum.NOT_APPROVE.getCode());
+        // 单据出入类型(1.入 2.出)
+        entity.setInOutType(1);
         // 插入单据
         int insert = tbOrdersMapper.insert(entity);
 

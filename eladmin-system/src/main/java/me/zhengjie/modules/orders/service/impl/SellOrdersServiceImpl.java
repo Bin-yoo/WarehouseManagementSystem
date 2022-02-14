@@ -100,6 +100,8 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
         entity.setOrderType(OrderTypeEnum.SELL.getCode());
         // 单据状态
         entity.setStatus(OrderStatusEnum.NOT_APPROVE.getCode());
+        // 单据出入类型(1.入 2.出)
+        entity.setInOutType(2);
         // 插入单据
         int insert = tbOrdersMapper.insert(entity);
 

@@ -33,6 +33,9 @@ public class TbOrders extends CommonModel<TbOrders> implements Serializable {
     @TableId(type= IdType.ASSIGN_ID)
     private Long id;
 
+    @ApiModelProperty(value = "单据出入类型(1.入 2.出)")
+    private Integer inOutType;
+
     @ApiModelProperty(value = "单据类型")
     private Integer orderType;
 
@@ -116,6 +119,9 @@ public class TbOrders extends CommonModel<TbOrders> implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "父订单id")
+    private Long pid;
 
     public void copyFrom(TbOrders source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));

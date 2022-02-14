@@ -97,6 +97,8 @@ public class PurchaseRefundOrdersServiceImpl extends CommonServiceImpl<TbOrdersM
         entity.setOrderType(OrderTypeEnum.PURCHASE_REFUND.getCode());
         // 单据状态
         entity.setStatus(OrderStatusEnum.NOT_APPROVE.getCode());
+        // 单据出入类型(1.入 2.出)
+        entity.setInOutType(2);
         // 插入单据
         int insert = tbOrdersMapper.insert(entity);
 

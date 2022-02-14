@@ -46,7 +46,7 @@
             LEFT JOIN tb_warehouse sw ON sw.wh_id = o.source_id
             LEFT JOIN tb_partner_company_info c ON c.id = o.source_id
             LEFT JOIN sys_dept d ON d.dept_id = o.source_id
-        WHERE g.id = #{goodId}
+        WHERE g.id = #{goodId} AND o.status = 2
         ORDER BY o.order_date DESC
     </select>
 </mapper>
