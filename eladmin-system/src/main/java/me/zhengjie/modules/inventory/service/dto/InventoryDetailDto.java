@@ -26,6 +26,9 @@ public class InventoryDetailDto implements Serializable {
     @ApiModelProperty(value = "单号")
     private String orderNo;
 
+    @ApiModelProperty(value = "单据出入类型(1.入 2.出)")
+    private Integer inOutType;
+
     @ApiModelProperty(value = "单据类型")
     private Integer orderType;
 

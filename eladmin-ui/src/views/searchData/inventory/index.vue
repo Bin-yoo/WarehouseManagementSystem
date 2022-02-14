@@ -86,7 +86,11 @@
             <el-table-column prop="specification" label="规格" />
             <el-table-column prop="unitName" label="单位" />
             <el-table-column prop="price" label="单价" />
-            <el-table-column prop="count" label="数量" />
+            <el-table-column prop="count" label="数量">
+              <template slot-scope="scope">
+                <span v-if="scope.row.inOutType === 2">-</span>{{ scope.row.count }}
+              </template>
+            </el-table-column>
             <el-table-column prop="totalPrice" label="金额" />
             <el-table-column prop="whName" label="仓库" />
             <el-table-column prop="source" label="来源" />

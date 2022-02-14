@@ -30,7 +30,7 @@
             LEFT JOIN `tb_wh_goods` wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id ${ew.customSqlSegment}
     </select>
     <select id="getWhInOutDetail" resultType="me.zhengjie.modules.inventory.service.dto.InventoryDetailDto">
-        SELECT o.order_no, o.order_type, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
+        SELECT o.order_no, o.in_out_type, o.order_type, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
             og.price,
             (CASE WHEN og.pl_good_num IS NOT NULL THEN og.pl_good_num ELSE og.good_num END) AS count,
             (CASE WHEN og.pl_price IS NOT NULL THEN og.pl_price ELSE og.total_price END) AS total_price,
