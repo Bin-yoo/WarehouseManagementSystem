@@ -2,14 +2,39 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+      <div>
         <!-- 搜索 -->
-        <el-input v-model="query.orderType" clearable placeholder="单据类型" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <el-input v-model="query.orderNo" clearable placeholder="单号" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-input v-model="query.orderPerson" clearable placeholder="制单人名称" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-input v-model="query.manager" clearable placeholder="经办人名称" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-input v-model="query.whId" clearable placeholder="存入仓库id" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-select
+          v-model="query.orderType"
+          placeholder="单据类型"
+          style="width: 185px;"
+          class="filter-item"
+          clearable
+        >
+          <el-option
+            v-for="item in dict.order_type_for_searching"
+            :key="item.id"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
         <el-input v-model="query.originOrderNo" clearable placeholder="原始单号" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-select
+          v-model="query.whId"
+          placeholder="仓库"
+          style="width: 185px;"
+          class="filter-item"
+          clearable
+        >
+          <el-option
+            v-for="item in whSelect"
+            :key="item.whId"
+            :label="item.whName"
+            :value="item.whId"
+          />
+        </el-select>
+        <el-input v-model="query.sourceName" clearable placeholder="来源(来往单位/部门/仓库)" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <date-range-picker
           v-model="query.orderDate"
           start-placeholder="制单日期开始时间"
@@ -19,159 +44,369 @@
         <rrOperation :crud="crud" />
       </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
-      <crudOperation :permission="permission" />
+      <!-- <crudOperation :permission="permission">
+        <el-button
+          slot="right"
+          v-permission="permission.add"
+          class="filter-item"
+          size="mini"
+          type="success"
+          icon="el-icon-check"
+          :disabled="crud.selections.length === 0"
+          :loading="approveAllLoading"
+          @click="toApprove(crud.selections)"
+        >
+          审批
+        </el-button>
+        <el-button
+          slot="right"
+          v-permission="permission.edit"
+          class="filter-item"
+          size="mini"
+          type="warning"
+          icon="el-icon-refresh-left"
+          style="margin-left: 4px !important;"
+          :disabled="crud.selections.length === 0"
+          :loading="reApproveAllLoading"
+          @click="toReApprove(crud.selections)"
+        >
+          反审
+        </el-button>
+      </crudOperation> -->
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="单号" prop="orderNo">
-            <el-input v-model="form.orderNo" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="制单日期" prop="orderDate">
-            <el-input v-model="form.orderDate" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="制单人id" prop="orderPersonId">
-            <el-input v-model="form.orderPersonId" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="制单人名称" prop="orderPerson">
-            <el-input v-model="form.orderPerson" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="经办人id" prop="managerId">
-            <el-input v-model="form.managerId" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="经办人名称">
-            <el-input v-model="form.manager" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="入库日期" prop="date">
-            <el-input v-model="form.date" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="存入仓库名称">
-            <el-input v-model="form.whName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="货品来源(来往单位、部门或仓库名称)">
-            <el-input v-model="form.sourceName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="原始单号" prop="originOrderNo">
-            <el-input v-model="form.originOrderNo" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="采购单状态 1 未审批 2 已通过 3 反审核">
-            <el-input v-model="form.status" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="审核日期">
-            <el-input v-model="form.verifyDate" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="审核人名称">
-            <el-input v-model="form.verifyPerson" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="最后修改日期">
-            <el-input v-model="form.updateTime" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="最后修改人">
-            <el-input v-model="form.updateBy" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model="form.remark" style="width: 370px;" />
-          </el-form-item>
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="showDisable ? '查看单据' : crud.status.title" width="1000px" @closed="closeDialog">
+        <el-form ref="form" :model="form" size="small" label-width="80px">
+          <div class="order_info">
+            <span class="order_info_title">单据信息</span>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item prop="orderNo">
+                  <span slot="label">单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</span>
+                  <span>{{ form.orderNo }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="制单日期:" prop="orderDate">
+                  <span>{{ form.orderDate | formatDate("") }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item prop="orderPerson">
+                  <span slot="label">制&nbsp;&nbsp;单&nbsp;&nbsp;人:</span>
+                  <span>{{ form.orderPerson }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item prop="date">
+                  <span slot="label" v-if="form.inOutType === 1">入库日期:</span>
+                  <span slot="label" v-else-if="form.inOutType === 2">出库日期:</span>
+                  <span slot="label" v-else>盘点日期:</span>
+                  <span>{{ form.date | formatDate("") }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item>
+                  <span slot="label" v-if="form.inOutType === 1">入库仓库:</span>
+                  <span slot="label" v-else-if="form.inOutType === 2 && form.orderType !== 6">出库仓库:</span>
+                  <span slot="label" v-else-if="form.orderType === 6">调入仓库:</span>
+                  <span slot="label" v-else>盘点仓库:</span>
+                  <span>{{ form.whName }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item>
+                  <span slot="label" v-if="form.orderType === 1 || form.orderType === 4">供&nbsp;&nbsp;应&nbsp;&nbsp;商:</span>
+                  <span slot="label" v-else-if="form.orderType === 2">生产部门:</span>
+                  <span slot="label" v-else-if="form.orderType === 3 || form.orderType === 5">客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户:</span>
+                  <span slot="label" v-else-if="form.orderType === 6">调出仓库:</span>
+                  <span>{{ form.sourceName }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item>
+                  <span slot="label">经&nbsp;&nbsp;办&nbsp;&nbsp;人:</span>
+                  <span>{{ form.manager }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="原始单号:" prop="originOrderNo">
+                  <span>{{ form.originOrderNo }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item prop="remark:">
+                  <span slot="label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</span>
+                  <span>{{ form.remark }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="order_info" style="margin-top: 12px;">
+            <span class="order_info_title">货品明细</span>
+            <el-table ref="goodsTable" v-loading="goodListLoading" :data="form.goodList" size="small" style="width: 100%; margin-bottom: 10px;" max-height="400">
+              <el-table-column type="index" label="#" width="40px" />
+              <el-table-column prop="gCode" label="货品编码" />
+              <el-table-column prop="gName" label="货品名称" />
+              <el-table-column prop="unitName" label="单位" width="70px" />
+              <el-table-column prop="specification" label="规格" width="70px" />
+              <el-table-column prop="price" label="单价" />
+              <template v-if="form.orderType === 7">
+                <el-table-column prop="paperGoodNum" label="账面数量" />
+                <el-table-column prop="inventoryGoodNum" label="实盘数量" />
+                <el-table-column prop="plGoodNum" label="盈亏数量" />
+                <el-table-column prop="plPrice" label="盈亏金额" />
+              </template>
+              <template v-else>
+                <el-table-column prop="goodNum" label="数量" />
+                <el-table-column prop="totalPrice" label="金额" />
+              </template>
+            </el-table>
+            <div style="margin: 10px 0;">
+              <el-row v-if="form.orderType === 7">
+                <el-col :span="14">
+                  <span style="color: #000;">大写金额: {{ form.upperCasePrice }}</span>
+                </el-col>
+                <el-col :span="5">
+                  <span style="color: #000;">合计盈亏数量: {{ form.amountCount }}</span>
+                </el-col>
+                <el-col :span="5">
+                  <span style="color: #000;">合计盈亏金额: {{ form.amountPrice }}元</span>
+                </el-col>
+              </el-row>
+              <el-row v-else>
+                <el-col :span="14">
+                  <span style="color: #000;">大写金额: {{ form.upperCasePrice }}</span>
+                </el-col>
+                <el-col :span="5">
+                  <span style="color: #000;">合计数量: {{ form.amountCount }}</span>
+                </el-col>
+                <el-col :span="5">
+                  <span style="color: #000;">合计金额: {{ form.amountPrice }}元</span>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
-          <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+          <el-button v-if="!showDisable" :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="orderType" label="单据类型" />
-        <el-table-column prop="orderNo" label="单号" />
-        <el-table-column prop="orderDate" label="制单日期" />
-        <el-table-column prop="orderPerson" label="制单人名称" />
-        <el-table-column prop="manager" label="经办人名称" />
-        <el-table-column prop="date" label="入库日期" />
-        <el-table-column prop="whName" label="存入仓库名称" />
-        <el-table-column prop="sourceName" label="货品来源(来往单位、部门或仓库名称)" />
-        <el-table-column prop="originOrderNo" label="原始单号" />
-        <el-table-column prop="status" label="采购单状态 1 未审批 2 已通过 3 反审核" />
-        <el-table-column prop="verifyDate" label="审核日期" />
-        <el-table-column prop="verifyPerson" label="审核人名称" />
-        <el-table-column prop="delFlag" label="删除标识" />
-        <el-table-column prop="updateTime" label="最后修改日期" />
-        <el-table-column prop="updateBy" label="最后修改人" />
-        <el-table-column prop="remark" label="备注" />
-        <el-table-column v-if="checkPer(['admin','purchaseOrders:edit','purchaseOrders:del'])" label="操作" width="150px" align="center">
+        <el-table-column prop="orderType" label="单据类型">
+              <template slot-scope="scope">
+                {{ formatOrderType(scope.row.orderType) }}
+              </template>
+            </el-table-column>
+        <el-table-column prop="orderNo" label="单号" width="150">
           <template slot-scope="scope">
-            <udOperation
-              :data="scope.row"
-              :permission="permission"
-            />
+            <span style="color: #0000FF; cursor: pointer;" @click="crud.toEdit(scope.row),showOrder()">{{ scope.row.orderNo }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderDate" label="制单日期" width="90px">
+          <template slot-scope="scope">
+            {{ scope.row.orderDate | formatDate("") }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderPerson" label="制单人" />
+        <el-table-column prop="manager" label="经办人" />
+        <el-table-column prop="date" label="出库日期" width="90px">
+          <template slot-scope="scope">
+            {{ scope.row.date | formatDate("") }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="whName" label="仓库" />
+        <el-table-column prop="sourceName" label="来往单位/部门/仓库" />
+        <el-table-column prop="originOrderNo" label="原始单号" />
+        <el-table-column prop="status" label="单据状态">
+          <template slot-scope="scope">
+            {{ scope.row.status | convertStatus("") }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="verifyPerson" label="审核人" />
+        <el-table-column prop="verifyDate" label="审核日期" width="90px" />
+        <el-table-column prop="updateBy" label="修改人" />
+        <el-table-column prop="updateTime" label="修改日期" width="90px" />
+        <el-table-column prop="remark" label="备注" width="200">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
+              <div>{{ scope.row.remark ? scope.row.remark.length > 12 ? scope.row.remark.substr(0,12)+'...' : scope.row.remark : '' }}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="checkPer(['admin','searchOrders:edit','searchOrders:del'])" fixed="right" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
           </template>
         </el-table-column>
       </el-table>
       <!--分页组件-->
       <pagination />
+      <OrderPrinting :print-order-id="printOrderId" :inner-visible="printVisible" @cancel="cancelprinting" />
     </div>
   </div>
 </template>
 
 <script>
-import PurchaseOrders from '@/api/purchaseOrders.js'
+import SearchOrders from '@/api/searchOrders.js'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import DateRangePicker from '@/components/DateRangePicker/index'
+import crudTbWhInventory from '@/api/tbWhInventory'
+import { getFormatDate } from '@/utils/common.js'
+import OrderPrinting from '@/components/OrderPrintingTemplate/SearchOrderTemplate'
 
-const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null }
+const defaultForm = { id: null, inOutType: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
-  name: 'PurchaseOrders',
-  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
+  name: 'SearchOrders',
+  components: { pagination, crudOperation, rrOperation, DateRangePicker, OrderPrinting },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '采购入库单', url: 'api/purchaseOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...PurchaseOrders }})
+    return CRUD({ title: '采购退货单', url: 'api/searchOrders', idField: 'id', sort: 'id,desc', crudMethod: { ...SearchOrders }})
   },
+  dicts: ['order_type_for_searching'],
   data() {
     return {
       permission: {
-        add: ['admin', 'purchaseOrders:add'],
-        edit: ['admin', 'purchaseOrders:edit'],
-        del: ['admin', 'purchaseOrders:del']
+        detail: ['admin', 'searchOrders:detail'],
+        print: ['admin', 'searchOrders:print']
       },
-      rules: {
-        orderNo: [
-          { required: true, message: '单号不能为空', trigger: 'blur' }
-        ],
-        orderDate: [
-          { required: true, message: '制单日期不能为空', trigger: 'blur' }
-        ],
-        orderPersonId: [
-          { required: true, message: '制单人id不能为空', trigger: 'blur' }
-        ],
-        orderPerson: [
-          { required: true, message: '制单人名称不能为空', trigger: 'blur' }
-        ],
-        managerId: [
-          { required: true, message: '必须选择经办人', trigger: 'blur' }
-        ],
-        date: [
-          { required: true, message: '入库日期不能为空', trigger: 'blur' }
-        ],
-        whId: [
-          { required: true, message: '必须选择存入仓库', trigger: 'blur' }
-        ],
-        originOrderNo: [
-          { required: true, message: '原始单号不能为空', trigger: 'blur' }
-        ]
-      }
+      whSelect: [],
+      innerVisible: false,
+      showDisable: false,
+      goodListLoading: false,
+      printVisible: false,
+      printOrderId: null,
+      chooseOrderVisible: false
     }
+  },
+  created() {
+    this.getWareHouseSelect()
   },
   methods: {
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
       return true
+    },
+    // 新增与编辑前做的操作
+    [CRUD.HOOK.afterToCU](crud, form) {
+      if (form.id !== null) {
+        this.getOrderGoodList(form.id)
+      }
+    },
+    closeDialog() {
+      this.showDisable = false
+    },
+    getWareHouseSelect() {
+      crudTbWhInventory.getWareHouseSelect().then(res => {
+        this.whSelect = res
+      })
+    },
+    getOrderGoodList(id) {
+      this.goodListLoading = true
+      SearchOrders.getOrderGoodList(id).then(res => {
+        this.form.goodList = res
+        this.goodListLoading = false
+      }).catch(() => {
+        this.goodListLoading = false
+      })
+    },
+    showOrder() {
+      this.showDisable = true
+    },
+    toPrint(data) {
+      this.printOrderId = data.id
+      this.printVisible = true
+    },
+    cancelprinting() {
+      this.printVisible = false
+      this.printOrderId = null
+    },
+    deleteAllPicked() {
+      this.form.goodList = []
+      this.$nextTick(() => {
+        this.calculate()
+      })
+    },
+    chooseOrder() {
+      if (this.form.goodList.length == 0 || this.form.goodList === []) {
+        this.chooseOrderVisible = true
+      } else {
+        this.$notify({
+          title: '选择单据前,需清空货品明细!',
+          type: 'warning',
+          duration: 2500
+        })
+      }
+    },
+    cancelChoose() {
+      this.chooseOrderVisible = false
+    },
+    selectGood(val) {
+      this.form.goodList = val.selectGoodList
+      this.form.whId = val.whId
+      this.form.whName = val.whName
+      this.form.sourceId = val.sourceId
+      this.form.sourceName = val.sourceName
+      this.$nextTick(() => {
+        this.calculate()
+      })
+    },
+    formatOrderType(val) {
+      let label = ''
+      for (const [i, v] of this.dict.order_type_for_searching.entries()) {
+        if (v.value == val) {
+          label = v.label
+          break
+        }
+      }
+      return label
+    }
+  },
+  filters: {
+    convertStatus(val) {
+      if (val === 1) {
+        return '未审批'
+      }
+      if (val === 2) {
+        return '已审批'
+      }
+      if (val === 3) {
+        return '反审中'
+      }
+    },
+    formatDate(val) {
+      return getFormatDate(val)
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style rel="stylesheet/scss" lang="scss">
+.order_info{
+  position: relative;
+  border: 1px solid #1E9FFF;
+  border-radius: 5px;
+  padding: 15px 5px 0px 15px;
+  .order_info_title{
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    padding: 5px;
+    font-size: 12px;
+    background-color: #fff;
+    color: red;
+  }
+}
+.el-dialog__body {
+  padding: 30px 10px !important;
+}
 </style>
