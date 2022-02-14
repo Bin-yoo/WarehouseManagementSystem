@@ -35,6 +35,7 @@ import me.zhengjie.utils.StringUtils;
 import me.zhengjie.utlis.JasperReportUtil;
 import me.zhengjie.utlis.OrderUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -64,7 +65,7 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     public PageInfo<TbOrdersDto> queryAll(TbOrdersQueryParam query, Pageable pageable) {
         IPage<TbOrders> queryPage = PageUtil.toMybatisPage(pageable);
         QueryWrapper<TbOrders> predicate = QueryHelpMybatisPlus.getPredicate(query);
-        predicate.eq("order_type", OrderTypeEnum.TRANSFER.getCode());
+        predicate.eq("order_type", OrderTypeEnum.TRANSFER_OUT.getCode());
         IPage<TbOrders> page = tbOrdersMapper.selectPage(queryPage, predicate);
         return ConvertUtil.convertPage(page, TbOrdersDto.class);
     }
@@ -92,13 +93,25 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
         // 单号
         entity.setOrderNo(orderUtil.getIncrOrderNo(CommonConstant.DC));
         // 单据类型为调拨
-        entity.setOrderType(OrderTypeEnum.TRANSFER.getCode());
+        entity.setOrderType(OrderTypeEnum.TRANSFER_OUT.getCode());
         // 单据状态
         entity.setStatus(OrderStatusEnum.NOT_APPROVE.getCode());
-        // 插入单据
+        // 单据出入类型(1.入 2.出)
+        entity.setInOutType(2);
+        // 插入调出单据
         int insert = tbOrdersMapper.insert(entity);
 
-        List<TbOrderGoods> orderGoodList = new ArrayList<>();
+        // 插入关联调入单据
+        TbOrders transferIn = ConvertUtil.convert(vo, TbOrders.class);
+        transferIn.setOrderNo(orderUtil.getIncrOrderNo(CommonConstant.DR));
+        transferIn.setOrderType(OrderTypeEnum.TRANSFER_IN.getCode());
+        transferIn.setStatus(OrderStatusEnum.NOT_APPROVE.getCode());
+        transferIn.setPid(entity.getId());
+        transferIn.setInOutType(1);
+        tbOrdersMapper.insert(transferIn);
+
+        List<TbOrderGoods> outOrderGoodList = new ArrayList<>();
+        List<TbOrderGoods> inOrderGoodList = new ArrayList<>();
 
         List<GoodsInfoVo> goodList = vo.getGoodList();
         for (GoodsInfoVo goodsInfoVo : goodList) {
@@ -108,10 +121,16 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             tbOrderGoods.setGoodNum(goodsInfoVo.getGoodNum().toString());
             tbOrderGoods.setPrice(goodsInfoVo.getPurchasePrice());
             tbOrderGoods.setTotalPrice(goodsInfoVo.getTotalPrice());
-            orderGoodList.add(tbOrderGoods);
+            outOrderGoodList.add(tbOrderGoods);
+
+            TbOrderGoods inOrderGoods = new TbOrderGoods();
+            BeanUtils.copyProperties(tbOrderGoods, inOrderGoods);
+            inOrderGoods.setOrderId(transferIn.getId());
+            inOrderGoodList.add(inOrderGoods);
         }
         // 批量插入单据货品
-        tbOrderGoodsMapper.insertBatchSomeColumn(orderGoodList);
+        tbOrderGoodsMapper.insertBatchSomeColumn(outOrderGoodList);
+        tbOrderGoodsMapper.insertBatchSomeColumn(inOrderGoodList);
 
         return insert;
     }
@@ -135,10 +154,16 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
 
         // 清除旧的订单货品数据
         LambdaQueryWrapper<TbOrderGoods> wrapper = new LambdaQueryWrapper();
-        wrapper.eq(TbOrderGoods::getOrderId, entity.getId());
+        wrapper.eq(TbOrderGoods::getOrderId, vo.getId());
         tbOrderGoodsMapper.delete(wrapper);
 
+        TbOrders transferIn = tbOrdersMapper.lambdaQuery().eq(TbOrders::getPid, vo.getId()).one();
+        LambdaQueryWrapper<TbOrderGoods> wrapper1 = new LambdaQueryWrapper();
+        wrapper.eq(TbOrderGoods::getOrderId, transferIn.getId());
+        tbOrderGoodsMapper.delete(wrapper1);
+
         List<TbOrderGoods> newOrderGoodList = new ArrayList<>();
+        List<TbOrderGoods> inOrderGoodList = new ArrayList<>();
 
         List<GoodsInfoVo> goodList = vo.getGoodList();
         for (GoodsInfoVo goodsInfoVo : goodList) {
@@ -149,9 +174,15 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             tbOrderGoods.setPrice(goodsInfoVo.getPurchasePrice());
             tbOrderGoods.setTotalPrice(goodsInfoVo.getTotalPrice());
             newOrderGoodList.add(tbOrderGoods);
+
+            TbOrderGoods inOrderGoods = new TbOrderGoods();
+            BeanUtils.copyProperties(tbOrderGoods, inOrderGoods);
+            inOrderGoods.setOrderId(transferIn.getId());
+            inOrderGoodList.add(inOrderGoods);
         }
         // 批量插入单据货品
         tbOrderGoodsMapper.insertBatchSomeColumn(newOrderGoodList);
+        tbOrderGoodsMapper.insertBatchSomeColumn(inOrderGoodList);
 
         return ret;
     }
@@ -168,15 +199,18 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
     @Transactional(rollbackFor = Exception.class)
     public int removeByIds(Set<Long> ids){
         // delCaches(ids);
+        Set<Long> pids = new HashSet<>();
         ids.forEach(id -> {
-            TbOrders order = tbOrdersMapper.lambdaQuery()
-                    .eq(TbOrders::getId, id).one();
+            TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
             if (order == null) {
                 throw new BadRequestException("该订单不存在!");
             } else if (order.getStatus().equals(OrderStatusEnum.APPROVE.getCode())) {
                 throw new BadRequestException("订单编号:" + order.getOrderNo() + "已审批，无法删除!");
             }
+            TbOrders dr = tbOrdersMapper.lambdaQuery().eq(TbOrders::getPid, id).one();
+            pids.add(dr.getId());
         });
+        tbOrdersMapper.deleteBatchIds(pids);
         return tbOrdersMapper.deleteBatchIds(ids);
     }
 
@@ -274,6 +308,14 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             order.setVerifyPersonId(SecurityUtils.getCurrentUserId());
             tbOrdersMapper.updateById(order);
 
+            TbOrders childOrder = tbOrdersMapper.lambdaQuery()
+                    .eq(TbOrders::getPid, id).one();
+            childOrder.setStatus(OrderStatusEnum.APPROVE.getCode());
+            childOrder.setVerifyDate(new Date());
+            childOrder.setVerifyPerson(SecurityUtils.getCurrentUsername());
+            childOrder.setVerifyPersonId(SecurityUtils.getCurrentUserId());
+            tbOrdersMapper.updateById(childOrder);
+
             //另起线程更新库存信息
             Runnable runnable = () -> {
                 try {
@@ -317,6 +359,11 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             order.setStatus(OrderStatusEnum.RE_APPROVE.getCode());
             tbOrdersMapper.updateById(order);
 
+            TbOrders childOrder = tbOrdersMapper.lambdaQuery()
+                    .eq(TbOrders::getPid, id).one();
+            childOrder.setStatus(OrderStatusEnum.RE_APPROVE.getCode());
+            tbOrdersMapper.updateById(childOrder);
+
             //另起线程更新库存信息
             Runnable runnable = () -> {
                 try {
@@ -350,7 +397,7 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
         // 订单信息
         TbOrders order = tbOrdersMapper.lambdaQuery()
                 .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER.getCode())
+                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER_OUT.getCode())
                 .one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
@@ -384,7 +431,7 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
         // 订单信息
         TbOrders order = tbOrdersMapper.lambdaQuery()
                 .eq(TbOrders::getId, id)
-                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER.getCode())
+                .eq(TbOrders::getOrderType, OrderTypeEnum.TRANSFER_OUT.getCode())
                 .one();
 
         List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
