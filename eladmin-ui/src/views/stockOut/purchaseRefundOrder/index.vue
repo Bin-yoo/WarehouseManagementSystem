@@ -23,7 +23,7 @@
         </el-select>
         <el-select
           v-model="query.sourceId"
-          placeholder="客户"
+          placeholder="供应商"
           style="width: 185px;"
           class="filter-item"
           clearable
@@ -140,7 +140,7 @@
                   <span slot="label">供&nbsp;&nbsp;应&nbsp;&nbsp;商</span>
                   <el-select
                     v-model="form.sourceId"
-                    placeholder="请选择客户"
+                    placeholder="请选择供应商"
                     style="width: 90%"
                     :disabled="showDisable"
                     clearable
@@ -268,7 +268,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="whName" label="退货仓库" />
-        <el-table-column prop="sourceName" label="客户" />
+        <el-table-column prop="sourceName" label="供应商" />
         <el-table-column prop="originOrderNo" label="原始单号" />
         <el-table-column prop="status" label="采购单状态">
           <template slot-scope="scope">
@@ -352,7 +352,7 @@ export default {
           { required: true, message: '必须选择退货仓库', trigger: 'blur' }
         ],
         sourceId: [
-          { required: true, message: '必须选择客户', trigger: 'blur' }
+          { required: true, message: '必须选择供应商', trigger: 'blur' }
         ],
         originOrderNo: [
           { required: true, message: '原始单号不能为空', trigger: 'blur' }
