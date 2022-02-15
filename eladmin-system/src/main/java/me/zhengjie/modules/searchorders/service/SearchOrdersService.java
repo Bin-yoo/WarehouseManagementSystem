@@ -37,11 +37,11 @@ public interface SearchOrdersService extends CommonService<TbOrders> {
     TbOrders getById(Long id);
     TbOrdersDto findById(Long id);
 
-    List<SearchOrderGoodsInfoDto> getOrderGoodList(String id);
+    List<SearchOrderGoodsInfoDto> getOrderGoodList(Long id);
 
-    void printOrderReport(String id, HttpServletResponse response) throws Exception;
+    void printOrderReport(Long id, HttpServletResponse response) throws Exception;
 
-    Object getOrderPrintingInfo(String id);
+    Object getOrderPrintingInfo(Long id);
 
     /**
     * 导出数据

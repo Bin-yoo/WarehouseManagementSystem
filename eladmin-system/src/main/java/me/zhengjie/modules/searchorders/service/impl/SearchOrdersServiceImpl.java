@@ -10,7 +10,6 @@ import me.zhengjie.enums.OrderTypeEnum;
 import me.zhengjie.modules.employee.service.mapper.TbEmployeeMapper;
 import me.zhengjie.modules.inventory.service.mapper.TbWhInventoryMapper;
 import me.zhengjie.modules.orders.domain.TbOrders;
-import me.zhengjie.modules.orders.domain.vo.GoodsInfoVo;
 import me.zhengjie.modules.orders.domain.vo.ReportGoodsListVo;
 import me.zhengjie.modules.orders.service.dto.TbOrdersDto;
 import me.zhengjie.modules.partnercompanyinfo.service.mapper.TbPartnerCompanyInfoMapper;
@@ -44,11 +43,6 @@ public class SearchOrdersServiceImpl extends CommonServiceImpl<SearchOrdersMappe
 
     //private final RedisUtils redisUtils;
     private final SearchOrdersMapper tbOrdersMapper;
-    private final TbOrderGoodsMapper tbOrderGoodsMapper;
-    private final TbWhInventoryMapper tbWhInventoryMapper;
-    private final TbPartnerCompanyInfoMapper tbPartnerCompanyInfoMapper;
-    private final TbEmployeeMapper tbEmployeeMapper;
-    private final OrderUtil orderUtil;
 
     @Override
     public PageInfo<TbOrdersDto> queryAll(SearchOrdersQueryParam query, Pageable pageable) {
@@ -109,16 +103,14 @@ public class SearchOrdersServiceImpl extends CommonServiceImpl<SearchOrdersMappe
 
 
     @Override
-    public List<SearchOrderGoodsInfoDto> getOrderGoodList(String id) {
+    public List<SearchOrderGoodsInfoDto> getOrderGoodList(Long id) {
         return tbOrdersMapper.getInventoryOrderGoodList(id);
     }
 
     @Override
-    public void printOrderReport(String id, HttpServletResponse response) throws Exception {
+    public void printOrderReport(Long id, HttpServletResponse response) throws Exception {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<SearchOrderGoodsInfoDto> orderGoodList = getOrderGoodList(id);
         List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
@@ -147,11 +139,9 @@ public class SearchOrdersServiceImpl extends CommonServiceImpl<SearchOrdersMappe
     }
 
     @Override
-    public Object getOrderPrintingInfo(String id) {
+    public Object getOrderPrintingInfo(Long id) {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery()
-                .eq(TbOrders::getId, id)
-                .one();
+        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<SearchOrderGoodsInfoDto> orderGoodList = getOrderGoodList(id);
         //定义参数

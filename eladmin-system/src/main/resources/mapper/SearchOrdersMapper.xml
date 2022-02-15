@@ -9,7 +9,7 @@
   </sql>
   -->
 
-    <select id="getInventoryOrderGoodList" parameterType="String" resultType="me.zhengjie.modules.searchorders.service.dto.SearchOrderGoodsInfoDto">
+    <select id="getInventoryOrderGoodList" parameterType="Long" resultType="me.zhengjie.modules.searchorders.service.dto.SearchOrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
                u.gu_name AS unitName, t.gt_name AS typeName, og.price, og.good_num, og.total_price, og.paper_good_num, og.inventory_good_num, og.pl_good_num, og.pl_price

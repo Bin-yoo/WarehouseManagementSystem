@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface SearchOrdersMapper extends CommonMapper<TbOrders> {
 
-    List<SearchOrderGoodsInfoDto> getInventoryOrderGoodList(@Param("id") String id);
+    List<SearchOrderGoodsInfoDto> getInventoryOrderGoodList(@Param("id") Long id);
 }
