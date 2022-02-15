@@ -539,10 +539,10 @@ export default {
       line-height: 30px !important;
     }
   }
-  .el-dialog-div{
-    height: 60vh;
-    overflow: auto;
-  }
+  // .el-dialog-div{
+  //   height: 60vh;
+  //   overflow: auto;
+  // }
   .el-tabs{
     margin: 0;
   }

@@ -71,7 +71,7 @@
       </div>
       <!-- <crudOperation :permission="permission" /> -->
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :visible.sync="dialogShow" title="查看库存明细" width="1000px" @closed="dialogClose">
+      <el-dialog :close-on-click-modal="false" :visible.sync="dialogShow" title="查看库存明细" width="1200px" @closed="dialogClose">
         <el-row>
           <el-table v-loading="detailDataLoading" :data="detailData" size="small" style="width: 100%;">
             <el-table-column prop="orderNo" label="单号" width="150" />
