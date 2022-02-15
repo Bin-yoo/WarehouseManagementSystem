@@ -125,8 +125,8 @@
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="model" label="型号" />
         <el-table-column prop="count" label="库存数量" />
-        <el-table-column prop="lower_limit" label="库存下限" />
-        <el-table-column prop="upper_limit" label="库存上限" />
+        <el-table-column prop="lowerLimit" label="库存下限" />
+        <el-table-column prop="upperLimit" label="库存上限" />
         <el-table-column prop="weight" label="重量" />
         <el-table-column prop="color" label="颜色" />
         <el-table-column prop="unitName" label="计量单位" />

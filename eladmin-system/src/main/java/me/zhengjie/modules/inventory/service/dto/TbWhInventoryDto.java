@@ -104,4 +104,10 @@ public class TbWhInventoryDto implements Serializable {
 
     @ApiModelProperty(value = "货品数量")
     private Integer count;
+
+    @ApiModelProperty(value = "库存下限")
+    private Integer lowerLimit;
+
+    @ApiModelProperty(value = "库存上限")
+    private Integer upperLimit;
 }

@@ -39,7 +39,7 @@ import java.util.*;
 public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveOrdersMapper, TbOrders> implements WaitApproveOrdersService {
 
     //private final RedisUtils redisUtils;
-    private final WaitApproveOrdersMapper tbOrdersMapper;
+    private final WaitApproveOrdersMapper waitApproveOrdersMapper;
     private final PurchaseOrdersService purchaseOrdersService;
     private final ProductOrdersService productOrdersService;
     private final SellRefundOrdersService sellRefundOrdersService;
@@ -53,18 +53,18 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
         IPage<TbOrders> queryPage = PageUtil.toMybatisPage(pageable);
         QueryWrapper<TbOrders> predicate = QueryHelpMybatisPlus.getPredicate(query);
         predicate.ne("status", 2);
-        IPage<TbOrders> page = tbOrdersMapper.selectPage(queryPage, predicate);
+        IPage<TbOrders> page = waitApproveOrdersMapper.selectPage(queryPage, predicate);
         return ConvertUtil.convertPage(page, TbOrdersDto.class);
     }
 
     @Override
     public List<TbOrdersDto> queryAll(SearchOrdersQueryParam query){
-        return ConvertUtil.convertList(tbOrdersMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), TbOrdersDto.class);
+        return ConvertUtil.convertList(waitApproveOrdersMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), TbOrdersDto.class);
     }
 
     @Override
     public TbOrders getById(Long id) {
-        return tbOrdersMapper.selectById(id);
+        return waitApproveOrdersMapper.selectById(id);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
 
     @Override
     public List<SearchOrderGoodsInfoDto> getOrderGoodList(Long id) {
-        return tbOrdersMapper.getInventoryOrderGoodList(id);
+        return waitApproveOrdersMapper.getInventoryOrderGoodList(id);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
     public void approveOrders(Set<Long> ids) {
         ids.forEach(id -> {
             // 单据状态校验
-            TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
+            TbOrders order = waitApproveOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
             if (order != null) {
                 switch (OrderTypeEnum.getValue(order.getOrderType())) {
                     case PURCHASE : {
@@ -171,7 +171,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
     public void reApproveOrders(Set<Long> ids) {
         ids.forEach(id -> {
             // 单据状态校验
-            TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
+            TbOrders order = waitApproveOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
             if (order != null) {
                 switch (OrderTypeEnum.getValue(order.getOrderType())) {
                     case PURCHASE : {
@@ -224,7 +224,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
     @Override
     public void printOrderReport(Long id, HttpServletResponse response) throws Exception {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
+        TbOrders order = waitApproveOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<SearchOrderGoodsInfoDto> orderGoodList = getOrderGoodList(id);
         List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
@@ -255,7 +255,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
     @Override
     public Object getOrderPrintingInfo(Long id) {
         // 订单信息
-        TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
+        TbOrders order = waitApproveOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
         List<SearchOrderGoodsInfoDto> orderGoodList = getOrderGoodList(id);
         //定义参数
