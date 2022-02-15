@@ -74,7 +74,7 @@
       <el-dialog :close-on-click-modal="false" :visible.sync="dialogShow" title="查看库存明细" width="1000px" @closed="dialogClose">
         <el-row>
           <el-table v-loading="detailDataLoading" :data="detailData" size="small" style="width: 100%;">
-            <el-table-column prop="orderNo" label="单号" width="150"/>
+            <el-table-column prop="orderNo" label="单号" width="150" />
             <el-table-column prop="orderType" label="单据类型">
               <template slot-scope="scope">
                 {{ formatOrderType(scope.row.orderType) }}

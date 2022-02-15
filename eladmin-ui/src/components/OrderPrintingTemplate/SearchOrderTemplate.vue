@@ -198,7 +198,7 @@ export default {
           break
         }
       }
-      return label+'单'
+      return label + '单'
     }
   },
   watch: {
