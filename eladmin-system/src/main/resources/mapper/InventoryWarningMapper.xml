@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.inventorywarning.service.mapper.InventoryWarningMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.good_id, a.wh_id, a.count
+  </sql>
+  -->
+  <select id="queryAll" parameterType="me.zhengjie.modules.inventory.service.dto.TbWhInventoryQueryParam" resultType="me.zhengjie.modules.inventory.service.dto.TbWhInventoryDto">
+      SELECT g.id AS good_id, w.wh_id, w.wh_name, g.g_code, g.g_name, g.py_code, g.specification, g.type AS type_id,
+             t.gt_name AS type, g.model, g.weight, g.color, g.unit AS unit_id, u.gu_name AS unit, g.allocation, g.manufacturer, g.bar_code, g.qr_code, i.count, wg.lower_limit, wg.upper_limit
+      FROM tb_goods_info g
+          LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+          LEFT JOIN tb_goods_type t ON t.id = g.type
+          LEFT JOIN tb_goods_unit u ON u.id = g.unit
+          LEFT JOIN tb_warehouse w ON w.wh_id = i.wh_id
+          LEFT JOIN tb_wh_goods wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id
+      WHERE wg.lower_limit+10 >= i.count
+      <if test="query.gName != null and gName != ''">
+          AND g.g_name = #{query.gName}
+      </if>
+      <if test="query.gCode != null and gCode != ''">
+          AND g.g_code = #{query.gCode}
+      </if>
+      <if test="query.pyCode != null and pyCode != ''">
+          AND g.py_code = #{query.pyCode}
+      </if>
+      <if test="query.whId != null and whId != ''">
+          AND i.wh_id = #{query.whId}
+      </if>
+      <if test="query.typeId != null and typeId != ''">
+          AND t.id = #{query.typeId}
+      </if>
+      <if test="query.unitId != null and unitId != ''">
+          AND u.id = #{query.unitId}
+      </if>
+  </select>
+
+</mapper>
