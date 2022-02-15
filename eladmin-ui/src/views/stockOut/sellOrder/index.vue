@@ -412,6 +412,21 @@ export default {
         })
         return false
       }
+
+      let outRangeFlag = false
+      for (const [i, v] of this.form.goodList.entries()) {
+        if (v.goodNum > v.count) {
+          let msg = '货品编码为:[' + this.form.gCode + ']、名称为:[' + this.form.gName + ']的货品，当前[' + this.form.whName + ']的库存不足(库存:' + v.count + ',出库量:' + v.goodNum + ')！'
+          this.$alert(msg, '提示', {
+            confirmButtonText: '确定'
+          });
+          flag = false
+          break
+        }
+      }
+      if (outRangeFlag) {
+        return false
+      }
       return true
     },
     closeDialog() {
