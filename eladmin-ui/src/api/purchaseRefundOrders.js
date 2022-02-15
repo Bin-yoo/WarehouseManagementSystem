@@ -53,10 +53,11 @@ export function getGoodChooseList(params) {
   })
 }
 
-export function getOrderGoodList(id) {
+export function getOrderGoodList(params) {
   return request({
-    url: 'api/purchaseRefundOrders/getOrderGoodList?id=' + id,
-    method: 'get'
+    url: 'api/purchaseRefundOrders/getOrderGoodList',
+    method: 'get',
+    params
   })
 }
 

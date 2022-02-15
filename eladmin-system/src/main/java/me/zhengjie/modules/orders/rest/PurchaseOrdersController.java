@@ -110,8 +110,8 @@ public class PurchaseOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('purchaseOrders:edit')")
-    public ResponseEntity getOrderGoodList(Long id){
-        return new ResponseEntity<>(purchaseOrdersService.getOrderGoodList(id),HttpStatus.OK);
+    public ResponseEntity getOrderGoodList(Long id, Long whId){
+        return new ResponseEntity<>(purchaseOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }
 
     @PutMapping("/approveOrders")

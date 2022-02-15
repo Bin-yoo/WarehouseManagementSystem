@@ -109,8 +109,8 @@ public class SellRefundOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('sellRefundOrders:edit')")
-    public ResponseEntity getOrderGoodList(Long id){
-        return new ResponseEntity<>(sellRefundOrdersService.getOrderGoodList(id),HttpStatus.OK);
+    public ResponseEntity getOrderGoodList(Long id, Long whId){
+        return new ResponseEntity<>(sellRefundOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }
 
     @PutMapping("/approveOrders")

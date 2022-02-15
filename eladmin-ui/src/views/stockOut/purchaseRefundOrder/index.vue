@@ -213,7 +213,7 @@
               </el-table-column>
               <el-table-column label="数量">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.goodNum" :disabled="showDisable" :min="1" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
+                  <el-input-number v-model="scope.row.goodNum" :disabled="showDisable" :min="1" :max="scope.row.count" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
               <el-table-column label="金额">
@@ -404,7 +404,7 @@ export default {
         this.form.orderPersonId = this.user.id
         this.form.orderPerson = this.user.nickName
       } else {
-        this.getOrderGoodList(form.id)
+        this.getOrderGoodList(form.id, form.whId)
       }
     },
     // 提交前的验证
@@ -414,6 +414,21 @@ export default {
           message: '请添加货品!',
           type: 'warning'
         })
+        return false
+      }
+
+      let outRangeFlag = false
+      for (const [i, v] of this.form.goodList.entries()) {
+        if (v.goodNum > val.count) {
+          let msg = '货品编码为:[' + this.form.gCode + ']、名称为:[' + this.form.gName + ']的货品，当前[' + this.form.whName + ']的库存不足(库存:' + v.count + ',出库量:' + v.goodNum + ')！'
+          this.$alert(msg, '提示', {
+            confirmButtonText: '确定'
+          });
+          flag = false
+          break
+        }
+      }
+      if (outRangeFlag) {
         return false
       }
       return true
@@ -524,9 +539,10 @@ export default {
       this.form.amountPrice = price
       this.form.upperCasePrice = changeMoneyToChinese(price)
     },
-    getOrderGoodList(id) {
+    getOrderGoodList(id, whId) {
       this.goodListLoading = true
-      PurchaseRefundOrders.getOrderGoodList(id).then(res => {
+      const params = { id: id, whId: whId }
+      PurchaseRefundOrders.getOrderGoodList(params).then(res => {
         this.form.goodList = res
         this.goodListLoading = false
       }).catch(() => {

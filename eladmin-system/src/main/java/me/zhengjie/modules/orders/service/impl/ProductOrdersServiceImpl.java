@@ -250,8 +250,8 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
     }
 
     @Override
-    public List<GoodsInfoVo> getOrderGoodList(Long id) {
-        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
+    public List<GoodsInfoVo> getOrderGoodList(Long id, Long whId) {
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodListWithWhId(id, whId);
         return ConvertUtil.convertList(list, GoodsInfoVo.class);
     }
 
@@ -260,8 +260,7 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
     public void approveOrders(Set<Long> ids) {
         ids.forEach(id -> {
             // 单据状态校验
-            TbOrders order = tbOrdersMapper.lambdaQuery()
-                    .eq(TbOrders::getId, id).one();
+            TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
             if (order == null) {
                 throw new BadRequestException("该订单不存在!");
             } else if (order.getStatus().equals(OrderStatusEnum.APPROVE.getCode())) {
@@ -299,8 +298,7 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
     public void reApproveOrders(Set<Long> ids) {
         ids.forEach(id -> {
             // 单据状态校验
-            TbOrders order = tbOrdersMapper.lambdaQuery()
-                    .eq(TbOrders::getId, id).one();
+            TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
             if (order == null) {
                 throw new BadRequestException("该订单不存在!");
             } else if (!order.getStatus().equals(OrderStatusEnum.APPROVE.getCode())) {
@@ -335,8 +333,9 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
         // 订单信息
         TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
-        List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
-        List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(orderGoodList, ReportGoodsListVo.class);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
+        //List<GoodsInfoVo> orderGoodList = ConvertUtil.convertList(list, GoodsInfoVo.class);
+        List<ReportGoodsListVo> reportGoodsListVos = ConvertUtil.convertList(list, ReportGoodsListVo.class);
         //定义参数
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orderNo", order.getOrderNo());
@@ -366,7 +365,8 @@ public class ProductOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, 
         // 订单信息
         TbOrders order = tbOrdersMapper.lambdaQuery().eq(TbOrders::getId, id).one();
 
-        List<GoodsInfoVo> orderGoodList = getOrderGoodList(id);
+        List<OrderGoodsInfoDto> list = tbOrdersMapper.getInOrderGoodList(id);
+        List<GoodsInfoVo> orderGoodList = ConvertUtil.convertList(list, GoodsInfoVo.class);
         //定义参数
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("orderNo", order.getOrderNo());

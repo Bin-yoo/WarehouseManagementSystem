@@ -101,8 +101,8 @@ public class TransferOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('transferOrders:edit')")
-    public ResponseEntity getOrderGoodList(Long id){
-        return new ResponseEntity<>(transferOrdersService.getOrderGoodList(id),HttpStatus.OK);
+    public ResponseEntity getOrderGoodList(Long id, Long whId){
+        return new ResponseEntity<>(transferOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }
 
     @PutMapping("/approveOrders")

@@ -56,7 +56,7 @@ public interface PurchaseOrdersService extends CommonService<TbOrders>  {
 
     Object getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable);
 
-    List<GoodsInfoVo> getOrderGoodList(Long id);
+    List<GoodsInfoVo> getOrderGoodList(Long id, Long whId);
 
     void approveOrders(Set<Long> ids);
 

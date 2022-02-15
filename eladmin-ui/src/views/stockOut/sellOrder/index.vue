@@ -212,7 +212,7 @@
               </el-table-column>
               <el-table-column label="数量">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.goodNum" :disabled="showDisable" :min="1" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
+                  <el-input-number v-model="scope.row.goodNum" :disabled="showDisable" :min="1" :max="scope.row.count" controls-position="right" style="width: 100%" @change="changeNumOrPrice(scope.row,scope.$index)" />
                 </template>
               </el-table-column>
               <el-table-column label="金额">
@@ -400,7 +400,7 @@ export default {
         this.form.orderPersonId = this.user.id
         this.form.orderPerson = this.user.nickName
       } else {
-        this.getOrderGoodList(form.id)
+        this.getOrderGoodList(form.id, form.whId)
       }
     },
     // 提交前的验证
@@ -520,9 +520,10 @@ export default {
       this.form.amountPrice = price
       this.form.upperCasePrice = changeMoneyToChinese(price)
     },
-    getOrderGoodList(id) {
+    getOrderGoodList(id, whId) {
       this.goodListLoading = true
-      SellOrders.getOrderGoodList(id).then(res => {
+      const params = { id: id, whId: whId }
+      SellOrders.getOrderGoodList(params).then(res => {
         this.form.goodList = res
         this.goodListLoading = false
       }).catch(() => {

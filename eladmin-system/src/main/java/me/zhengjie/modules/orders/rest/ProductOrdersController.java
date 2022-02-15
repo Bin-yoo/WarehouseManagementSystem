@@ -101,8 +101,8 @@ public class ProductOrdersController {
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
     @PreAuthorize("@el.check('productOrders:edit')")
-    public ResponseEntity getOrderGoodList(Long id){
-        return new ResponseEntity<>(productOrdersService.getOrderGoodList(id),HttpStatus.OK);
+    public ResponseEntity getOrderGoodList(Long id, Long whId){
+        return new ResponseEntity<>(productOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }
 
     @PutMapping("/approveOrders")
