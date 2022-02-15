@@ -233,7 +233,9 @@
         <el-table-column prop="originOrderNo" label="原始单号" />
         <el-table-column prop="status" label="盘点单状态">
           <template slot-scope="scope">
-            {{ scope.row.status | convertStatus("") }}
+            <el-tag type="danger" size="mini" effect="dark" v-if="scope.row.status === 1" >未审批</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.status === 2" >已审批</el-tag>
+            <el-tag type="warning" size="mini" effect="dark" v-if="scope.row.status === 3" >反审中</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="verifyPerson" label="审核人" />
@@ -588,17 +590,6 @@ export default {
     }
   },
   filters: {
-    convertStatus(val) {
-      if (val === 1) {
-        return '未审批'
-      }
-      if (val === 2) {
-        return '已审批'
-      }
-      if (val === 3) {
-        return '反审中'
-      }
-    },
     formatDate(val) {
       return getFormatDate(val)
     }
