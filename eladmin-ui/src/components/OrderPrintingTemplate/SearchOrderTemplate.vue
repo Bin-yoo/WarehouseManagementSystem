@@ -33,10 +33,18 @@
       </el-row>
       <el-row style="margin: 20px 0 0 0; font-size: 12px;">
         <el-col :span="9">
-          <span>盘点仓库:&nbsp;&nbsp;{{ templateData.whName }}</span>
+          <span v-if="templateData.inOutType === 1">入库仓库&nbsp;&nbsp;:</span>
+          <span v-else-if="templateData.inOutType === 2 && templateData.orderType !== 6">出库仓库&nbsp;&nbsp;:</span>
+          <span v-else-if="templateData.orderType === 6">调入仓库&nbsp;&nbsp;:</span>
+          <span v-else>盘点仓库&nbsp;&nbsp;:</span>
+          <span>{{ templateData.whName }}</span>
         </el-col>
         <el-col :span="9">
-          <!-- <span>供&nbsp;应&nbsp;商:&nbsp;&nbsp;{{ templateData.supplier }}</span> -->
+          <span v-if="templateData.orderType === 1 || templateData.orderType === 4">供&nbsp;&nbsp;应&nbsp;&nbsp;商&nbsp;&nbsp;:</span>
+          <span v-else-if="templateData.orderType === 2">生产部门&nbsp;&nbsp;:</span>
+          <span v-else-if="templateData.orderType === 3 || templateData.orderType === 5">客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;:</span>
+          <span v-else-if="templateData.orderType === 6">调出仓库&nbsp;&nbsp;:</span>
+          <span>{{ templateData.sourceName }}</span>
         </el-col>
         <el-col :span="6">
           <span>制&nbsp;单&nbsp;人:&nbsp;&nbsp;{{ templateData.orderPerson }}</span>
@@ -70,10 +78,16 @@
           <el-table-column prop="unitName" label="单位" width="70px" />
           <el-table-column prop="specification" label="规格" width="70px" />
           <el-table-column prop="purchasePrice" label="单价" />
-          <el-table-column prop="paperGoodNum" label="账面数量" />
-          <el-table-column prop="inventoryGoodNum" label="实盘数量" />
-          <el-table-column prop="plGoodNum" label="盈亏数量" />
-          <el-table-column prop="plPrice" label="盈亏金额" />
+          <template v-if="templateData.orderType === 7">
+            <el-table-column prop="paperGoodNum" label="账面数量" />
+            <el-table-column prop="inventoryGoodNum" label="实盘数量" />
+            <el-table-column prop="plGoodNum" label="盈亏数量" />
+            <el-table-column prop="plPrice" label="盈亏金额" />
+          </template>
+          <template v-else>
+            <el-table-column prop="goodNum" label="数量" />
+            <el-table-column prop="totalPrice" label="金额" />
+          </template>
         </el-table>
       </el-row>
       <el-row>
