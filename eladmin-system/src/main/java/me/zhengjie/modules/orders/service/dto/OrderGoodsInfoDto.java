@@ -93,7 +93,7 @@ public class OrderGoodsInfoDto implements Serializable {
     private String pic;
 
     @ApiModelProperty(value = "货品库存")
-    private String count;
+    private Integer count;
 
     @ApiModelProperty(value = "数量")
     private Integer goodNum;

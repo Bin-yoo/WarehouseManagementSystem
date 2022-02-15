@@ -93,5 +93,5 @@ public class TbGoodsInfoDto implements Serializable {
     private String pic;
 
     @ApiModelProperty(value = "货品库存")
-    private String count;
+    private Integer count;
 }
