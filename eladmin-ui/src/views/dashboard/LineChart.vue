@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import HomePage from '@/api/homePage.js'
 
 export default {
   mixins: [resize],
@@ -28,7 +29,7 @@ export default {
     },
     chartData: {
       type: Object,
-      required: true
+      // required: true
     }
   },
   data() {
@@ -44,6 +45,9 @@ export default {
       }
     }
   },
+  created() {
+    this.queryLineBarData()
+  },
   mounted() {
     this.$nextTick(() => {
       this.initChart()
@@ -57,14 +61,19 @@ export default {
     this.chart = null
   },
   methods: {
+    queryLineBarData() {
+      HomePage.queryLineBarData().then(res => {
+        this.setOptions(res)
+      })
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      this.setOptions(this.chartData)
+      // this.setOptions(this.chart)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ days, purchaseLineBarData, produceLineBarData, sellRefundLineBarData, purchaseRefundLineBarData, sellLineBarData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: days,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,44 +99,98 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['采购入库', '生产入库', '销售退货', '采购退货', '销售提货']
         },
-        series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
+        series: [
+          {
+            name: '采购入库',
+            itemStyle: {
+              normal: {
                 color: '#FF005A',
-                width: 2
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2
+                }
               }
-            }
+            },
+            type: 'line',
+            data: purchaseLineBarData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
           },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
+          {
+            name: '生产入库',
+            type: 'line',
+            itemStyle: {
+              normal: {
                 color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
               }
-            }
+            },
+            data: produceLineBarData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
           },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+            {
+            name: '销售退货', itemStyle: {
+              normal: {
+                color: '#FF005A',
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2
+                }
+              }
+            },
+            type: 'line',
+            data: sellRefundLineBarData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },
+          {
+            name: '采购退货',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#3888fa',
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
+              }
+            },
+            data: purchaseRefundLineBarData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          },
+          {
+            name: '销售提货',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#3888fa',
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
+              }
+            },
+            data: sellLineBarData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          }
+        ]
       })
     }
   }
