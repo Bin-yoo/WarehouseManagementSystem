@@ -36,7 +36,7 @@ public class HomePageController {
 
     @GetMapping("/queryLineBarData")
     @Log("折线图数据")
-    @ApiOperation("快捷方式数据")
+    @ApiOperation("折线图数据")
     @PreAuthorize("@el.check('homePage:list')")
     public ResponseEntity queryLineBarData(){
         return new ResponseEntity<>(homePageService.queryLineBarData(),HttpStatus.OK);
