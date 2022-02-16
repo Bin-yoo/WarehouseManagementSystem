@@ -50,7 +50,10 @@
                  LEFT JOIN tb_goods_type t ON t.id = g.type
                  LEFT JOIN tb_order_goods og ON og.good_id = g.id
                  LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
-        WHERE og.order_id = #{id} AND i.wh_id = #{whId}
+        WHERE og.order_id = #{id}
+        <if test="whId != null and whId != ''">
+            AND i.wh_id = #{whId}
+        </if>
     </select>
 
     <select id="getSellOrderGoodListWithWhId" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
@@ -62,7 +65,10 @@
                  LEFT JOIN tb_goods_type t ON t.id = g.type
                  LEFT JOIN tb_order_goods og ON og.good_id = g.id
                  LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
-        WHERE og.order_id = #{id} AND i.wh_id = #{whId}
+        WHERE og.order_id = #{id}
+        <if test="whId != null and whId != ''">
+            AND i.wh_id = #{whId}
+        </if>
     </select>
 
     <select id="getInventoryOrderGoodList" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">

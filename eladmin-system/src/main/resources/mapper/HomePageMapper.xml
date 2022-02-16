@@ -19,11 +19,11 @@
 <!--    </select>-->
 
     <select id="selectPurchaseOrderCountByMonth" parameterType="Date" resultType="Integer">
-        SELECT COUNT(*) FROM tb_orders WHERE order_type = 1 AND verify_date BETWEEN #{startTime} AND #{endTime}
+        SELECT COUNT(*) FROM tb_orders WHERE order_type = 1 AND date BETWEEN #{startTime} AND #{endTime}
     </select>
 
     <select id="selectSellOrderCountByMonth" parameterType="Date" resultType="Integer">
-        SELECT COUNT(*) FROM tb_orders WHERE order_type = 5 AND verify_date BETWEEN #{startTime} AND #{endTime}
+        SELECT COUNT(*) FROM tb_orders WHERE order_type = 5 AND date BETWEEN #{startTime} AND #{endTime}
     </select>
 
     <select id="selectWaitApproveOrderCountByMonth" resultType="Integer">
@@ -43,7 +43,7 @@
     <select id="queryLineBarDataByOrderType" parameterType="Integer" resultType="me.zhengjie.modules.homepage.service.dto.LineBarDto">
         SELECT (CASE WHEN SUM(o.count) !=0 THEN SUM(o.count) ELSE 0 END) AS count, dt.days
         FROM
-            (SELECT COUNT(order_type) AS count, DATE_FORMAT(verify_date, '%Y-%m-%d') AS days FROM tb_orders
+            (SELECT COUNT(order_type) AS count, DATE_FORMAT(date, '%Y-%m-%d') AS days FROM tb_orders
             WHERE status = 2 AND order_type = #{orderType} GROUP BY days, order_type) o
         RIGHT JOIN
             (
