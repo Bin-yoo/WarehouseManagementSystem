@@ -124,7 +124,11 @@
         <el-table-column prop="typeName" label="货品类别" />
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="model" label="型号" />
-        <el-table-column prop="count" label="库存数量" />
+        <el-table-column prop="count" label="库存数量" >
+          <template slot-scope="scope">
+            <span style="color: #F56C6C;">{{ scope.row.count }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="lowerLimit" label="库存下限" />
         <el-table-column prop="upperLimit" label="库存上限" />
         <el-table-column prop="weight" label="重量" />
