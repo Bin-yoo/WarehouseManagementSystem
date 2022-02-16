@@ -53,6 +53,7 @@ public class WaitApproveOrdersServiceImpl extends CommonServiceImpl<WaitApproveO
         IPage<TbOrders> queryPage = PageUtil.toMybatisPage(pageable);
         QueryWrapper<TbOrders> predicate = QueryHelpMybatisPlus.getPredicate(query);
         predicate.ne("status", 2);
+        predicate.ne("order_type", OrderTypeEnum.TRANSFER_IN.getCode());
         IPage<TbOrders> page = waitApproveOrdersMapper.selectPage(queryPage, predicate);
         return ConvertUtil.convertPage(page, TbOrdersDto.class);
     }
