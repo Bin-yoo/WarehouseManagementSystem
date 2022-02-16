@@ -110,6 +110,9 @@ export default {
                 lineStyle: {
                   color: '#FF005A',
                   width: 2
+                },
+                areaStyle: {
+                  color: '#FF005A'
                 }
               }
             },
@@ -129,7 +132,7 @@ export default {
                   width: 2
                 },
                 areaStyle: {
-                  color: '#f3f8ff'
+                  color: '#3888fa'
                 }
               }
             },
@@ -140,10 +143,13 @@ export default {
             {
             name: '销售退货', itemStyle: {
               normal: {
-                color: '#FF005A',
+                color: '#409EFF',
                 lineStyle: {
-                  color: '#FF005A',
+                  color: '#409EFF',
                   width: 2
+                },
+                areaStyle: {
+                  color: '#409EFF'
                 }
               }
             },
@@ -157,13 +163,13 @@ export default {
             type: 'line',
             itemStyle: {
               normal: {
-                color: '#3888fa',
+                color: '#67C23A',
                 lineStyle: {
-                  color: '#3888fa',
+                  color: '#67C23A',
                   width: 2
                 },
                 areaStyle: {
-                  color: '#f3f8ff'
+                  color: '#67C23A'
                 }
               }
             },
@@ -176,13 +182,13 @@ export default {
             type: 'line',
             itemStyle: {
               normal: {
-                color: '#3888fa',
+                color: '#DCDFE6',
                 lineStyle: {
-                  color: '#3888fa',
+                  color: '#DCDFE6',
                   width: 2
                 },
                 areaStyle: {
-                  color: '#f3f8ff'
+                  color: '#DCDFE6'
                 }
               }
             },
