@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.homepage.service.mapper.HomePageMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.good_id, a.wh_id, a.count
+  </sql>
+  -->
+<!--    <select id="selectPurchaseOrderCountByMonth" parameterType="Date" resultType="Integer">-->
+<!--        SELECT COUNT(*) FROM tb_orders WHERE order_type = 1-->
+<!--        <if test="startTime != null">-->
+<!--            AND verify_date >= #{endTime}-->
+<!--        </if>-->
+<!--        <if test="endTime != null">-->
+<!--            AND verify_date &lt;= #{startTime}-->
+<!--        </if>-->
+<!--    </select>-->
+
+    <select id="selectPurchaseOrderCountByMonth" parameterType="Date" resultType="Integer">
+        SELECT COUNT(*) FROM tb_orders WHERE order_type = 1 AND verify_date BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="selectSellOrderCountByMonth" parameterType="Date" resultType="Integer">
+        SELECT COUNT(*) FROM tb_orders WHERE order_type = 5 AND verify_date BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="selectWaitApproveOrderCountByMonth" resultType="Integer">
+        SELECT COUNT(*) FROM tb_orders WHERE del_flag = 0 AND (status &lt;> 2) AND (order_type &lt;> 8)
+    </select>
+
+    <select id="selectInventoryWarningCountByMonth" resultType="Integer">
+        SELECT COUNT(*) FROM tb_goods_info g
+            LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+            LEFT JOIN tb_goods_type t ON t.id = g.type
+            LEFT JOIN tb_goods_unit u ON u.id = g.unit
+            LEFT JOIN tb_warehouse w ON w.wh_id = i.wh_id
+            LEFT JOIN tb_wh_goods wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id
+        WHERE wg.lower_limit + 50 >= i.count
+    </select>
+
+    <select id="queryLineBarDataByOrderType" parameterType="Integer" resultType="me.zhengjie.modules.homepage.service.dto.LineBarDto">
+        SELECT (CASE WHEN SUM(o.count) !=0 THEN SUM(o.count) ELSE 0 END) AS count, dt.days
+        FROM
+            (SELECT COUNT(order_type) AS count, DATE_FORMAT(verify_date, '%Y-%m-%d') AS days FROM tb_orders
+            WHERE status = 2 AND order_type = #{orderType} GROUP BY days, order_type) o
+        RIGHT JOIN
+            (
+                SELECT DATE_FORMAT(curdate(), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 1 DAY), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 2 DAY), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 3 DAY), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 4 DAY), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 5 DAY), '%Y-%m-%d') AS days from DUAL UNION ALL
+                SELECT DATE_FORMAT(date_sub(curdate(), INTERVAL 6 DAY), '%Y-%m-%d') AS days from DUAL
+            ) dt ON o.days = dt.days
+        GROUP BY dt.days ORDER BY dt.days ASC
+    </select>
+
+</mapper>
