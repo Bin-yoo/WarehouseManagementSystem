@@ -44,12 +44,17 @@
     <select id="getInOrderGoodListWithWhId" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
-               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price, i.count
+               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as purchasePrice, og.total_price
+                <if test="whId != null and whId != ''">
+                    , i.count
+                </if>
         FROM tb_goods_info g
-                 LEFT JOIN tb_goods_unit u ON u.id = g.unit
-                 LEFT JOIN tb_goods_type t ON t.id = g.type
-                 LEFT JOIN tb_order_goods og ON og.good_id = g.id
-                 LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+                LEFT JOIN tb_goods_unit u ON u.id = g.unit
+                LEFT JOIN tb_goods_type t ON t.id = g.type
+                LEFT JOIN tb_order_goods og ON og.good_id = g.id
+                <if test="whId != null and whId != ''">
+                    LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+                </if>
         WHERE og.order_id = #{id}
         <if test="whId != null and whId != ''">
             AND i.wh_id = #{whId}
@@ -59,12 +64,17 @@
     <select id="getSellOrderGoodListWithWhId" parameterType="Long" resultType="me.zhengjie.modules.orders.service.dto.OrderGoodsInfoDto">
         SELECT g.id, g.g_code, g.g_name, g.specification, g.py_code, g.manufacturer, g.remark, g.bar_code,
                g.qr_code, g.type, g.model, g.weight, g.color, g.unit, g.allocation,
-               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as sellPrice, og.total_price, i.count
+               u.gu_name AS unitName, t.gt_name AS typeName, og.good_num, og.price as sellPrice, og.total_price
+                <if test="whId != null and whId != ''">
+                    , i.count
+                </if>
         FROM tb_goods_info g
-                 LEFT JOIN tb_goods_unit u ON u.id = g.unit
-                 LEFT JOIN tb_goods_type t ON t.id = g.type
-                 LEFT JOIN tb_order_goods og ON og.good_id = g.id
-                 LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+                LEFT JOIN tb_goods_unit u ON u.id = g.unit
+                LEFT JOIN tb_goods_type t ON t.id = g.type
+                LEFT JOIN tb_order_goods og ON og.good_id = g.id
+                <if test="whId != null and whId != ''">
+                    LEFT JOIN tb_wh_inventory i ON i.good_id = g.id
+                </if>
         WHERE og.order_id = #{id}
         <if test="whId != null and whId != ''">
             AND i.wh_id = #{whId}
