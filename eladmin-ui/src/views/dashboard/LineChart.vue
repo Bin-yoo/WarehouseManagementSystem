@@ -116,6 +116,7 @@ export default {
                 }
               }
             },
+            smooth: false,
             type: 'line',
             data: purchaseLineBarData,
             animationDuration: 2800,
@@ -136,6 +137,7 @@ export default {
                 }
               }
             },
+            smooth: false,
             data: produceLineBarData,
             animationDuration: 2800,
             animationEasing: 'quadraticOut'
@@ -153,6 +155,7 @@ export default {
                 }
               }
             },
+            smooth: false,
             type: 'line',
             data: sellRefundLineBarData,
             animationDuration: 2800,
@@ -173,6 +176,7 @@ export default {
                 }
               }
             },
+            smooth: false,
             data: purchaseRefundLineBarData,
             animationDuration: 2800,
             animationEasing: 'quadraticOut'
@@ -192,6 +196,7 @@ export default {
                 }
               }
             },
+            smooth: false,
             data: sellLineBarData,
             animationDuration: 2800,
             animationEasing: 'quadraticOut'
