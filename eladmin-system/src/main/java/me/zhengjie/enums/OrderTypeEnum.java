@@ -41,8 +41,8 @@ public enum OrderTypeEnum {
         this.description = description;
     }
 
-    /*//根据编码得到值
-    public static String getValue(Integer code) {
+    //根据编码得到值
+    public static String getDescription(Integer code) {
         OrderTypeEnum[] orderTypeEnums = values();
         for (OrderTypeEnum orderTypeEnum : orderTypeEnums) {
             if (orderTypeEnum.getCode().equals(code)) {
@@ -50,7 +50,7 @@ public enum OrderTypeEnum {
             }
         }
         return null;
-    }*/
+    }
 
     //根据编码得到枚举(switch)
     public static OrderTypeEnum getValue(Integer code) {
