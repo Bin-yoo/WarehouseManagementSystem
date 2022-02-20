@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="me.zhengjie.modules.inventoryStatistics.service.mapper.InventoryStatisticsMapper">
+<mapper namespace="me.zhengjie.modules.statistics.service.mapper.InventoryStatisticsMapper">
 
   <!-- 通用查询结果列 -->
   <!--
@@ -9,7 +9,7 @@
   </sql>
   -->
 
-    <select id="queryLineBarDataByInOutType" parameterType="Integer" resultType="me.zhengjie.modules.inventoryStatistics.service.dto.LineBarDto">
+    <select id="queryLineBarDataByInOutType" parameterType="Integer" resultType="me.zhengjie.modules.statistics.service.dto.LineBarDto">
         SELECT (CASE WHEN SUM(o.count) !=0 THEN SUM(o.count) ELSE 0 END) AS count, dt.months AS days
         FROM
             (
@@ -35,7 +35,7 @@
         GROUP BY dt.months ORDER BY dt.months ASC
     </select>
 
-    <select id="queryPieChartData" resultType="me.zhengjie.modules.inventoryStatistics.service.dto.PieChartDto">
+    <select id="queryPieChartData" resultType="me.zhengjie.modules.statistics.service.dto.PieChartDto">
         SELECT order_type AS name, COUNT(*) AS value FROM tb_orders WHERE order_type IN (1,2,3,4,5) AND status = 2 GROUP BY order_type ORDER BY value DESC
     </select>
 

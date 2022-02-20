@@ -1,13 +1,13 @@
-package me.zhengjie.modules.inventoryStatistics.service.impl;
+package me.zhengjie.modules.statistics.service.impl;
 
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.enums.OrderTypeEnum;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
-import me.zhengjie.modules.inventoryStatistics.service.InventoryStatisticsService;
-import me.zhengjie.modules.inventoryStatistics.service.dto.LineBarDto;
-import me.zhengjie.modules.inventoryStatistics.service.dto.PieChartDto;
-import me.zhengjie.modules.inventoryStatistics.service.mapper.InventoryStatisticsMapper;
+import me.zhengjie.modules.statistics.service.InventoryStatisticsService;
+import me.zhengjie.modules.statistics.service.dto.LineBarDto;
+import me.zhengjie.modules.statistics.service.dto.PieChartDto;
+import me.zhengjie.modules.statistics.service.mapper.InventoryStatisticsMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

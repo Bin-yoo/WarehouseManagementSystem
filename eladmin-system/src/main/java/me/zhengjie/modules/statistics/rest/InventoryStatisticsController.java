@@ -1,10 +1,10 @@
-package me.zhengjie.modules.inventoryStatistics.rest;
+package me.zhengjie.modules.statistics.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.Log;
-import me.zhengjie.modules.inventoryStatistics.service.InventoryStatisticsService;
+import me.zhengjie.modules.statistics.service.InventoryStatisticsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

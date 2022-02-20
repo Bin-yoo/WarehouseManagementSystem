@@ -1,4 +1,4 @@
-package me.zhengjie.modules.inventoryStatistics.service;
+package me.zhengjie.modules.statistics.service;
 
 import me.zhengjie.base.CommonService;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;

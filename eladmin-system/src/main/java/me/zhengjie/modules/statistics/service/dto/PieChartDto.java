@@ -1,6 +1,5 @@
-package me.zhengjie.modules.inventoryStatistics.service.dto;
+package me.zhengjie.modules.statistics.service.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 

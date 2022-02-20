@@ -1,13 +1,12 @@
-package me.zhengjie.modules.inventoryStatistics.service.mapper;
+package me.zhengjie.modules.statistics.service.mapper;
 
 import me.zhengjie.base.CommonMapper;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
-import me.zhengjie.modules.inventoryStatistics.service.dto.LineBarDto;
-import me.zhengjie.modules.inventoryStatistics.service.dto.PieChartDto;
+import me.zhengjie.modules.statistics.service.dto.LineBarDto;
+import me.zhengjie.modules.statistics.service.dto.PieChartDto;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
