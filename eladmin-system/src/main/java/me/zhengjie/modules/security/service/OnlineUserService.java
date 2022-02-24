@@ -118,6 +118,11 @@ public class OnlineUserService {
     public void logout(String token) {
         String key = properties.getOnlineKey() + token;
         redisUtils.del(key);
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        // 清除redis缓存
+        redisUtils.del(CacheKey.DATA_USER + currentUserId);
+        redisUtils.del(CacheKey.MENU_USER + currentUserId);
+        redisUtils.del(CacheKey.ROLE_AUTH + currentUserId);
     }
 
     /**
