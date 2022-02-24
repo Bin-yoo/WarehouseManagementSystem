@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
-import me.zhengjie.modules.inventory.service.dto.InventoryDetailDto;
 import me.zhengjie.modules.statistics.service.SupplierOfferStatisticsService;
 import me.zhengjie.modules.statistics.service.dto.*;
 import me.zhengjie.modules.statistics.service.mapper.SupplierOfferStatisticsMapper;
@@ -37,9 +36,9 @@ public class SupplierOfferStatisticsServiceImpl extends CommonServiceImpl<Suppli
     }
 
     @Override
-    public Object getDetail(Long sourceId, Pageable pageable) {
+    public PageInfo<SupplierOfferDetailDto> getDetail(Long sourceId, Pageable pageable) {
         IPage<SupplierOfferDetailDto> queryPage = PageUtil.toMybatisPage(pageable);
-        IPage<SupplierOfferDetailDto> page = supplierOfferStatisticsMapper.getDetail(sourceId, queryPage);
+        IPage<SupplierOfferDetailDto> page = supplierOfferStatisticsMapper.getDetail(queryPage, sourceId);
         return ConvertUtil.convertPage(page, SupplierOfferDetailDto.class);
     }
 }

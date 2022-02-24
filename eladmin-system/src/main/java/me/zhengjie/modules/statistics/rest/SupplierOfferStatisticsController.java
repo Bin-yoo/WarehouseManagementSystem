@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.Log;
+import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.statistics.service.SupplierOfferStatisticsService;
 import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,9 @@ public class SupplierOfferStatisticsController {
     @ApiOperation("获取供应商供货汇总详情")
     @PreAuthorize("@el.check('supplierOfferStatistics:list')")
     public ResponseEntity getDetail(Long sourceId, Pageable pageable){
+        if (sourceId == null) {
+            throw new BadRequestException("缺少供应商id");
+        }
         return new ResponseEntity<>(supplierOfferStatisticsService.getDetail(sourceId, pageable),HttpStatus.OK);
     }
 

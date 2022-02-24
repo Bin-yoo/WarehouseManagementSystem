@@ -15,13 +15,14 @@
           <el-table v-loading="detailDataLoading" :data="detailData" size="small" style="width: 100%;">
             <el-table-column prop="orderType" label="单据类型">
               <template slot-scope="scope">
-                采购入库单
+                <span v-if="scope.row.orderType === 1">采购入库单</span>
+                <span v-if="scope.row.orderType === 4">采购退货单</span>
               </template>
             </el-table-column>
             <el-table-column prop="orderNo" label="单号" width="150" />
             <el-table-column prop="sourceName" label="供应商" />
-            <el-table-column prop="whName" label="入库仓库" />
-            <el-table-column prop="date" label="入库日期" />
+            <el-table-column prop="whName" label="出入库仓库" />
+            <el-table-column prop="date" label="出入库日期" />
             <el-table-column prop="gCode" label="货品编码" />
             <el-table-column prop="gName" label="货品名称" />
             <el-table-column prop="pyCode" label="拼音码" />
@@ -52,11 +53,23 @@
         <el-table-column type="selection" width="55" />
         <el-table-column prop="sourceName" label="供应商" />
         <el-table-column prop="purchaseCount" label="采购数量" />
-        <el-table-column prop="purchaseAmount" label="采购金额" />
+        <el-table-column prop="purchaseAmount" label="采购金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.purchaseAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="refundCount" label="退货数量" />
-        <el-table-column prop="refundAmount" label="退货金额" />
+        <el-table-column prop="refundAmount" label="退货金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.refundAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="totalCount" label="总数量" />
-        <el-table-column prop="totalAmount" label="总金额" />
+        <el-table-column prop="totalAmount" label="总金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.totalAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="checkPer(['admin','supplierOfferStatistics:list'])" fixed="right" label="操作" width="295px" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.sourceId)" style="margin-left: 0px;" />
@@ -76,7 +89,6 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
-import crudTbWhInventory from '@/api/tbWhInventory'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
@@ -85,7 +97,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation, GoodChooseBoard },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '查看单据详情', url: 'api/supplierOfferStatistics', idField: 'id', sort: 'id,desc', crudMethod: { ...SupplierOfferStatistics }})
+    return CRUD({ title: '查看单据详情', url: 'api/supplierOfferStatistics', idField: 'id', sort: 'a.id,desc', crudMethod: { ...SupplierOfferStatistics }})
   },
   data() {
     return {
@@ -110,7 +122,6 @@ export default {
     },
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
-      
     },
     // 提交前的验证
     [CRUD.HOOK.afterValidateCU]() {
@@ -143,6 +154,7 @@ export default {
     dialogClose() {
       this.sourceId = null
       this.size = 10
+      this.total = 0
       this.detailData = []
     }
   }

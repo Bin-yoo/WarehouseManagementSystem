@@ -18,6 +18,6 @@ public interface SupplierOfferStatisticsMapper extends CommonMapper<TbWhInventor
 
     IPage<SupplierOfferStatisticsDto> queryAll(IPage<SupplierOfferStatisticsDto> queryPage, @Param("query") SupplierOfferStatisticsQueryParam query);
 
-    IPage<SupplierOfferDetailDto> getDetail(@Param("sourceId") Long sourceId, IPage<SupplierOfferDetailDto> queryPage);
+    IPage<SupplierOfferDetailDto> getDetail(IPage<SupplierOfferDetailDto> queryPage, @Param("sourceId") Long sourceId);
 
 }
