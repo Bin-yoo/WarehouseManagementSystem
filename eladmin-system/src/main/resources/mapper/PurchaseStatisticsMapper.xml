@@ -32,10 +32,10 @@
                 AND g.g_name LIKE CONCAT('%', #{query.gName}, '%')
             </if>
             <if test="query.gCode != null and query.gCode != ''">
-                AND p.g_code LIKE CONCAT('%', #{query.gCode}, '%')
+                AND g.g_code LIKE CONCAT('%', #{query.gCode}, '%')
             </if>
             <if test="query.pyCode != null and query.pyCode != ''">
-                AND p.py_code LIKE CONCAT('%', #{query.pyCode}, '%')
+                AND g.py_code LIKE CONCAT('%', #{query.pyCode}, '%')
             </if>
             GROUP BY g.id, o.order_type
         ) a GROUP BY a.id
