@@ -1,6 +1,5 @@
 package me.zhengjie.modules.statistics.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -27,7 +26,6 @@ public class SupplierOfferDetailDto implements Serializable {
     @ApiModelProperty(value = "单据类型")
     private Integer orderType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "入库日期")
     private Date date;
 

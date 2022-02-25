@@ -22,7 +22,11 @@
             <el-table-column prop="orderNo" label="单号" width="150" />
             <el-table-column prop="sourceName" label="供应商" />
             <el-table-column prop="whName" label="出入库仓库" />
-            <el-table-column prop="date" label="出入库日期" />
+            <el-table-column prop="date" label="出入库日期" width="85" >
+              <template slot-scope="scope">
+                {{ scope.row.date | formatDate("") }}
+              </template>
+            </el-table-column>
             <el-table-column prop="gCode" label="货品编码" />
             <el-table-column prop="gName" label="货品名称" />
             <el-table-column prop="pyCode" label="拼音码" />
@@ -90,6 +94,7 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import GoodChooseBoard from '@/components/GoodChooseBoard'
+import { getFormatDate } from '@/utils/common.js'
 
 const defaultForm = { id: null, orderType: null, orderNo: null, orderDate: null, orderPersonId: null, orderPerson: null, managerId: null, manager: null, date: null, whId: null, whName: null, sourceId: null, sourceName: null, originOrderNo: null, upperCasePrice: '零元整', amountCount: 0, amountPrice: 0, status: null, verifyDate: null, verifyPersonId: null, verifyPerson: null, delFlag: null, updateTime: null, updateBy: null, remark: null, goodList: [] }
 export default {
@@ -156,6 +161,11 @@ export default {
       this.size = 10
       this.total = 0
       this.detailData = []
+    }
+  },
+  filters: {
+    formatDate(val) {
+      return getFormatDate(val)
     }
   }
 }
