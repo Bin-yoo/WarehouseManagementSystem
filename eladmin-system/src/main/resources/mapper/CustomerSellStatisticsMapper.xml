@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.statistics.service.mapper.CustomerSellStatisticsMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.good_id, a.wh_id, a.count
+  </sql>
+  -->
+
+    <select id="queryAll" resultType="me.zhengjie.modules.statistics.service.dto.CustomerSellStatisticsDto">
+        SELECT a.id AS source_id, a.c_name AS source_name, SUM(a.sell_count) AS sell_count, SUM(a.sell_amount) AS sell_amount,
+            SUM(a.refund_count) AS refund_count,SUM(a.refund_amount) AS refund_amount,
+            (SUM(a.sell_count) - SUM(a.refund_count)) AS total_count, (SUM(a.sell_amount) - SUM(a.refund_amount)) AS total_amount
+        FROM
+        (
+            SELECT p.id, p.c_name,
+            (CASE WHEN o.order_type = 5 THEN SUM(o.amount_count) ELSE 0 END) AS sell_count,
+            (CASE WHEN o.order_type = 3 THEN SUM(o.amount_count) ELSE 0 END) AS refund_count,
+            (CASE WHEN o.order_type = 5 THEN SUM(o.amount_price) ELSE 0 END) AS sell_amount,
+            (CASE WHEN o.order_type = 3 THEN SUM(o.amount_price) ELSE 0 END) AS refund_amount
+            FROM tb_partner_company_info p
+            LEFT JOIN tb_orders o ON o.source_id = p.id
+            WHERE p.type IN (2, 3)
+            <if test="query.sourceName != null and query.sourceName != ''">
+                AND p.c_name LIKE CONCAT('%', #{query.sourceName}, '%')
+            </if>
+            GROUP BY p.id,o.order_type
+        ) a GROUP BY a.id
+    </select>
+
+    <select id="getDetail" resultType="me.zhengjie.modules.statistics.service.dto.SupplierOfferDetailDto">
+        SELECT o.order_no, o.order_type, o.date, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
+               og.price, og.good_num AS count, og.total_price, w.wh_name, c.c_name AS source_name
+        FROM tb_orders o
+             LEFT JOIN tb_order_goods og ON og.order_id = o.id
+             LEFT JOIN tb_goods_info g ON g.id = og.good_id
+             LEFT JOIN tb_goods_unit u ON u.id = g.unit
+             LEFT JOIN tb_warehouse w ON w.wh_id = o.wh_id
+             LEFT JOIN tb_partner_company_info c ON c.id = o.source_id
+        WHERE o.order_type IN (3, 5) AND o.status = 2 AND c.id = #{sourceId}
+        ORDER BY o.order_date DESC
+    </select>
+</mapper>
