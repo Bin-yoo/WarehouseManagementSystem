@@ -10,7 +10,7 @@
   -->
 
     <select id="queryAll" resultType="me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsDto">
-        SELECT a.id AS sourceId, a.c_name AS sourceName, SUM(a.purchase_count) AS purchase_count, SUM(a.purchase_amount) AS purchase_amount,
+        SELECT a.id AS source_id, a.c_name AS source_name, SUM(a.purchase_count) AS purchase_count, SUM(a.purchase_amount) AS purchase_amount,
             SUM(a.refund_count) AS refund_count,SUM(a.refund_amount) AS refund_amount,
             (SUM(a.purchase_count) - SUM(a.refund_count)) AS total_count, (SUM(a.purchase_amount) - SUM(a.refund_amount)) AS total_amount
         FROM
