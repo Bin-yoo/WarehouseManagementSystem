@@ -4,7 +4,7 @@
     <div class="head-container">
       <div>
         <!-- 搜索 -->
-        <el-input v-model="query.sourceName" clearable placeholder="输入供应商名称搜索" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.sourceName" clearable placeholder="输入生产部门名称搜索" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
@@ -54,7 +54,7 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="sourceName" label="供应商" />
+        <el-table-column prop="sourceName" label="生产部门" />
         <el-table-column prop="productCount" label="生产数量" />
         <el-table-column prop="productAmount" label="生产金额">
           <template slot-scope="scope">
