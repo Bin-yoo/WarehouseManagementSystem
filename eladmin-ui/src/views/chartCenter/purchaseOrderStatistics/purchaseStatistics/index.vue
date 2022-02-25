@@ -47,8 +47,8 @@
             </el-table-column>
             <el-table-column prop="orderNo" label="单号" width="150" />
             <el-table-column prop="sourceName" label="供应商" />
-            <el-table-column prop="whName" label="入库仓库" />
-            <el-table-column prop="date" label="入库日期" width="85" >
+            <el-table-column prop="whName" label="出入库仓库" />
+            <el-table-column prop="date" label="出入库日期" width="85" >
               <template slot-scope="scope">
                 {{ scope.row.date | formatDate("") }}
               </template>
