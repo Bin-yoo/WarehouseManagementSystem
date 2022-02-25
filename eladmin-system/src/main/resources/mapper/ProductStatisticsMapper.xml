@@ -19,7 +19,7 @@
             LEFT JOIN tb_goods_unit u ON u.id = g.unit
             LEFT JOIN tb_order_goods og ON og.good_id= g.id
             LEFT JOIN tb_orders o ON o.id = og.order_id
-        WHERE o.order_type = 2
+        WHERE o.order_type = 2 AND o.status = 2
         <if test="query.gName != null and query.gName != ''">
             AND g.g_name LIKE CONCAT('%', #{query.gName}, '%')
         </if>

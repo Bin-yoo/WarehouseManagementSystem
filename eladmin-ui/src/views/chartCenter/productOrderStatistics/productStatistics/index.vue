@@ -87,7 +87,11 @@
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="unitName" label="计量单位" />
         <el-table-column prop="productCount" label="生产数量" />
-        <el-table-column prop="productAmount" label="生产金额" />
+        <el-table-column prop="productAmount" label="生产金额" >
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.productAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="checkPer(['admin','supplierOfferStatistics:list'])" fixed="right" label="操作" width="295px" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.goodId)" style="margin-left: 0px;" />

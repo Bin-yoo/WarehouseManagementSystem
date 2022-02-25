@@ -40,7 +40,4 @@ public class ProductStatisticsQueryParam {
     @Query(type = Query.Type.INNER_LIKE)
     private String sourceName;
 
-    @Query(type = Query.Type.INNER_LIKE)
-    private String deptName;
-
 }

@@ -88,11 +88,23 @@
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="unitName" label="计量单位" />
         <el-table-column prop="purchaseCount" label="采购数量" />
-        <el-table-column prop="purchaseAmount" label="采购金额" />
+        <el-table-column prop="purchaseAmount" label="采购金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.purchaseAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="refundCount" label="退货数量" />
-        <el-table-column prop="refundAmount" label="退货金额" />
+        <el-table-column prop="refundAmount" label="退货金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.refundAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="totalCount" label="总数量" />
-        <el-table-column prop="totalAmount" label="总金额" />
+        <el-table-column prop="totalAmount" label="总金额">
+          <template slot-scope="scope">
+            <span>¥&nbsp;{{ scope.row.totalAmount }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="checkPer(['admin','supplierOfferStatistics:list'])" fixed="right" label="操作" width="295px" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.goodId)" style="margin-left: 0px;" />
