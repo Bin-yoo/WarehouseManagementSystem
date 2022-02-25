@@ -14,7 +14,7 @@ import java.util.List;
 */
 @Getter
 @Setter
-public class SupplierOfferStatisticsQueryParam {
+public class PurchaseStatisticsQueryParam {
 
     @Query(type = Query.Type.INNER_LIKE)
     private String gName;

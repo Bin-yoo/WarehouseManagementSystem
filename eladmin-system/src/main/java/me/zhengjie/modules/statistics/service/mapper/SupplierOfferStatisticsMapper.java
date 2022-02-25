@@ -5,7 +5,7 @@ import me.zhengjie.base.CommonMapper;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
 import me.zhengjie.modules.statistics.service.dto.SupplierOfferDetailDto;
 import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsDto;
-import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
+import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsQueryParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupplierOfferStatisticsMapper extends CommonMapper<TbWhInventory> {
 
-    IPage<SupplierOfferStatisticsDto> queryAll(IPage<SupplierOfferStatisticsDto> queryPage, @Param("query") SupplierOfferStatisticsQueryParam query);
+    IPage<SupplierOfferStatisticsDto> queryAll(IPage<SupplierOfferStatisticsDto> queryPage, @Param("query") PurchaseStatisticsQueryParam query);
 
     IPage<SupplierOfferDetailDto> getDetail(IPage<SupplierOfferDetailDto> queryPage, @Param("sourceId") Long sourceId);
 

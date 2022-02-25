@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.statistics.service.PurchaseStatisticsService;
-import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
+import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class PurchaseStatisticsController {
     @Log("查询货品采购汇总列表")
     @ApiOperation("查询货品采购汇总列表")
     @PreAuthorize("@el.check('purchaseStatistics:list')")
-    public ResponseEntity query(SupplierOfferStatisticsQueryParam query, Pageable pageable){
+    public ResponseEntity query(PurchaseStatisticsQueryParam query, Pageable pageable){
         return new ResponseEntity<>(purchaseStatisticsService.queryAll(query,pageable),HttpStatus.OK);
     }
 

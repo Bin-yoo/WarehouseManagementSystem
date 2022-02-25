@@ -6,14 +6,12 @@ import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.statistics.service.SupplierOfferStatisticsService;
-import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
+import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 /**
 * @author LiangBin
@@ -31,7 +29,7 @@ public class SupplierOfferStatisticsController {
     @Log("查询供应商供货汇总列表")
     @ApiOperation("查询供应商供货汇总列表")
     @PreAuthorize("@el.check('supplierOfferStatistics:list')")
-    public ResponseEntity query(SupplierOfferStatisticsQueryParam query, Pageable pageable){
+    public ResponseEntity query(PurchaseStatisticsQueryParam query, Pageable pageable){
         return new ResponseEntity<>(supplierOfferStatisticsService.queryAll(query,pageable),HttpStatus.OK);
     }
 

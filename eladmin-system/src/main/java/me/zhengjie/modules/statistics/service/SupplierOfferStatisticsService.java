@@ -4,10 +4,8 @@ import me.zhengjie.base.CommonService;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.modules.inventory.domain.TbWhInventory;
 import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsDto;
-import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
+import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsQueryParam;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 /**
 * @author LiangBin
@@ -23,7 +21,7 @@ public interface SupplierOfferStatisticsService extends CommonService<TbWhInvent
      * @param pageable 分页参数
      * @return PageInfo<TbGoodsInfoDto>
      */
-    PageInfo<SupplierOfferStatisticsDto> queryAll(SupplierOfferStatisticsQueryParam query, Pageable pageable);
+    PageInfo<SupplierOfferStatisticsDto> queryAll(PurchaseStatisticsQueryParam query, Pageable pageable);
 
     Object getDetail(Long sourceId, Pageable pageable);
 }

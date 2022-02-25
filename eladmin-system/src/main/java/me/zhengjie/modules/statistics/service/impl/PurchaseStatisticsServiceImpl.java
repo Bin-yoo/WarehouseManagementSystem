@@ -8,7 +8,7 @@ import me.zhengjie.modules.inventory.domain.TbWhInventory;
 import me.zhengjie.modules.statistics.service.PurchaseStatisticsService;
 import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsDto;
 import me.zhengjie.modules.statistics.service.dto.SupplierOfferDetailDto;
-import me.zhengjie.modules.statistics.service.dto.SupplierOfferStatisticsQueryParam;
+import me.zhengjie.modules.statistics.service.dto.PurchaseStatisticsQueryParam;
 import me.zhengjie.modules.statistics.service.mapper.PurchaseStatisticsMapper;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
@@ -31,7 +31,7 @@ public class PurchaseStatisticsServiceImpl extends CommonServiceImpl<PurchaseSta
     private final PurchaseStatisticsMapper purchaseStatisticsMapper;
 
     @Override
-    public PageInfo<PurchaseStatisticsDto> queryAll(SupplierOfferStatisticsQueryParam query, Pageable pageable) {
+    public PageInfo<PurchaseStatisticsDto> queryAll(PurchaseStatisticsQueryParam query, Pageable pageable) {
         IPage<PurchaseStatisticsDto> queryPage = PageUtil.toMybatisPage(pageable);
         IPage<PurchaseStatisticsDto> page = purchaseStatisticsMapper.queryAll(queryPage, query);
         return ConvertUtil.convertPage(page, PurchaseStatisticsDto.class);

@@ -29,7 +29,7 @@ public class SupplierOfferStatisticsServiceImpl extends CommonServiceImpl<Suppli
     private final SupplierOfferStatisticsMapper supplierOfferStatisticsMapper;
 
     @Override
-    public PageInfo<SupplierOfferStatisticsDto> queryAll(SupplierOfferStatisticsQueryParam query, Pageable pageable) {
+    public PageInfo<SupplierOfferStatisticsDto> queryAll(PurchaseStatisticsQueryParam query, Pageable pageable) {
         IPage<SupplierOfferStatisticsDto> queryPage = PageUtil.toMybatisPage(pageable);
         IPage<SupplierOfferStatisticsDto> page = supplierOfferStatisticsMapper.queryAll(queryPage, query);
         return ConvertUtil.convertPage(page, SupplierOfferStatisticsDto.class);
