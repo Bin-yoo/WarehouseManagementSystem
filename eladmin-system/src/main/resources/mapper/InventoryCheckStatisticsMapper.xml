@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.statistics.service.mapper.InventoryCheckStatisticsMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.good_id, a.wh_id, a.count
+  </sql>
+  -->
+
+    <select id="queryAll" resultType="me.zhengjie.modules.statistics.service.dto.InventoryCheckStatisticsDto">
+        SELECT g.id AS goodId, g.g_code, g.g_name, g.py_code,
+            SUM(og.pl_good_num) AS pl_good_num,
+            SUM(og.pl_price) AS pl_price,
+        t.gt_name AS typeName, g.specification, u.gu_name AS unitName
+        FROM tb_goods_info g
+            LEFT JOIN tb_goods_type t ON t.id = g.type
+            LEFT JOIN tb_goods_unit u ON u.id = g.unit
+            LEFT JOIN tb_order_goods og ON og.good_id= g.id
+            LEFT JOIN tb_orders o ON o.id = og.order_id
+        WHERE o.order_type = 7 AND o.status = 2
+        <if test="query.gName != null and query.gName != ''">
+            AND g.g_name LIKE CONCAT('%', #{query.gName}, '%')
+        </if>
+        <if test="query.gCode != null and query.gCode != ''">
+            AND g.g_code LIKE CONCAT('%', #{query.gCode}, '%')
+        </if>
+        <if test="query.pyCode != null and query.pyCode != ''">
+            AND g.py_code LIKE CONCAT('%', #{query.pyCode}, '%')
+        </if>
+        GROUP BY g.id
+    </select>
+
+    <select id="getDetail" resultType="me.zhengjie.modules.statistics.service.dto.SupplierOfferDetailDto">
+        SELECT o.order_no, o.order_type, o.date, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
+        og.price, og.paper_good_num, og.inventory_good_num, og.pl_good_num, og.pl_price, o.wh_name
+        FROM tb_orders o
+        LEFT JOIN tb_order_goods og ON og.order_id = o.id
+        LEFT JOIN tb_goods_info g ON g.id = og.good_id
+        LEFT JOIN tb_goods_unit u ON u.id = g.unit
+        WHERE o.order_type = 7 AND o.status = 2
+        <if test="goodId != null and goodId != ''">
+            AND g.id = #{goodId}
+        </if>
+        ORDER BY o.order_date DESC
+    </select>
+</mapper>

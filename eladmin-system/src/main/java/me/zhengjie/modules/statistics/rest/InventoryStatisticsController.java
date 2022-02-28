@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 **/
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "首页数据展示")
+@Api(tags = "图表数据展示")
 @RequestMapping("/api/inventoryStatistics")
 public class InventoryStatisticsController {
 

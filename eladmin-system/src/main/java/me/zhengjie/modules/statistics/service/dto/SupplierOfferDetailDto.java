@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -58,5 +59,17 @@ public class SupplierOfferDetailDto implements Serializable {
 
     @ApiModelProperty(value = "来往单位/部门")
     private String sourceName;
+
+    @ApiModelProperty(value = "账面数量")
+    private Integer paperGoodNum = 0;
+
+    @ApiModelProperty(value = "实盘数量")
+    private Integer inventoryGoodNum = 0;
+
+    @ApiModelProperty(value = "盈亏数量")
+    private Integer plGoodNum = 0;
+
+    @ApiModelProperty(value = "盈亏金额")
+    private BigDecimal plPrice = new BigDecimal(0);
 
 }
