@@ -121,7 +121,7 @@
         <el-table-column prop="gCode" label="货品编码" />
         <el-table-column prop="gName" label="货品名称" />
         <el-table-column prop="pyCode" label="拼音码" />
-        <el-table-column prop="typeName" label="货品类别" />
+        <el-table-column prop="type" label="货品类别" />
         <el-table-column prop="specification" label="规格" />
         <el-table-column prop="model" label="型号" />
         <el-table-column prop="count" label="库存数量" />
@@ -129,7 +129,7 @@
         <el-table-column prop="upperLimit" label="库存上限" />
         <el-table-column prop="weight" label="重量" />
         <el-table-column prop="color" label="颜色" />
-        <el-table-column prop="unitName" label="计量单位" />
+        <el-table-column prop="unit" label="计量单位" />
         <el-table-column prop="purchasePrice" label="进价" />
         <el-table-column prop="sellPrice" label="售价" />
         <el-table-column prop="allocation" label="货位(m²)" />

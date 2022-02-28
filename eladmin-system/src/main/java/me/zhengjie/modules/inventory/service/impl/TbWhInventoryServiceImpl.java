@@ -47,7 +47,7 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
         IPage<TbWhInventoryDto> page;
         QueryWrapper<TbWhInventoryDto> wrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(query.getGName())) {
-            wrapper.like("g.name", query.getGName());
+            wrapper.like("g.g_name", query.getGName());
         }
         if (StringUtils.isNotEmpty(query.getGCode())) {
             wrapper.like("g.g_code", query.getGCode());
