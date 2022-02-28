@@ -24,14 +24,12 @@
 
     <select id="getDetail" resultType="me.zhengjie.modules.statistics.service.dto.SupplierOfferDetailDto">
         SELECT o.order_no, o.order_type, o.date, g.g_code, g.g_name, g.specification, g.py_code, u.gu_name AS unitName,
-        og.price, og.good_num AS count, og.total_price, w.wh_name, d.name AS source_name
+        og.price, og.good_num AS count, og.total_price, o.wh_name, o.source_name
         FROM tb_orders o
         LEFT JOIN tb_order_goods og ON og.order_id = o.id
         LEFT JOIN tb_goods_info g ON g.id = og.good_id
         LEFT JOIN tb_goods_unit u ON u.id = g.unit
-        LEFT JOIN tb_warehouse w ON w.wh_id = o.wh_id
-        LEFT JOIN sys_dept d ON d.dept_id = o.source_id
-        WHERE o.order_type = 2 AND o.status = 2 AND d.dept_id = #{sourceId}
+        WHERE o.order_type = 2 AND o.status = 2 AND o.source_id = #{sourceId}
         ORDER BY o.order_date DESC
     </select>
 </mapper>
