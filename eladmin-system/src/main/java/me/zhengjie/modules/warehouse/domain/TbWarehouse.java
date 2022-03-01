@@ -1,9 +1,7 @@
 package me.zhengjie.modules.warehouse.domain;
 
+import com.baomidou.mybatisplus.annotation.*;
 import me.zhengjie.base.CommonModel;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,6 +56,11 @@ public class TbWarehouse extends CommonModel<TbWarehouse> implements Serializabl
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "删除标识")
+    @TableLogic
+    @TableField(fill=FieldFill.INSERT_UPDATE)
+    private Boolean delFlag;
 
     public void copyFrom(TbWarehouse source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));

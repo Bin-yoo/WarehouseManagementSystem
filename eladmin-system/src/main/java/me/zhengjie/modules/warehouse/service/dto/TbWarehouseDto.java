@@ -1,5 +1,8 @@
 package me.zhengjie.modules.warehouse.service.dto;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,4 +63,7 @@ public class TbWarehouseDto implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "删除标识")
+    private Boolean delFlag;
 }

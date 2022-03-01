@@ -67,7 +67,7 @@ public class SearchOrderGoodsInfoDto implements Serializable {
     private String unitName;
 
     @ApiModelProperty(value = "货位")
-    private Integer allocation;
+    private String allocation;
 
     @ApiModelProperty(value = "单价")
     private BigDecimal price;

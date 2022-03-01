@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
+import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.employee.domain.TbEmployee;
 import me.zhengjie.modules.employee.domain.vo.TbEmployeeVo;
 import me.zhengjie.modules.employee.service.mapper.TbEmployeeMapper;
@@ -108,6 +109,12 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int removeByIds(Set<Long> ids){
+        ids.forEach(id -> {
+            TbWarehouse tbWarehouse = tbWarehouseMapper.selectById(id);
+            if (tbWarehouse == null) {
+                throw new BadRequestException("仓库不存在!");
+            }
+        });
         // delCaches(ids);
         return tbWarehouseMapper.deleteBatchIds(ids);
     }

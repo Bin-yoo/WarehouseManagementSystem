@@ -78,7 +78,7 @@ public class TbGoodsInfoVo implements Serializable {
     private BigDecimal sellPrice;
 
     @ApiModelProperty(value = "货位")
-    private Integer allocation;
+    private String allocation;
 
     @ApiModelProperty(value = "货品图片")
     private String pic;

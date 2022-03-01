@@ -91,7 +91,7 @@ public class TbWhInventoryDto implements Serializable {
     private String unit;
 
     @ApiModelProperty(value = "货位")
-    private Integer allocation;
+    private String allocation;
 
     @ApiModelProperty(value = "仓库id")
     /** 防止精度丢失 */

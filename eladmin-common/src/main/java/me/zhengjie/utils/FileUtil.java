@@ -18,6 +18,7 @@ package me.zhengjie.utils;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
+import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import me.zhengjie.exception.BadRequestException;
 import org.apache.poi.ss.usermodel.CellType;
@@ -37,9 +38,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * File工具类，扩展 hutool 工具包
@@ -423,5 +422,61 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         }else{
             return null;
         }
+    }
+
+    /**
+     * excel导入工具类
+     *
+     * @param file       文件
+     * @param columnNames 列对应的字段名
+     * @return 返回数据集合
+     * @throws BadRequestException
+     * @throws IOException
+     */
+    public static List<Map<String, Object>> uploadExcel(MultipartFile file, String[] columnNames) throws BadRequestException, IOException {
+        String fileName = file.getOriginalFilename();
+        // 上传文件为空
+        if (StringUtils.isEmpty(fileName)) {
+            throw new BadRequestException("没有导入文件");
+        }
+        //上传文件大小为1000条数据
+        if (file.getSize() > 1024 * 1024 * 10) {
+            log.error("upload | 上传失败: 文件大小超过10M，文件大小为：{}", file.getSize());
+            throw new BadRequestException("上传失败: 文件大小不能超过10M!");
+        }
+        // 上传文件名格式不正确
+        if (fileName.lastIndexOf(".") != -1 && !".xlsx".equals(fileName.substring(fileName.lastIndexOf(".")))
+                && !".xls".equals(fileName.substring(fileName.lastIndexOf("."))) ) {
+            throw new BadRequestException("文件名格式不正确, 请使用后缀名为.XLS或.XLSX的文件");
+        }
+
+        // 1.获取上传文件输入流
+        InputStream inputStream = null;
+        inputStream = file.getInputStream();
+        // 2.应用HUtool ExcelUtil获取ExcelReader指定输入流和sheet
+        ExcelReader excelReader = ExcelUtil.getReader(inputStream, "Sheet1");
+        // 可以加上表头验证
+        // 3.读取第二行到最后一行数据
+        List<List<Object>> lineList = excelReader.read(1, excelReader.getRowCount(), false);
+
+        //将数据封装到list<Map>中
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (int i = 0; i < lineList.size(); i++) {
+            if (null != lineList.get(i)) {
+                Map<String, Object> hashMap = new HashMap<>();
+                for (int j = 0; j < columnNames.length; j++) {
+                    if (lineList.get(i).size() > j) {
+                        Object property = lineList.get(i).get(j);
+                        hashMap.put(columnNames[j], property);
+                    } else {
+                        break;
+                    }
+                }
+                dataList.add(hashMap);
+            } else {
+                break;
+            }
+        }
+        return dataList;
     }
 }
