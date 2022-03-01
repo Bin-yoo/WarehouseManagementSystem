@@ -132,7 +132,7 @@
         <el-table-column prop="unit" label="计量单位" />
         <el-table-column prop="purchasePrice" label="进价" />
         <el-table-column prop="sellPrice" label="售价" />
-        <el-table-column prop="allocation" label="货位(m²)" />
+        <el-table-column prop="allocation" label="货位" />
         <el-table-column prop="manufacturer" label="生产厂家" />
         <el-table-column prop="barCode" label="条形码" />
         <el-table-column prop="qrCode" label="二维码" />

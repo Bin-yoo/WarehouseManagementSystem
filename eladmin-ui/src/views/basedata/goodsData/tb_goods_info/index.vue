@@ -208,8 +208,8 @@
                 </el-row>
                 <el-row>
                   <el-col :span="11">
-                    <el-form-item label="货位(m²)">
-                      <el-input-number v-model="form.allocation" :min="0" :max="999" controls-position="right" style="width: 100%" />
+                    <el-form-item label="货位">
+                      <el-input v-model="form.allocation" style="width: 100%" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="11" :offset="1">
@@ -299,7 +299,7 @@
         <el-table-column prop="unitName" label="计量单位" />
         <el-table-column prop="purchasePrice" label="进价" />
         <el-table-column prop="sellPrice" label="售价" />
-        <el-table-column prop="allocation" label="货位(m²)" />
+        <el-table-column prop="allocation" label="货位" />
         <el-table-column prop="manufacturer" label="生产厂家" />
         <el-table-column prop="barCode" label="条形码" />
         <el-table-column prop="qrCode" label="二维码" />

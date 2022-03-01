@@ -1,3 +1,16 @@
+// 下载文件
+export function downloadFile(obj, name,suffix){
+  const url = window. URL. create0bjectURL(new Blob([obj]))
+  const link = document.createElement ('a')
+  link.style.display = 'none'
+  link.href = url
+  const fileName = parseTime(new Date()) +'-'+ name + '.' + suffix
+  link.setAttribute('download', fileName)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
 // 金额大写转化函数   add by zhangbg 2018-11-12 start
 //money 数字
 //currencyunit 金额单位
