@@ -34,7 +34,7 @@
     <el-row>
       <el-table v-loading="tableLoading" :data="orderData" size="small" border style="width: 100%; margin-top: 8px;" @row-click="rowClick">
         <el-table-column prop="orderType" label="单据类型" width="85px">
-          <span>采购入库单</span>
+          <span>销售提货单</span>
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" width="150" />
         <el-table-column prop="orderDate" label="制单日期" width="90px">

@@ -46,7 +46,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            低库存报警
+            低库存预警
           </div>
           <count-to :start-val="0" :end-val="panelData.inventoryWarningCount" :duration="3600" class="card-panel-num" />
         </div>

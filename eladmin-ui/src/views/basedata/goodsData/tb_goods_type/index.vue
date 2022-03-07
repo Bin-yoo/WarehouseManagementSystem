@@ -47,7 +47,7 @@
     <el-table ref="table" v-loading="tableLoading" row-key='id' default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="types" size="small"
       style="width: 100%;">
-      <el-table-column prop="gtName" label="货品类型名称">
+      <el-table-column prop="gtName" label="货品类别名称">
         <template slot-scope="scope">
           <i class="el-icon-folder" v-if="scope.row.isFolder == 1"></i>
           <i class="el-icon-document" v-else></i>
@@ -104,7 +104,7 @@ export default {
       rules: {
         gtName: [{
           required: true,
-          message: '货品类型名称不能为空',
+          message: '货品类别名称不能为空',
           trigger: 'blur'
         }],
         parentId: [{
@@ -134,7 +134,7 @@ export default {
       this.defaultForm.id = ''
     },
     toAdd(id) {
-      this.title = '新增货品类型'
+      this.title = '新增货品类别'
       this.dialogShow = true
       this.typesSelectTree = []
       this.loadTypesSelectTree()
@@ -146,7 +146,7 @@ export default {
       }
     },
     toEdit(id) {
-      this.title = '修改货品类型'
+      this.title = '修改货品类别'
       this.dialogShow = true
       this.typesSelectTree = []
       this.loadTypesSelectTree()

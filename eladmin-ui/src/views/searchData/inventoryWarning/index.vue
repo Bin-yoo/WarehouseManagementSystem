@@ -51,7 +51,7 @@
           :options="types"
           :load-options="loadSreachParamTypesSelectTree"
           class="dept_tree_select"
-          placeholder="货品分类"
+          placeholder="货品类别"
         />
         <el-select
           v-model="query.unitId"

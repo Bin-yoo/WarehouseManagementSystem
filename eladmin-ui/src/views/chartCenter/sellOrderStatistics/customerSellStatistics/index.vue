@@ -62,7 +62,6 @@
       </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="55" />
         <el-table-column prop="sourceName" label="客户" />
         <el-table-column prop="sellCount" label="销售数量" />
         <el-table-column prop="sellAmount" label="销售金额">
@@ -82,7 +81,7 @@
             <span>¥&nbsp;{{ scope.row.totalAmount }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPer(['admin','customerSellStatistics:list'])" fixed="right" label="操作" width="295px" align="center">
+        <el-table-column v-if="checkPer(['admin','customerSellStatistics:list'])" fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.sourceId)" style="margin-left: 0px;" />
           </template>

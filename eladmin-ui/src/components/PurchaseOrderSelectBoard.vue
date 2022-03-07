@@ -189,7 +189,8 @@ export default {
     },
     getOrderGoodList(id) {
       this.goodListLoading = true
-      PurchaseRefundOrders.getOrderGoodList(id).then(res => {
+      const params = { id: id }
+      PurchaseRefundOrders.getOrderGoodList(params).then(res => {
         this.goodList = res
         this.goodListLoading = false
       }).catch(() => {

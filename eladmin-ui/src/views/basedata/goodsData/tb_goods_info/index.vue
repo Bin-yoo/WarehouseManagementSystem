@@ -37,7 +37,7 @@
           :options="types"
           :load-options="loadTypesSelectTree"
           class="dept_tree_select"
-          placeholder="货品分类"
+          placeholder="货品类别"
         />
         <!-- <el-input
           v-model="query.specification"
