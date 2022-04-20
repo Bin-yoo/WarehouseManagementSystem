@@ -83,16 +83,16 @@ export default {
       })
     },
     purchaseOrderCount() {
-      this.$router.push("/purchaseOrders")
+      this.$router.push("/warehousing/purchaseOrders")
     },
     sellOrderCount() {
-      this.$router.push("/sell")
+      this.$router.push("/stockOut/sell")
     },
     waitApproveOrderCount() {
-      this.$router.push("/waitApproveOrders")
+      this.$router.push("/searchData/waitApproveOrders")
     },
     inventoryWarningCount() {
-      this.$router.push("/inventoryWarning")
+      this.$router.push("/searchData/inventoryWarning")
     }
   }
 }
