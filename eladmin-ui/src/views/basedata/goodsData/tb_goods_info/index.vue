@@ -225,13 +225,13 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <el-row>
+                <!-- <el-row>
                   <el-col :span="23">
                     <el-form-item label="二维码">
                       <el-input v-model="form.qrCode" />
                     </el-form-item>
                   </el-col>
-                </el-row>
+                </el-row> -->
                 <el-row>
                   <el-col :span="23">
                     <el-form-item label="货品图片">
@@ -301,8 +301,8 @@
         <el-table-column prop="sellPrice" label="售价" />
         <el-table-column prop="allocation" label="货位" />
         <el-table-column prop="manufacturer" label="生产厂家" />
-        <el-table-column prop="barCode" label="条形码" />
-        <el-table-column prop="qrCode" label="二维码" />
+        <!-- <el-table-column prop="barCode" label="条形码" /> -->
+        <!-- <el-table-column prop="qrCode" label="二维码" /> -->
         <el-table-column prop="remark" label="备注" width="200">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.remark" placement="top-start">
