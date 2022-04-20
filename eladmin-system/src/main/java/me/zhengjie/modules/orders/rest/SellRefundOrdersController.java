@@ -125,7 +125,7 @@ public class SellRefundOrdersController {
     @PutMapping("/reApproveOrders")
     @Log("反审单据")
     @ApiOperation("反审单据")
-    @PreAuthorize("@el.check('sellRefundOrders:approve')")
+    @PreAuthorize("@el.check('sellRefundOrders:reApprove')")
     public ResponseEntity reApproveOrders(@RequestBody Set<Long> ids) {
         sellRefundOrdersService.reApproveOrders(ids);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -143,7 +143,7 @@ public class SellRefundOrdersController {
     @GetMapping("/getOrderPrintingInfo")
     @Log("获取打印单据信息")
     @ApiOperation("获取打印单据信息")
-    @PreAuthorize("@el.check('sellRefundOrders:list')")
+    @PreAuthorize("@el.check('sellRefundOrders:print')")
     public ResponseEntity getOrderPrintingInfo(Long id) throws Exception {
         return new ResponseEntity<>(sellRefundOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }

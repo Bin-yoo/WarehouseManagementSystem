@@ -48,7 +48,7 @@
       <crudOperation :permission="permission">
         <el-button
           slot="right"
-          v-permission="permission.add"
+          v-permission="permission.approve"
           class="filter-item"
           size="mini"
           type="success"
@@ -61,7 +61,7 @@
         </el-button>
         <el-button
           slot="right"
-          v-permission="permission.edit"
+          v-permission="permission.reApprove"
           class="filter-item"
           size="mini"
           type="warning"
@@ -286,21 +286,16 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPer(['admin','purchaseOrders:edit','purchaseOrders:del'])" fixed="right" label="操作" width="295px" align="center">
+        <el-table-column v-if="checkPer(['admin','purchaseOrders:edit','purchaseOrders:del','purchaseOrders:approve','purchaseOrders:reApprove','purchaseOrders:print'])" fixed="right" label="操作" width="295px" align="center">
           <template slot-scope="scope">
-            <el-row>
-              <el-col :span="8" :offset="2">
-                <udOperation
-                  :data="scope.row"
-                  :permission="permission"
-                />
-              </el-col>
-              <el-col :span="13">
-                <el-button type="success" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-check" @click="toApprove(scope.row)" />
-                <el-button type="warning" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-refresh-left" @click="toReApprove(scope.row)" />
-                <el-button size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
-              </el-col>
-            </el-row>
+            <udOperation
+              :data="scope.row"
+              :permission="permission"
+            >
+              <el-button slot="right" type="success" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-check" style="margin-right: 2px;" v-permission="permission.approve" @click="toApprove(scope.row)" />
+              <el-button slot="right" type="warning" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-refresh-left" style="margin-right: 2px;" v-permission="permission.reApprove" @click="toReApprove(scope.row)" />
+              <el-button slot="right" size="mini" icon="el-icon-printer" style="margin-right: 2px;" v-permission="permission.print" @click="toPrint(scope.row)" />
+            </udOperation>
           </template>
         </el-table-column>
       </el-table>
@@ -338,7 +333,10 @@ export default {
       permission: {
         add: ['admin', 'purchaseOrders:add'],
         edit: ['admin', 'purchaseOrders:edit'],
-        del: ['admin', 'purchaseOrders:del']
+        del: ['admin', 'purchaseOrders:del'],
+        approve: ['admin', 'purchaseOrders:approve'],
+        reApprove: ['admin', 'purchaseOrders:reApprove'],
+        print: ['admin', 'purchaseOrders:print']
       },
       rules: {
         managerId: [

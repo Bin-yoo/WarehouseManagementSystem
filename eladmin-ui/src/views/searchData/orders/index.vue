@@ -242,7 +242,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPer(['admin','searchOrders:edit','searchOrders:del'])" fixed="right" label="操作" align="center">
+        <el-table-column v-if="checkPer(['admin','searchOrders:print'])" fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
           </template>

@@ -227,10 +227,10 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPer(['admin','waitApproveOrders:print'])" fixed="right" label="操作" align="center" width="200px">
+        <el-table-column v-if="checkPer(['admin','waitApproveOrders:print','waitApproveOrders:approve'])" fixed="right" label="操作" align="center" width="200px">
           <template slot-scope="scope">
-            <el-button type="success" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-check" @click="toApprove(scope.row)" />
-            <el-button size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
+            <el-button v-if="checkPer(['admin', 'waitApproveOrders:approve'])" type="success" :loading="crud.dataStatus[crud.getDataId(scope.row)].approve === 2" size="mini" icon="el-icon-check" @click="toApprove(scope.row)" />
+            <el-button v-if="checkPer(['admin', 'waitApproveOrders:print'])" size="mini" icon="el-icon-printer" @click="toPrint(scope.row)" />
           </template>
         </el-table-column>
       </el-table>

@@ -6,7 +6,7 @@
         <span class="crud-opts-left">
           <!--左侧插槽-->
           <slot name="left" />
-          <el-button v-if="checkPer(['admin',permission.add])" v-permission="permission.add" class="filter-item" size="mini"
+          <el-button v-if="checkPer(['admin','tbGoodsType:add'])" class="filter-item" size="mini"
             type="primary" icon="el-icon-plus" @click="toAdd()">
             新增
           </el-button>
@@ -54,13 +54,13 @@
           {{scope.row.gtName}}
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPer(['admin','tbGoodsType:edit','tbGoodsType:del'])" label="操作" width="300px"
+      <el-table-column v-if="checkPer(['admin','tbGoodsType:add','tbGoodsType:edit','tbGoodsType:del'])" label="操作" width="300px"
         align="center">
         <template slot-scope="scope">
-          <el-button v-if="checkPer(['admin',permission.add]) && scope.row.isFolder == 1" v-permission="permission.add" :loading="status" class="filter-item" size="mini"
+          <el-button v-if="checkPer(['admin','tbGoodsType:add']) && scope.row.isFolder == 1" :loading="status" class="filter-item" size="mini"
             type="primary" icon="el-icon-plus" @click="toAdd(scope.row.id)" />
-          <el-button v-if="scope.row.id != 1" v-permission="permission.edit" :loading="status" size="mini" type="primary" icon="el-icon-edit" @click="toEdit(scope.row.id)" style="margin-left: 0px;" />
-          <myDoperation v-if="scope.row.id != 1 && scope.row.children.length == 0" :id="scope.row.id" :permission="permission" :status="status" @doDelete="doDelete" />
+          <el-button v-if="checkPer(['admin','tbGoodsType:edit']) && scope.row.id != 1" :loading="status" size="mini" type="primary" icon="el-icon-edit" @click="toEdit(scope.row.id)" style="margin-left: 0px;" />
+          <myDoperation v-if="checkPer(['admin','tbGoodsType:del']) && scope.row.id != 1 && scope.row.children.length == 0" :id="scope.row.id" :permission="permission" :status="status" @doDelete="doDelete" />
         </template>
       </el-table-column>
     </el-table>

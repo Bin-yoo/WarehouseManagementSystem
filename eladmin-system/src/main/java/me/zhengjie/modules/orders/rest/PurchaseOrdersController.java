@@ -126,7 +126,7 @@ public class PurchaseOrdersController {
     @PutMapping("/reApproveOrders")
     @Log("反审单据")
     @ApiOperation("反审单据")
-    @PreAuthorize("@el.check('purchaseOrders:approve')")
+    @PreAuthorize("@el.check('purchaseOrders:reApprove')")
     public ResponseEntity reApproveOrders(@RequestBody Set<Long> ids) {
         purchaseOrdersService.reApproveOrders(ids);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -135,7 +135,7 @@ public class PurchaseOrdersController {
     @GetMapping("/printOrderReport")
     @Log("打印单据")
     @ApiOperation("打印单据")
-    @PreAuthorize("@el.check('purchaseOrders:list')")
+    @PreAuthorize("@el.check('purchaseOrders:print')")
     public ResponseEntity printOrderReport(Long id, HttpServletResponse response) throws Exception {
         purchaseOrdersService.printOrderReport(id, response);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -144,7 +144,7 @@ public class PurchaseOrdersController {
     @GetMapping("/getOrderPrintingInfo")
     @Log("获取打印单据信息")
     @ApiOperation("获取打印单据信息")
-    @PreAuthorize("@el.check('purchaseOrders:list')")
+    @PreAuthorize("@el.check('purchaseOrders:print')")
     public ResponseEntity getOrderPrintingInfo(Long id) throws Exception {
         return new ResponseEntity<>(purchaseOrdersService.getOrderPrintingInfo(id), HttpStatus.OK);
     }

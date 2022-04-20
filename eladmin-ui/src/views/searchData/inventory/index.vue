@@ -136,7 +136,7 @@
         <el-table-column prop="manufacturer" label="生产厂家" />
         <!-- <el-table-column prop="barCode" label="条形码" /> -->
         <!-- <el-table-column prop="qrCode" label="二维码" /> -->
-        <el-table-column v-if="checkPer(['admin','tbWhInventory:edit','tbWhInventory:del'])" fixed="right" label="操作" width="80px" align="center">
+        <el-table-column fixed="right" label="操作" width="80px" align="center">
           <template slot-scope="scope">
             <!-- <udOperation
               :data="scope.row"
