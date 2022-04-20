@@ -281,7 +281,7 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
             tbOrdersMapper.updateById(order);
 
             //另起线程更新库存信息
-            Runnable runnable = () -> {
+            //Runnable runnable = () -> {
                 try {
                     // 修改库存数量为盘点的数量
                     List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
@@ -296,8 +296,8 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            };
-            new Thread(runnable).start();
+            //};
+            //new Thread(runnable).start();
         });
     }
 
@@ -317,7 +317,7 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
             tbOrdersMapper.updateById(order);
 
             //另起线程更新库存信息
-            Runnable runnable = () -> {
+            //Runnable runnable = () -> {
                 try {
                     // 还原库存数量为账面的数量
                     List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
@@ -332,8 +332,8 @@ public class InventoryOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            };
-            new Thread(runnable).start();
+            //};
+            //new Thread(runnable).start();
         });
     }
 

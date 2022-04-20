@@ -288,7 +288,7 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
             tbOrdersMapper.updateById(order);
 
             //另起线程更新库存信息
-            Runnable runnable = () -> {
+            //Runnable runnable = () -> {
                 try {
                     // 减少库存数量
                     List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
@@ -308,8 +308,8 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            };
-            new Thread(runnable).start();
+            //};
+            //new Thread(runnable).start();
         });
     }
 
@@ -328,7 +328,7 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
             tbOrdersMapper.updateById(order);
 
             //另起线程更新库存信息
-            Runnable runnable = () -> {
+            //Runnable runnable = () -> {
                 try {
                     // 还原库存数量
                     List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
@@ -343,8 +343,8 @@ public class SellOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper, TbO
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            };
-            new Thread(runnable).start();
+            //};
+            //new Thread(runnable).start();
         });
     }
 

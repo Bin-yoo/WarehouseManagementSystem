@@ -152,7 +152,7 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
         int ret = tbGoodsInfoMapper.updateById(entity);
 
         //另起线程处理库存变更计算
-        Runnable runnable = () -> {
+        //Runnable runnable = () -> {
             try {
                 // 旧的货品基础库存表数据
                 List<TbWhGoods> lastUpdateList = tbWhGoodsMapper.lambdaQuery().eq(TbWhGoods::getGoodId, entity.getId()).orderByAsc(TbWhGoods::getGoodId).list();
@@ -164,10 +164,20 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
 
                 List<TbWhGoods> tbWhGoodsList = ConvertUtil.convertList(resources.getWhGoodsList(), TbWhGoods.class);
                 for (int i = 0; i < tbWhGoodsList.size(); i++) {
+                    TbWhGoods whGoods = tbWhGoodsList.get(i);
+                    if (whGoods.getId() == null) {
+                        tbWhGoodsMapper.insert(whGoods);
+                        TbWhInventory tbWhInventory = new TbWhInventory();
+                        tbWhInventory.setWhId(whGoods.getWhId());
+                        tbWhInventory.setGoodId(whGoods.getGoodId());
+                        tbWhInventory.setCount(whGoods.getInitialCount());
+                        tbWhInventoryMapper.insert(tbWhInventory);
+                        continue;
+                    }
                     //ids.add(item.getId());
                     int count = 0;
                     TbWhGoods oldData = lastUpdateList.get(i);
-                    TbWhGoods newData = tbWhGoodsList.get(i);
+                    TbWhGoods newData = whGoods;
                     /*
                      * 计算相差数量
                      * 相差数量=新的初库数量-旧的初库数量
@@ -185,8 +195,8 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        };
-        new Thread(runnable).start();
+        //};
+        //new Thread(runnable).start();
 
         // delCaches(resources.id);
         return ret;

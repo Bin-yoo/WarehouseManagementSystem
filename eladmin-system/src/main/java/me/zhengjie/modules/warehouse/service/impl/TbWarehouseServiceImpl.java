@@ -10,6 +10,12 @@ import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.employee.domain.TbEmployee;
 import me.zhengjie.modules.employee.domain.vo.TbEmployeeVo;
 import me.zhengjie.modules.employee.service.mapper.TbEmployeeMapper;
+import me.zhengjie.modules.goodsinfo.domain.TbGoodsInfo;
+import me.zhengjie.modules.goodsinfo.service.mapper.TbGoodsInfoMapper;
+import me.zhengjie.modules.inventory.domain.TbWhInventory;
+import me.zhengjie.modules.inventory.service.mapper.TbWhInventoryMapper;
+import me.zhengjie.modules.tb_wh_goods.domain.TbWhGoods;
+import me.zhengjie.modules.tb_wh_goods.service.mapper.TbWhGoodsMapper;
 import me.zhengjie.modules.warehouse.domain.vo.TbWarehouseVo;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.PageUtil;
@@ -41,6 +47,9 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
 
     // private final RedisUtils redisUtils;
     private final TbWarehouseMapper tbWarehouseMapper;
+    private final TbGoodsInfoMapper tbGoodsInfoMapper;
+    private final TbWhGoodsMapper tbWhGoodsMapper;
+    private final TbWhInventoryMapper tbWhInventoryMapper;
     private final TbEmployeeMapper tbEmployeeMapper;
 
     @Override
@@ -69,6 +78,7 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
             mpjQueryWrapper.like("d.name", query.getDirector());
         }
 
+        mpjQueryWrapper.eq("t.del_flag", false);
         IPage<TbWarehouseVo> page = tbWarehouseMapper.selectJoinPage(queryPage, TbWarehouseVo.class ,mpjQueryWrapper);
 
         return ConvertUtil.convertPage(page, TbWarehouseVo.class);
@@ -94,7 +104,35 @@ public class TbWarehouseServiceImpl extends CommonServiceImpl<TbWarehouseMapper,
     @Transactional(rollbackFor = Exception.class)
     public int insert(TbWarehouseDto resources) {
         TbWarehouse entity = ConvertUtil.convert(resources, TbWarehouse.class);
-        return tbWarehouseMapper.insert(entity);
+        int insert = tbWarehouseMapper.insert(entity);
+
+
+        // 帮所有货品初始化库存/所属仓库数量
+        List<TbWhGoods> tbWhGoodsList = new ArrayList<>();
+        List<TbWhInventory> tbWhInventoryList = new ArrayList<>();
+        List<TbGoodsInfo> goodsInfoList = tbGoodsInfoMapper.lambdaQuery().list();
+        for (TbGoodsInfo tbGoodsInfo : goodsInfoList) {
+            TbWhGoods whGoods = new TbWhGoods();
+            whGoods.setGoodId(tbGoodsInfo.getId());
+            whGoods.setWhId(entity.getWhId());
+            whGoods.setInitialCount(0);
+            whGoods.setLowerLimit(0);
+            whGoods.setUpperLimit(0);
+            tbWhGoodsList.add(whGoods);
+
+            TbWhInventory tbWhInventory = new TbWhInventory();
+            tbWhInventory.setWhId(whGoods.getWhId());
+            tbWhInventory.setGoodId(whGoods.getGoodId());
+            tbWhInventory.setCount(whGoods.getInitialCount());
+            tbWhInventoryList.add(tbWhInventory);
+
+        }
+
+        // 批量插入
+        tbWhGoodsMapper.insertBatchSomeColumn(tbWhGoodsList);
+        tbWhInventoryMapper.insertBatchSomeColumn(tbWhInventoryList);
+
+        return insert;
     }
 
     @Override
