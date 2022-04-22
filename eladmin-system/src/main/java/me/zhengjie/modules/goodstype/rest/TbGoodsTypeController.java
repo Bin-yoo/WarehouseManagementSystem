@@ -42,7 +42,7 @@ public class TbGoodsTypeController {
     @GetMapping("/getTypesFolderSelectTree")
     @Log("查询tb_goods_type树形选择数据")
     @ApiOperation("查询tb_goods_type树形选择数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getTypesFolderSelectTree(){
         return new ResponseEntity<>(tbGoodsTypeService.getTypesFolderSelectTree(0l),HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class TbGoodsTypeController {
     @GetMapping("/getTypesSelectTree")
     @Log("查询tb_goods_type树形选择数据")
     @ApiOperation("查询tb_goods_type树形选择数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getTypesSelectTree(){
         return new ResponseEntity<>(tbGoodsTypeService.getTypesSelectTree(0l),HttpStatus.OK);
     }
@@ -75,7 +75,7 @@ public class TbGoodsTypeController {
     @GetMapping("/getGoodsTypeById")
     @Log("获取货品类型信息")
     @ApiOperation("获取货品类型信息")
-    @PreAuthorize("@el.check('tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getGoodsTypeById(Long id) {
         return new ResponseEntity<>(tbGoodsTypeService.getGoodsTypeById(id), HttpStatus.OK);
     }

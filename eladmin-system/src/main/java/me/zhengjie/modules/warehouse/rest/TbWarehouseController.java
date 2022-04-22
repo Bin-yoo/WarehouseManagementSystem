@@ -71,7 +71,7 @@ public class TbWarehouseController {
     @GetMapping("/getEmpSelect")
     @Log("获取员工信息下拉数据")
     @ApiOperation("获取员工信息下拉数据")
-    @PreAuthorize("@el.check('tbWarehouse:add', 'tbWarehouse:edit')")
+    @PreAuthorize("@el.check('tbWarehouse:list')")
     public ResponseEntity getEmpSelect() {
         return new ResponseEntity<>(tbWarehouseService.getEmpSelect(), HttpStatus.OK);
     }

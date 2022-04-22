@@ -85,7 +85,7 @@ public class PurchaseOrdersController {
     @GetMapping("/getManagerSelect")
     @Log("获取经办人下拉菜单")
     @ApiOperation("获取经办人下拉菜单")
-    @PreAuthorize("@el.check('purchaseOrders:add','purchaseOrders:edit')")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
     public ResponseEntity getManagerSelect(){
         return new ResponseEntity<>(purchaseOrdersService.getManagerSelect(),HttpStatus.OK);
     }
@@ -93,7 +93,7 @@ public class PurchaseOrdersController {
     @GetMapping("/getOrderNo")
     @Log("获取新增单号")
     @ApiOperation("获取新增单号")
-    @PreAuthorize("@el.check('purchaseOrders:add','purchaseOrders:edit')")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
     public ResponseEntity getOrderNo(){
         return new ResponseEntity<>(purchaseOrdersService.getOrderNo(),HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class PurchaseOrdersController {
     @GetMapping("/getGoodChooseList")
     @Log("获取选择货品列表")
     @ApiOperation("获取选择货品列表")
-    @PreAuthorize("@el.check('purchaseOrders:add','purchaseOrders:edit')")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
     public ResponseEntity getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable){
         return new ResponseEntity<>(purchaseOrdersService.getGoodChooseList(query, pageable),HttpStatus.OK);
     }
@@ -109,7 +109,7 @@ public class PurchaseOrdersController {
     @GetMapping("/getOrderGoodList")
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
-    @PreAuthorize("@el.check('purchaseOrders:edit')")
+    @PreAuthorize("@el.check('purchaseOrders:list')")
     public ResponseEntity getOrderGoodList(Long id, Long whId){
         return new ResponseEntity<>(purchaseOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }

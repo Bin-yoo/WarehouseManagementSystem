@@ -2,7 +2,7 @@ module.exports = {
   /**
    * @description 网站标题
    */
-  title: 'eladmin-plus',
+  title: '仓储管理系统',
   /**
    * @description 是否显示 tagsView
    */
@@ -42,9 +42,9 @@ module.exports = {
   /**
    * 底部文字，支持html语法
    */
-  footerTxt: '© 2021 Fang Lei <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a>',
+  footerTxt: '',
   /**
    * 备案号
    */
-  caseNumber: '浙ICP备xxxxxxx号'
+  caseNumber: ''
 }

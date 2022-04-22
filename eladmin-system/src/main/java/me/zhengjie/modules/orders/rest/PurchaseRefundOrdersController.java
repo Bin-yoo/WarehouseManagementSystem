@@ -84,7 +84,7 @@ public class PurchaseRefundOrdersController {
     @GetMapping("/getManagerSelect")
     @Log("获取经办人下拉菜单")
     @ApiOperation("获取经办人下拉菜单")
-    @PreAuthorize("@el.check('purchaseRefundOrders:add','purchaseRefundOrders:edit')")
+    @PreAuthorize("@el.check('purchaseRefundOrders:list')")
     public ResponseEntity getManagerSelect(){
         return new ResponseEntity<>(purchaseRefundOrdersService.getManagerSelect(),HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class PurchaseRefundOrdersController {
     @GetMapping("/getOrderNo")
     @Log("获取新增单号")
     @ApiOperation("获取新增单号")
-    @PreAuthorize("@el.check('purchaseRefundOrders:add','purchaseRefundOrders:edit')")
+    @PreAuthorize("@el.check('purchaseRefundOrders:list')")
     public ResponseEntity getOrderNo(){
         return new ResponseEntity<>(purchaseRefundOrdersService.getOrderNo(),HttpStatus.OK);
     }
@@ -100,7 +100,7 @@ public class PurchaseRefundOrdersController {
     @GetMapping("/getGoodChooseList")
     @Log("获取选择货品列表")
     @ApiOperation("获取选择货品列表")
-    @PreAuthorize("@el.check('purchaseRefundOrders:add','purchaseRefundOrders:edit')")
+    @PreAuthorize("@el.check('purchaseRefundOrders:list')")
     public ResponseEntity getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable){
         return new ResponseEntity<>(purchaseRefundOrdersService.getGoodChooseList(query, pageable),HttpStatus.OK);
     }
@@ -108,7 +108,7 @@ public class PurchaseRefundOrdersController {
     @GetMapping("/getOrderGoodList")
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
-    @PreAuthorize("@el.check('purchaseRefundOrders:edit')")
+    @PreAuthorize("@el.check('purchaseRefundOrders:list')")
     public ResponseEntity getOrderGoodList(Long id, Long whId){
         return new ResponseEntity<>(purchaseRefundOrdersService.getOrderGoodList(id, whId),HttpStatus.OK);
     }
@@ -151,7 +151,7 @@ public class PurchaseRefundOrdersController {
     @GetMapping("/getOrderChooseList")
     @Log("获取选择订单列表")
     @ApiOperation("获取选择订单列表")
-    @PreAuthorize("@el.check('purchaseRefundOrders:add','purchaseRefundOrders:edit')")
+    @PreAuthorize("@el.check('purchaseRefundOrders:list')")
     public ResponseEntity getOrderChooseList(TbOrdersQueryParam query, Pageable pageable) throws Exception {
         return new ResponseEntity<>(purchaseRefundOrdersService.getOrderChooseList(query, pageable), HttpStatus.OK);
     }

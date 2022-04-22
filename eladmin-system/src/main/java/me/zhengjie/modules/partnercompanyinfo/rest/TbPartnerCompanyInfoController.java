@@ -65,7 +65,7 @@ public class TbPartnerCompanyInfoController {
     @GetMapping("/getCompanyCode")
     @Log("获取新的公司编码")
     @ApiOperation("获取新的公司编码")
-    @PreAuthorize("@el.check('tbPartnerCompanyInfo:add', 'tbPartnerCompanyInfo:edit')")
+    @PreAuthorize("@el.check('tbPartnerCompanyInfo:list')")
     public ResponseEntity getCompanyCode(){
         return new ResponseEntity<>(tbPartnerCompanyInfoService.getCompanyCode(),HttpStatus.OK);
     }

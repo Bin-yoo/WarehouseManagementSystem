@@ -70,7 +70,7 @@ public class TbGoodsInfoController {
     @GetMapping("/getGoodCode")
     @Log("获取新的货品编码")
     @ApiOperation("获取新的货品编码")
-    @PreAuthorize("@el.check('tbGoodsInfo:add', 'tbGoodsInfo:edit')")
+    @PreAuthorize("@el.check('tbGoodsInfo:list')")
     public ResponseEntity getGoodCode(Long typeId){
         return new ResponseEntity<>(tbGoodsInfoService.getGoodCode(typeId),HttpStatus.OK);
     }
@@ -78,7 +78,7 @@ public class TbGoodsInfoController {
     @GetMapping("/getTypesSelectTree")
     @Log("查询tb_goods_type树形选择数据")
     @ApiOperation("查询tb_goods_type树形选择数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getTypesSelectTree(){
         return new ResponseEntity<>(tbGoodsTypeService.getTypesSelectTree(1l),HttpStatus.OK);
     }
@@ -86,7 +86,7 @@ public class TbGoodsInfoController {
     @GetMapping("/getGoodUnitsSelect")
     @Log("查询tb_goods_units下拉选择数据")
     @ApiOperation("查询tb_goods_units下拉选择数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getGoodUnitsSelect(){
         return new ResponseEntity<>(tbGoodsInfoService.getGoodUnitsSelect(),HttpStatus.OK);
     }
@@ -94,7 +94,7 @@ public class TbGoodsInfoController {
     @GetMapping("/getWareHouseGoodsInfo")
     @Log("查询库存信息数据")
     @ApiOperation("查询库存信息数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getWareHouseGoodsInfo(){
         return new ResponseEntity<>(tbGoodsInfoService.getWareHouseGoodsInfo(),HttpStatus.OK);
     }
@@ -102,7 +102,7 @@ public class TbGoodsInfoController {
     @GetMapping("/getWareHouseGoodsInfoByGoodId")
     @Log("根据货品id查询货品库存信息数据")
     @ApiOperation("查询货品库存信息数据")
-    @PreAuthorize("@el.check('tbGoodsType:add','tbGoodsType:edit')")
+    @PreAuthorize("@el.check('tbGoodsType:list')")
     public ResponseEntity getWareHouseGoodsInfoByGoodId(Long goodId){
         return new ResponseEntity<>(tbGoodsInfoService.getWareHouseGoodsInfoByGoodId(goodId),HttpStatus.OK);
     }

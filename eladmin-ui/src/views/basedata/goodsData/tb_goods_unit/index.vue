@@ -58,7 +58,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: 'tb_goods_unit', url: 'api/tbGoodsUnit', idField: 'id', sort: 'id,asc', crudMethod: { ...crudTbGoodsUnit }})
+    return CRUD({ title: '货品单位', url: 'api/tbGoodsUnit', idField: 'id', sort: 'sort,asc', crudMethod: { ...crudTbGoodsUnit }})
   },
   data() {
     return {

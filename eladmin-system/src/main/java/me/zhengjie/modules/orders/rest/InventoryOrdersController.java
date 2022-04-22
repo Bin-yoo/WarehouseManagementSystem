@@ -76,7 +76,7 @@ public class InventoryOrdersController {
     @GetMapping("/getManagerSelect")
     @Log("获取经办人下拉菜单")
     @ApiOperation("获取经办人下拉菜单")
-    @PreAuthorize("@el.check('inventoryOrders:add','inventoryOrders:edit')")
+    @PreAuthorize("@el.check('inventoryOrders:list')")
     public ResponseEntity getManagerSelect(){
         return new ResponseEntity<>(inventoryOrdersService.getManagerSelect(),HttpStatus.OK);
     }
@@ -84,7 +84,7 @@ public class InventoryOrdersController {
     @GetMapping("/getOrderNo")
     @Log("获取新增单号")
     @ApiOperation("获取新增单号")
-    @PreAuthorize("@el.check('inventoryOrders:add','inventoryOrders:edit')")
+    @PreAuthorize("@el.check('inventoryOrders:list')")
     public ResponseEntity getOrderNo(){
         return new ResponseEntity<>(inventoryOrdersService.getOrderNo(),HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class InventoryOrdersController {
     @GetMapping("/getGoodChooseList")
     @Log("获取选择货品列表")
     @ApiOperation("获取选择货品列表")
-    @PreAuthorize("@el.check('inventoryOrders:add','inventoryOrders:edit')")
+    @PreAuthorize("@el.check('inventoryOrders:list')")
     public ResponseEntity getGoodChooseList(TbGoodsInfoQueryParam query, Pageable pageable){
         return new ResponseEntity<>(inventoryOrdersService.getGoodChooseList(query, pageable),HttpStatus.OK);
     }
@@ -100,7 +100,7 @@ public class InventoryOrdersController {
     @GetMapping("/getOrderGoodList")
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
-    @PreAuthorize("@el.check('inventoryOrders:edit')")
+    @PreAuthorize("@el.check('inventoryOrders:list')")
     public ResponseEntity getOrderGoodList(Long id){
         return new ResponseEntity<>(inventoryOrdersService.getOrderGoodList(id),HttpStatus.OK);
     }

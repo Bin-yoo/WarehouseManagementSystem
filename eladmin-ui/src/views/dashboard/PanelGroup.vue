@@ -26,7 +26,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-if="checkPer(['admin','waitApproveOrders:list'])">
       <div class="card-panel" @click="waitApproveOrderCount()">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="edit" class-name="card-panel-icon" />

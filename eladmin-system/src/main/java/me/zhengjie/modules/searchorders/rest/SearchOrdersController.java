@@ -49,7 +49,7 @@ public class SearchOrdersController {
     @GetMapping("/getOrderGoodList")
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
-    @PreAuthorize("@el.check('searchOrders:detail')")
+    @PreAuthorize("@el.check('searchOrders:list')")
     public ResponseEntity getOrderGoodList(Long id){
         return new ResponseEntity<>(searchOrdersService.getOrderGoodList(id),HttpStatus.OK);
     }

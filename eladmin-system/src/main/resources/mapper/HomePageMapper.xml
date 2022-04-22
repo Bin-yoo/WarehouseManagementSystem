@@ -37,7 +37,7 @@
             LEFT JOIN tb_goods_unit u ON u.id = g.unit
             LEFT JOIN tb_warehouse w ON w.wh_id = i.wh_id
             LEFT JOIN tb_wh_goods wg ON wg.wh_id = i.wh_id AND wg.good_id = i.good_id
-        WHERE wg.lower_limit + 50 >= i.count
+        WHERE wg.lower_limit + 50 >= i.count AND w.del_flag = 0
     </select>
 
     <select id="queryLineBarDataByOrderType" parameterType="Integer" resultType="me.zhengjie.modules.homepage.service.dto.LineBarDto">

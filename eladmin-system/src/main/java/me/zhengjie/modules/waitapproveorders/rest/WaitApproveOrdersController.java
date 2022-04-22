@@ -47,7 +47,7 @@ public class WaitApproveOrdersController {
     @GetMapping("/getOrderGoodList")
     @Log("获取单据货品列表")
     @ApiOperation("获取单据货品列表")
-    @PreAuthorize("@el.check('waitApproveOrders:detail')")
+    @PreAuthorize("@el.check('waitApproveOrders:list')")
     public ResponseEntity getOrderGoodList(Long id){
         return new ResponseEntity<>(waitApproveOrdersService.getOrderGoodList(id),HttpStatus.OK);
     }
