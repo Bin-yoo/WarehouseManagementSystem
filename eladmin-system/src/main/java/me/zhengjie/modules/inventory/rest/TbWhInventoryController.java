@@ -72,8 +72,8 @@ public class TbWhInventoryController {
     @Log("获取仓库库存出入详情")
     @ApiOperation("获取仓库库存出入详情")
     @PreAuthorize("@el.check('tbWhInventory:list')")
-    public ResponseEntity getWhInOutDetail(Long goodId, Pageable pageable){
-        return new ResponseEntity<>(tbWhInventoryService.getWhInOutDetail(goodId, pageable),HttpStatus.OK);
+    public ResponseEntity getWhInOutDetail(Long whId, Long goodId, Pageable pageable){
+        return new ResponseEntity<>(tbWhInventoryService.getWhInOutDetail(whId, goodId, pageable),HttpStatus.OK);
     }
 
     /*

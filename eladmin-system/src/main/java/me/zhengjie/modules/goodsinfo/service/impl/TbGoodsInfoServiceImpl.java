@@ -13,8 +13,14 @@ import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.config.FileProperties;
 import me.zhengjie.domain.LocalStorage;
+import me.zhengjie.enums.OrderStatusEnum;
+import me.zhengjie.enums.OrderTypeEnum;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.goodsinfo.domain.vo.TbGoodsInfoVo;
+import me.zhengjie.modules.orders.domain.TbOrders;
+import me.zhengjie.modules.orders.service.mapper.TbOrdersMapper;
+import me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods;
+import me.zhengjie.modules.tb_order_goods.service.mapper.TbOrderGoodsMapper;
 import me.zhengjie.modules.tb_wh_goods.domain.vo.TbWhGoodsVo;
 import me.zhengjie.modules.goodstype.domain.TbGoodsType;
 import me.zhengjie.modules.goodstype.service.mapper.TbGoodsTypeMapper;
@@ -74,6 +80,8 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
     private final TbWarehouseMapper tbWarehouseMapper;
     private final TbWhInventoryMapper tbWhInventoryMapper;
     private final TbWhInventoryServiceImpl tbWhInventoryService;
+    private final TbOrdersMapper tbOrdersMapper;
+    private final TbOrderGoodsMapper tbOrderGoodsMapper;
     private final FileProperties properties;
     private final LocalStorageMapper localStorageMapper;
 
@@ -139,6 +147,26 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
             tbWhInventory.setWhId(tbWhGood.getWhId());
             tbWhInventory.setCount(tbWhGood.getInitialCount());
             tbWhInventoryList.add(tbWhInventory);
+
+            if (!tbWhGood.getInitialCount().equals(0)){
+                // 设置仓初单数据
+                TbWarehouse tbWarehouse = tbWarehouseMapper.selectById(tbWhGood.getWhId());
+                TbOrders tbOrders = new TbOrders();
+                tbOrders.setWhId(tbWhGood.getWhId());
+                tbOrders.setWhName(tbWarehouse.getWhName());
+                tbOrders.setOrderNo("cskc");
+                tbOrders.setInOutType(1);
+                tbOrders.setStatus(OrderStatusEnum.APPROVE.getCode());
+                tbOrders.setOrderType(OrderTypeEnum.INITIAL.getCode());
+                tbOrdersMapper.insert(tbOrders);
+
+                // 单据货品数量
+                TbOrderGoods tbOrderGoods = new TbOrderGoods();
+                tbOrderGoods.setOrderId(tbOrders.getId());
+                tbOrderGoods.setGoodId(entity.getId());
+                tbOrderGoods.setGoodNum(String.valueOf(tbWhGood.getInitialCount()));
+                tbOrderGoodsMapper.insert(tbOrderGoods);
+            }
         }
         tbWhGoodsMapper.insertBatchSomeColumn(tbWhGoodsList);
         tbWhInventoryMapper.insertBatchSomeColumn(tbWhInventoryList);
@@ -151,52 +179,81 @@ public class TbGoodsInfoServiceImpl extends CommonServiceImpl<TbGoodsInfoMapper,
         TbGoodsInfo entity = ConvertUtil.convert(resources, TbGoodsInfo.class);
         int ret = tbGoodsInfoMapper.updateById(entity);
 
-        //另起线程处理库存变更计算
-        //Runnable runnable = () -> {
-            try {
-                // 旧的货品基础库存表数据
-                List<TbWhGoods> lastUpdateList = tbWhGoodsMapper.lambdaQuery().eq(TbWhGoods::getGoodId, entity.getId()).orderByAsc(TbWhGoods::getGoodId).list();
-                // 旧的货品库存信息
-                List<TbWhInventory> inventoryList = tbWhInventoryMapper.lambdaQuery().eq(TbWhInventory::getGoodId, entity.getId()).orderByAsc(TbWhInventory::getGoodId).list();
+        // 旧的货品基础库存表数据
+        List<TbWhGoods> lastUpdateList = tbWhGoodsMapper.lambdaQuery().eq(TbWhGoods::getGoodId, entity.getId()).orderByAsc(TbWhGoods::getGoodId).list();
+        // 旧的货品库存信息
+        List<TbWhInventory> inventoryList = tbWhInventoryMapper.lambdaQuery().eq(TbWhInventory::getGoodId, entity.getId()).orderByAsc(TbWhInventory::getGoodId).list();
 
-                //Set<Long> ids = tbWhGoodsList.stream().map(TbWhGoods::getId).collect(Collectors.toSet());
-                //Set<Long> ids = new HashSet<>();
+        //Set<Long> ids = tbWhGoodsList.stream().map(TbWhGoods::getId).collect(Collectors.toSet());
+        //Set<Long> ids = new HashSet<>();
 
-                List<TbWhGoods> tbWhGoodsList = ConvertUtil.convertList(resources.getWhGoodsList(), TbWhGoods.class);
-                for (int i = 0; i < tbWhGoodsList.size(); i++) {
-                    TbWhGoods whGoods = tbWhGoodsList.get(i);
-                    if (whGoods.getId() == null) {
-                        tbWhGoodsMapper.insert(whGoods);
-                        TbWhInventory tbWhInventory = new TbWhInventory();
-                        tbWhInventory.setWhId(whGoods.getWhId());
-                        tbWhInventory.setGoodId(whGoods.getGoodId());
-                        tbWhInventory.setCount(whGoods.getInitialCount());
-                        tbWhInventoryMapper.insert(tbWhInventory);
-                        continue;
-                    }
-                    //ids.add(item.getId());
-                    int count = 0;
-                    TbWhGoods oldData = lastUpdateList.get(i);
-                    TbWhGoods newData = whGoods;
-                    /*
-                     * 计算相差数量
-                     * 相差数量=新的初库数量-旧的初库数量
-                     * 如果数量不变,直接进入下一轮循环
-                     */
-                    if ((count = newData.getInitialCount() - oldData.getInitialCount()) == 0){
-                        continue;
-                    }
-
-                    Integer oldCount = inventoryList.get(i).getCount();
-                    inventoryList.get(i).setCount(Math.abs(oldCount + count));
-                }
-                tbWhInventoryService.updateBatchById(inventoryList);
-                tbWhGoodsService.updateBatchById(tbWhGoodsList);
-            } catch (Exception e) {
-                e.printStackTrace();
+        List<TbWhGoods> tbWhGoodsList = ConvertUtil.convertList(resources.getWhGoodsList(), TbWhGoods.class);
+        for (int i = 0; i < tbWhGoodsList.size(); i++) {
+            TbWhGoods whGoods = tbWhGoodsList.get(i);
+            if (whGoods.getId() == null) {
+                tbWhGoodsMapper.insert(whGoods);
+                TbWhInventory tbWhInventory = new TbWhInventory();
+                tbWhInventory.setWhId(whGoods.getWhId());
+                tbWhInventory.setGoodId(whGoods.getGoodId());
+                tbWhInventory.setCount(whGoods.getInitialCount());
+                tbWhInventoryMapper.insert(tbWhInventory);
             }
-        //};
-        //new Thread(runnable).start();
+            //ids.add(item.getId());
+            TbOrderGoods initialOrder = tbGoodsInfoMapper.getInitialCount(whGoods.getWhId(), whGoods.getGoodId());
+            if (!whGoods.getInitialCount().equals(0)){
+                if (initialOrder == null) {
+                    // 设置仓初单数据
+                    TbWarehouse tbWarehouse = tbWarehouseMapper.selectById(whGoods.getWhId());
+                    TbOrders tbOrders = new TbOrders();
+                    tbOrders.setWhId(whGoods.getWhId());
+                    tbOrders.setWhName(tbWarehouse.getWhName());
+                    tbOrders.setOrderNo("cskc");
+                    tbOrders.setInOutType(1);
+                    tbOrders.setStatus(OrderStatusEnum.APPROVE.getCode());
+                    tbOrders.setOrderType(OrderTypeEnum.INITIAL.getCode());
+                    tbOrdersMapper.insert(tbOrders);
+
+                    // 单据货品数量
+                    TbOrderGoods tbOrderGoods = new TbOrderGoods();
+                    tbOrderGoods.setOrderId(tbOrders.getId());
+                    tbOrderGoods.setGoodId(entity.getId());
+                    tbOrderGoods.setGoodNum(String.valueOf(whGoods.getInitialCount()));
+                    tbOrderGoodsMapper.insert(tbOrderGoods);
+
+                    continue;
+                }
+            }
+
+            int count = 0;
+            TbWhGoods oldData = lastUpdateList.get(i);
+            TbWhGoods newData = whGoods;
+            /*
+             * 计算相差数量
+             * 相差数量=新的初库数量-旧的初库数量
+             * 如果数量不变,直接进入下一轮循环
+             */
+            if ((count = newData.getInitialCount() - oldData.getInitialCount()) == 0){
+                continue;
+            }
+
+            Integer oldCount = inventoryList.get(i).getCount();
+            inventoryList.get(i).setCount(Math.abs(oldCount + count));
+
+            if (newData.getInitialCount().equals(0)) {
+                // 删除仓初单
+                tbOrdersMapper.deleteById(initialOrder.getOrderId());
+                tbOrderGoodsMapper.deleteByOrderId(initialOrder.getOrderId());
+            } else {
+                // 更新仓初单数据
+                tbOrderGoodsMapper.lambdaUpdate()
+                        .set(TbOrderGoods::getGoodNum, newData.getInitialCount())
+                        .eq(TbOrderGoods::getOrderId, initialOrder.getOrderId())
+                        .eq(TbOrderGoods::getGoodId, entity.getId())
+                        .update();
+            }
+        }
+        tbWhInventoryService.updateBatchById(inventoryList);
+        tbWhGoodsService.updateBatchById(tbWhGoodsList);
 
         // delCaches(resources.id);
         return ret;

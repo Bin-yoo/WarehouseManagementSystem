@@ -142,7 +142,7 @@
               :data="scope.row"
               :permission="permission"
             /> -->
-            <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.goodId)" style="margin-left: 0px;" />
+            <el-button size="mini" type="primary" icon="el-icon-reading" @click="showDetail(scope.row.whId,scope.row.goodId)" style="margin-left: 0px;" />
           </template>
         </el-table-column>
       </el-table>
@@ -180,6 +180,7 @@ export default {
         del: ['admin', 'tbWhInventory:del']
       },
       whSelect: [],
+      selectWhId: null,
       types: [],
       unitSelect: [],
       dialogShow: false,
@@ -216,13 +217,14 @@ export default {
         this.whSelect = res
       })
     },
-    showDetail(goodId) {
+    showDetail(whId, goodId) {
       this.dialogShow = true
       if (goodId) {
         this.goodId = goodId
       }
       this.detailDataLoading = true
       const params = {
+        whId: whId,
         goodId: this.goodId,
         page: this.page - 1,
         size: this.size

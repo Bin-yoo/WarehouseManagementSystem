@@ -61,6 +61,7 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
         if (query.getUnitId() != null) {
             wrapper.like("u.id", query.getUnitId());
         }
+        wrapper.isNotNull("g.id");
         if (query.getWhId() != null) {
             wrapper.eq("w.wh_id", query.getWhId());
             ArrayList<String> list = new ArrayList<>();
@@ -130,9 +131,9 @@ public class TbWhInventoryServiceImpl extends CommonServiceImpl<TbWhInventoryMap
     }
 
     @Override
-    public PageInfo<InventoryDetailDto> getWhInOutDetail(Long goodId, Pageable pageable) {
+    public PageInfo<InventoryDetailDto> getWhInOutDetail(Long whId, Long goodId, Pageable pageable) {
         IPage<InventoryDetailDto> queryPage = PageUtil.toMybatisPage(pageable);
-        IPage<InventoryDetailDto> page = tbWhInventoryMapper.getWhInOutDetail(goodId, queryPage);
+        IPage<InventoryDetailDto> page = tbWhInventoryMapper.getWhInOutDetail(whId, goodId, queryPage);
         return ConvertUtil.convertPage(page, InventoryDetailDto.class);
     }
 

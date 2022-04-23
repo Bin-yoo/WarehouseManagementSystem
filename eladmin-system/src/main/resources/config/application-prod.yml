@@ -1,12 +1,20 @@
 #配置数据源
 spring:
+  redis:
+    #数据库索引
+    database: ${REDIS_DB:5}
+    host: ${REDIS_HOST:172.18.104.210}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PWD:123456}
+    #连接超时时间
+    timeout: 5000
   datasource:
     druid:
       db-type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:eladmin}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      url: jdbc:log4jdbc:mysql://${DB_HOST:172.18.104.210}:${DB_PORT:3306}/${DB_NAME:wms}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
       username: ${DB_USER:root}
-      password: ${DB_PWD:123456}
+      password: ${DB_PWD:hrj123.}
       # 初始连接数
       initial-size: 5
       # 最小连接数

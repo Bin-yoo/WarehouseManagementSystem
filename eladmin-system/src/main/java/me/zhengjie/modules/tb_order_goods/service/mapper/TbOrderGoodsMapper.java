@@ -2,6 +2,7 @@ package me.zhengjie.modules.tb_order_goods.service.mapper;
 
 import me.zhengjie.base.CommonMapper;
 import me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TbOrderGoodsMapper extends CommonMapper<TbOrderGoods> {
 
+    void deleteByOrderId(@Param("orderId") Long orderId);
 }

@@ -8,4 +8,7 @@
       a.order_id, a.good_id, a.good_num, a.price, a.total_price, a.batch, a.product_date, a.valid_date, a.remark
   </sql>
   -->
+  <delete id="deleteByOrderId">
+    DELETE FROM tb_order_goods WHERE order_id = #{orderId}
+  </delete>
 </mapper>

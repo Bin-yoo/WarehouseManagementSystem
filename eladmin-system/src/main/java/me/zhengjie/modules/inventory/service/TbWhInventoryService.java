@@ -46,7 +46,7 @@ public interface TbWhInventoryService extends CommonService<TbWhInventory>  {
 
     Object getWareHouseSelect();
 
-    PageInfo<InventoryDetailDto> getWhInOutDetail(Long goodId, Pageable pageable);
+    PageInfo<InventoryDetailDto> getWhInOutDetail(Long whId, Long goodId, Pageable pageable);
 
     /**
     * 导出数据

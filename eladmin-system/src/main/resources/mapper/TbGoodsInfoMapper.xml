@@ -8,4 +8,11 @@
       a.id, a.g_code, a.g_name, a.specification, a.py_code, a.manufacturer, a.remark, a.bar_code, a.qr_code, a.type, a.model, a.weight, a.color, a.unit, a.purchase_price, a.sell_price, a.allocation, a.pic
   </sql>
   -->
+    <select id="getInitialCount" resultType="me.zhengjie.modules.tb_order_goods.domain.TbOrderGoods">
+      SELECT og.* FROM tb_orders o, tb_order_goods og
+      where o.id = og.order_id
+        AND o.wh_id = #{whId}
+        AND o.order_type = 9
+        AND og.good_id = #{goodId}
+    </select>
 </mapper>

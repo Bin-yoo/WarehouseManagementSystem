@@ -315,31 +315,23 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             childOrder.setVerifyPersonId(SecurityUtils.getCurrentUserId());
             tbOrdersMapper.updateById(childOrder);
 
-            //另起线程更新库存信息
-            //Runnable runnable = () -> {
-                try {
-                    // 更新库存数量
-                    List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
-                    for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
-                        TbWhInventory out = tbWhInventoryMapper.lambdaQuery()
-                                .eq(TbWhInventory::getWhId, order.getSourceId())
-                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                                .one();
-                        out.setCount(out.getCount() - Integer.parseInt(tbOrderGoods.getGoodNum()));
-                        tbWhInventoryMapper.updateById(out);
+            // 更新库存数量
+            List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
+            for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
+                TbWhInventory out = tbWhInventoryMapper.lambdaQuery()
+                        .eq(TbWhInventory::getWhId, order.getSourceId())
+                        .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                        .one();
+                out.setCount(out.getCount() - Integer.parseInt(tbOrderGoods.getGoodNum()));
+                tbWhInventoryMapper.updateById(out);
 
-                        TbWhInventory in = tbWhInventoryMapper.lambdaQuery()
-                                .eq(TbWhInventory::getWhId, order.getWhId())
-                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                                .one();
-                        in.setCount(in.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
-                        tbWhInventoryMapper.updateById(in);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            //};
-            //new Thread(runnable).start();
+                TbWhInventory in = tbWhInventoryMapper.lambdaQuery()
+                        .eq(TbWhInventory::getWhId, order.getWhId())
+                        .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                        .one();
+                in.setCount(in.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
+                tbWhInventoryMapper.updateById(in);
+            }
         });
     }
 
@@ -362,31 +354,23 @@ public class TransferOrdersServiceImpl extends CommonServiceImpl<TbOrdersMapper,
             childOrder.setStatus(OrderStatusEnum.RE_APPROVE.getCode());
             tbOrdersMapper.updateById(childOrder);
 
-            //另起线程更新库存信息
-            //Runnable runnable = () -> {
-                try {
-                    // 更新库存数量
-                    List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
-                    for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
-                        TbWhInventory out = tbWhInventoryMapper.lambdaQuery()
-                                .eq(TbWhInventory::getWhId, order.getSourceId())
-                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                                .one();
-                        out.setCount(out.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
-                        tbWhInventoryMapper.updateById(out);
+            // 更新库存数量
+            List<TbOrderGoods> oldOrderGoodList = tbOrderGoodsMapper.lambdaQuery().eq(TbOrderGoods::getOrderId, id).list();
+            for (TbOrderGoods tbOrderGoods : oldOrderGoodList) {
+                TbWhInventory out = tbWhInventoryMapper.lambdaQuery()
+                        .eq(TbWhInventory::getWhId, order.getSourceId())
+                        .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                        .one();
+                out.setCount(out.getCount() + Integer.parseInt(tbOrderGoods.getGoodNum()));
+                tbWhInventoryMapper.updateById(out);
 
-                        TbWhInventory in = tbWhInventoryMapper.lambdaQuery()
-                                .eq(TbWhInventory::getWhId, order.getWhId())
-                                .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
-                                .one();
-                        in.setCount(in.getCount() - Integer.parseInt(tbOrderGoods.getGoodNum()));
-                        tbWhInventoryMapper.updateById(in);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            //};
-            //new Thread(runnable).start();
+                TbWhInventory in = tbWhInventoryMapper.lambdaQuery()
+                        .eq(TbWhInventory::getWhId, order.getWhId())
+                        .eq(TbWhInventory::getGoodId, tbOrderGoods.getGoodId())
+                        .one();
+                in.setCount(in.getCount() - Integer.parseInt(tbOrderGoods.getGoodNum()));
+                tbWhInventoryMapper.updateById(in);
+            }
         });
     }
 

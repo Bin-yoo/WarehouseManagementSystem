@@ -14,7 +14,8 @@ public enum OrderTypeEnum {
     SELL(5, "销售提货单"),
     TRANSFER_OUT(6, "库存调拨单(出)"),
     INVENTORY(7, "库存盘点单"),
-    TRANSFER_IN(8, "库存调拨单(入)");
+    TRANSFER_IN(8, "库存调拨单(入)"),
+    INITIAL(9, "仓初数据");
 
     private Integer code;
 
